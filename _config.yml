@@ -1,1 +1,4 @@
 baseurl: /jekyll_demo
+title: My Blog
+description: A personal blog
+theme: minima  # 默认主题
