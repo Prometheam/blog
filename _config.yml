@@ -1,9 +1,9 @@
 # Site settings
-title: Liang Ke Jin
-description: Liang Ke Jin
+title: Meng Guo Wan
+description: Meng Guo Wan
 favicon: /assets/img/avatar.JPG
 baseurl:
-url: https://liungkejin.github.io
+url: https://mengguowan.github.io
 rss_url:
 
 # Build settings
