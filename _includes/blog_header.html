@@ -1,35 +1,24 @@
-<header class="blog-header">
-    <div class="header-container">
-        <!-- 作者信息部分 -->
-        <div class="author-info">
-            <a href="/" class="avatar-link" aria-label="返回首页">
-                <img alt="{{ site.data.blog.title }}的头像" 
-                     src="/assets/img/avatar.JPG" 
-                     width="80" 
-                     height="80"
-                     loading="lazy"/>
-            </a>
-            <div class="blog-meta">
-                <h1><a href="/">{{ site.data.blog.title }}</a></h1>
-                <p class="blog-description">{{ site.data.blog.description }}</p>
-            </div>
+<header class="bloghead">
+    <div class="authorheader">
+        <a href="/">
+            <img alt="My Avatar" src="/assets/img/avatar.JPG"/>
+        </a>
+        <div class="blogtitle">
+            <h1><a href="/">{{ site.data.blog.title }}</a></h1>
+            <h5> {{ site.data.blog.description }} </h5>
         </div>
-
-        <!-- 右侧导航菜单 - 使用CSS浮动到最右侧 -->
-        <nav class="main-nav" aria-label="主导航">
-            <ul class="nav-list">
-                <li><a href="/" class="nav-link" aria-current="page">主页</a></li>
-                <li><a href="/menu.html" class="nav-link">菜单</a></li>
-                <li>
-                    <a href="https://github.com/mengguowan" 
-                       target="_blank" 
-                       rel="noopener noreferrer" 
-                       class="nav-link external">
-                       Github ↗
-                    </a>
-                </li>
-                <li><a href="/about.html" class="nav-link">关于我</a></li>
-            </ul>
-        </nav>
     </div>
+
+    <nav class="menu" role="nav">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li>|</li>
+            <li><a href="/menu.html">Menu</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="https://github.com/mengguowan">Github</a></li>
+            <li>|</li>
+            <li><a target="_blank" href="/about.html"> About Me</a></li>
+        </ul>
+    </nav>
+</nav>
 </header>
