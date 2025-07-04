@@ -1,0 +1,33 @@
+---
+layout: post_layout
+title: "2016-03-05-在 Windows 上安装 Jekyll后生成博客"
+date: 2016-03-05 14:30:00 +0800
+categories: [博客搭建]
+location: 西安
+excerpt_separator: "```"
+---
+在 Windows 上安装 Jekyll 需要一些额外的步骤，因为 Jekyll 原本是为 macOS/Linux 设计的。
+也就是说，在Linux上安装同理：
+
+
+1. 由于Jekyll 是用 Ruby 编写的，所以需要先安装 Ruby:
+	- 下载 Ruby Installer:访问 [RubyInstaller for Windows](https://rubyinstaller.org/downloads/)
+	- 运行安装程序
+	- 验证 Ruby 安装
+				
+			ruby -v
+
+2. 安装 Jekyll 和 Bundler
+			
+		gem install jekyll bundler
+
+	验证安装
+		
+		jekyll -v
+	
+3. 创建 Jekyll 网站
+
+		jekyll new myblog
+		cd myblog
+		bundle exec jekyll serve
+访问 http://localhost:4000 查看网站。
