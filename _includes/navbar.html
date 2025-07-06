@@ -1,0 +1,275 @@
+<!-- 引入Font Awesome图标 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<nav class="navbar" role="navigation">
+  <div class="navbar-container container">
+    <!-- 博客Logo/标题 -->
+    <a href="{{ site.baseurl }}/" class="navbar-brand">
+      {% if site.logo %}
+        <img src="{{ site.logo | relative_url }}" alt="{{ site.title }}" class="logo">
+      {% endif %}
+      <span class="site-title">{{ site.title }}</span>
+    </a>
+
+    
+    <!-- 导航菜单 -->
+    <div class="navbar-menu" id="navbarMenu">
+      {% for item in site.data.navigation %}
+        {% if item.dropdown %}
+          <div class="nav-item dropdown">
+            <a href="{{ item.url | relative_url }}" class="nav-link with-icon">
+              <i class="{{ item.icon }}"></i>
+              <span>{{ item.name }}</span>
+              <i class="dropdown-icon fas fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu">
+              {% for subitem in item.dropdown %}
+                <li>
+                  <a href="{{ subitem.url | relative_url }}" class="dropdown-link with-icon">
+                    <i class="{{ subitem.icon }}"></i>
+                    <span>{{ subitem.name }}</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% else %}
+          <div class="nav-item">
+            <a href="{{ item.url | relative_url }}" class="nav-link with-icon">
+              <i class="{{ item.icon }}"></i>
+              <span>{{ item.name }}</span>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</nav>
+
+<!-- 导航栏样式 -->
+<style>
+/* 基础样式 */
+.navbar {
+  background-color: var(--navbar-bg, #2c3e50);
+  color: var(--navbar-text, #fff);
+  height: 70px;               /* 固定高度 */
+  padding: 0 2rem;            /* 左右内边距 */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  display: flex;              /* 启用 Flexbox 布局 */
+  align-items: center;        /* 垂直居中内容 */
+  
+  max-width: 1200px;  /* 设置最大宽度（根据需求调整） */
+  width: 100%;        /* 确保宽度占满父容器 */
+  margin: 0 auto;     /* 水平居中 */
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 20000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 品牌标志 */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.site-title {
+  margin-left: 10px;
+}
+
+/* 导航菜单 */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  position: relative;
+  margin: 0 0.5rem;
+}
+
+.nav-link, .dropdown-link {
+  color: inherit;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover, .dropdown-link:hover {
+  background-color: var(--navbar-hover-bg, rgba(255,255,255,0.1));
+}
+
+.with-icon i:first-child {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+}
+
+/* 下拉菜单 */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--dropdown-bg, #fff);
+  min-width: 200px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  padding: 0.5rem 0;
+  margin-top: 5px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropdown-link {
+  color: var(--dropdown-text, #333);
+  padding: 0.5rem 1.5rem;
+}
+
+.dropdown-link:hover {
+  background-color: var(--dropdown-hover-bg, #f5f5f5);
+}
+
+.dropdown-icon {
+  margin-left: 8px;
+  font-size: 0.8em;
+  transition: transform 0.3s;
+}
+
+.dropdown:hover .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.icon-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: currentColor;
+  margin: 4px 0;
+  transition: all 0.3s;
+}
+
+/* 当前活动项 */
+.nav-link.active, .dropdown-link.active {
+  color: var(--active-color, #3498db);
+  font-weight: bold;
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+  .navbar-container {
+    flex-wrap: wrap;
+  }
+  
+  .navbar-menu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .navbar-menu.active {
+    display: flex;
+  }
+  
+  .nav-item {
+    margin: 0.25rem 0;
+  }
+  
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    display: none;
+    background-color: transparent;
+    padding-left: 1.5rem;
+  }
+  
+  .dropdown.active .dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown-link {
+    color: inherit;
+  }
+  
+  .navbar-toggle {
+    display: block;
+  }
+  
+  .navbar-search {
+    width: 100%;
+    margin: 1rem 0 0;
+  }
+  
+  .navbar-toggle.active .icon-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  
+  .navbar-toggle.active .icon-bar:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .navbar-toggle.active .icon-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+}
+</style>
+
+<!-- 导航栏交互脚本 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const toggle = document.querySelector('.navbar-toggle');
+  const menu = document.querySelector('.navbar-menu');
+  
+  // 高亮当前页面链接
+  const currentPath = window.location.pathname;
+  const links = document.querySelectorAll('.nav-link, .dropdown-link');
+  
+  links.forEach(link => {
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active');
+      
+      // 展开父级下拉菜单
+      let parent = link.closest('.dropdown-menu');
+      if (parent) {
+        parent.previousElementSibling.classList.add('active');
+        parent.closest('.dropdown').classList.add('active');
+      }
+    }
+  });
+});
+</script>

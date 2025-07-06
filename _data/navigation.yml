@@ -1,0 +1,22 @@
+- name: 首页
+  url: /
+  icon: fas fa-home
+  
+- name: 归档
+  url: /archives/
+  icon: fas fa-archive
+  dropdown:
+    - name: 按日期
+      url: /archives/by-date/
+      icon: fas fa-calendar-alt
+    - name: 按分类
+      url: /archives/by-category/
+      icon: fas fa-folder
+
+- name: 分类
+  url: /categories/
+  icon: fas fa-tags
+
+- name: 关于
+  url: /about/
+  icon: fas fa-user
