@@ -1,26 +1,86 @@
----
-layout: blog_layout
----
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>孟国万的个人网站</title>
+    <style>
+        body {
+				margin: 0;
+				min-height: 100vh;          /* 替代 height，允许内容扩展 */
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				font-family: Arial, sans-serif;
+				background: url("assets/img/blog_bg.jpg") center/cover no-repeat;
+				overflow-y: auto;            /* 允许滚动 */
+				line-height: 1.6;           /* 行高增强可读性 */
+				color: #333;                /* 深灰色文本 */
+			}
+        .intro {
+			width: 500px;      /* 固定宽度 */
+			height: 200px;     /* 固定高度 */
+			padding: 50px;
+			background: rgba(255, 255, 255, 0.30); /* 透明度调整为10% */
+			backdrop-filter: blur(3px); /* 可选：背景模糊效果 */
+			border: 1px solid rgba(255, 255, 255, 0.2); /* 可选：半透明边框 */
+			border-radius: 10px;
+			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+			transition: all 0.3s ease;
+			color: #333; /* 确保文字可读性 */
+		}
+		@media (max-width: 600px) {
+			.intro {
+				padding: 20px;
+			}
+		}
+		.intro:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+		}
+    </style>	
+</head>
+<body>
+    <div class="intro">
+		<h1>孟国万的个人网站</h1>
+		<hr> <!-- 基本水平线 -->
+		<nav>
+            <a href="/blog" class="blog-link decor-line">>> 博客(Blog)</a>
+			<style>
+			.blog-link.decor-line {
+			  display: block;
+			  text-align: left; /* 左对齐 */
+			  padding: 15px 20px 15px 30px;
+			  margin: 15px 0;
+			  background: rgba(245, 245, 245, 0.15);
+			  border-left: 4px solid rgba(52, 152, 219, 0.7); /* 左侧装饰条 */
+			  color: #333;
+			  position: relative;
+			  transition: background 0.3s;
+			}
 
-{% for post in site.posts %}
-<article class="preview">
-    <header>
-        <h2 class="post-title">
-            <a href="{{ post.url }}">  {{ post.title }} </a>
-        </h2>
-        <p class="post-time"> {{ post.time }}</p>
-    </header>
-    <section class="post-section">
-        <p>
-            {{ post.excerpt }}
-        </p>
-        <p class="readmore">
-            <a href="{{ post.url }}">
-                阅读全文
-                <span class="glyphicon glyphicon-circle-arrow-right"></span>
-            </a>
-        </p>
-    </section>
+			.blog-link.decor-line:hover {
+			  background: rgba(245, 245, 245, 0.8);
+			  padding-left: 35px;
+			}
+			</style>
+        </nav>
+		<hr> <!-- 基本水平线 -->
+		<div class="domain-container">
+		  <p>mengguowan.github.io</p>
+		</div>
 
-</article>
-{% endfor %}
+		<style>
+		.domain-container {
+		  display: flex;
+		  justify-content: flex-end; /* 右对齐 */
+		}
+		.domain-container p {
+		  margin: 0;
+		  padding: 5px 0;
+		}
+		</style>
+    </div>
+</body>
+</html>
