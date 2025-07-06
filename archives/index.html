@@ -1,0 +1,38 @@
+---
+layout: blog_layout
+title: 文章归档
+---
+
+<div class="archives">
+  <h1>文章归档</h1>
+  
+  <!-- 按年份归档 -->
+  {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+  
+  {% for year in posts_by_year %}
+    <h2 id="{{ year.name }}">{{ year.name }}年</h2>
+    
+    <!-- 按月归档 -->
+    {% assign posts_by_month = year.items | group_by_exp: "post", "post.date | date: '%m'" %}
+    
+    {% for month in posts_by_month %}
+      <h3 id="{{ year.name }}-{{ month.name }}">{{ year.name }}年{{ month.name }}月</h3>
+      
+      <ul class="post-list">
+        {% for post in month.items %}
+          <li>
+            <span class="post-date">{{ post.date | date: "%m-%d" }}</span>
+            <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.categories.size > 0 %}
+              <span class="post-categories">
+                {% for category in post.categories %}
+                  <a href="/categories/{{ category | slugify }}/">{{ category }}</a>
+                {% endfor %}
+              </span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
+  {% endfor %}
+</div>

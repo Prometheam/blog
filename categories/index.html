@@ -1,0 +1,219 @@
+---
+layout: blog_layout
+title: 分类归档
+permalink: /categories/
+---
+
+<div class="categories">
+  <h1>文章分类</h1>
+  
+  <div class="category-stats">
+    共 {{ site.posts.size }} 篇文章，分为 {{ site.categories.size }} 个分类
+  </div>
+  
+  <div class="category-cloud">
+    {% assign categories = site.categories | sort %}
+    {% for category in categories %}
+      {% assign size = category[1].size %}
+      {% assign percent = size | times: 100 | divided_by: site.posts.size %}
+      {% if percent < 10 %}
+        {% assign class = 'smallest' %}
+      {% elsif percent < 20 %}
+        {% assign class = 'small' %}
+      {% elsif percent < 40 %}
+        {% assign class = 'medium' %}
+      {% elsif percent < 60 %}
+        {% assign class = 'large' %}
+      {% else %}
+        {% assign class = 'largest' %}
+      {% endif %}
+      
+      <a href="#{{ category[0] | slugify }}" 
+         class="{{ class }}" 
+         title="{{ category[0] }} ({{ size }}篇)">
+        {{ category[0] }} ({{ size }})
+      </a>
+    {% endfor %}
+  </div>
+
+  <div class="category-posts">
+    {% for category in categories %}
+      <div class="category-section" id="{{ category[0] | slugify }}">
+        <h2>
+          <a href="/categories/{{ category[0] | slugify }}/">
+            {{ category[0] }} ({{ category[1].size }}篇)
+          </a>
+        </h2>
+        
+        <ul class="post-list">
+          {% for post in category[1] %}
+            <li>
+              <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              {% if post.tags.size > 0 %}
+                <span class="post-tags">
+                  {% for tag in post.tags %}
+                    <a href="/tags/{{ tag | slugify }}/">#{{ tag }}</a>
+                  {% endfor %}
+                </span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.categories {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.category-stats {
+  text-align: center;
+  margin: 20px 0;
+  color: #666;
+  font-size: 1.1em;
+}
+
+.category-cloud {
+  text-align: center;
+  margin: 30px 0;
+  line-height: 2;
+}
+
+.category-cloud a {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.category-cloud a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.category-cloud .smallest { 
+  font-size: 0.8em;
+  background: #f0f8ff;
+  color: #0066cc;
+}
+.category-cloud .small { 
+  font-size: 1em;
+  background: #e6f7ff;
+  color: #0099ff;
+}
+.category-cloud .medium { 
+  font-size: 1.2em;
+  background: #d6f0ff;
+  color: #0077cc;
+}
+.category-cloud .large { 
+  font-size: 1.4em;
+  background: #c2e6ff;
+  color: #0055aa;
+}
+.category-cloud .largest { 
+  font-size: 1.6em;
+  background: #a8d8ff;
+  color: #003377;
+}
+
+.category-posts {
+  margin-top: 40px;
+}
+
+.category-section {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.category-section h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.category-section h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.category-section h2 a:hover {
+  color: #0066cc;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-list li {
+  margin-bottom: 10px;
+  padding: 8px 0;
+  line-height: 1.6;
+}
+
+.post-date {
+  display: inline-block;
+  width: 90px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.post-tags {
+  margin-left: 10px;
+}
+
+.post-tags a {
+  font-size: 0.8em;
+  color: #888;
+  text-decoration: none;
+  margin-right: 5px;
+}
+
+.post-tags a:hover {
+  color: #cc3300;
+}
+
+.view-all {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.view-all a {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.view-all a:hover {
+  color: #0066cc;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .category-cloud a {
+    margin: 3px;
+    padding: 3px 6px;
+  }
+  
+  .post-date {
+    display: block;
+    width: auto;
+    margin-bottom: 2px;
+  }
+  
+  .post-tags {
+    display: block;
+    margin-left: 0;
+    margin-top: 3px;
+  }
+}
+</style>
