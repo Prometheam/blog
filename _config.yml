@@ -29,3 +29,18 @@ kramdown:
     coderay_tab_width: 4
     coderay_bold_every: 10
     coderay_css: style
+
+# 启用归档功能
+collections:
+  archives:
+    output: true
+    permalink: /archives/:year/:month/:day/:title/
+
+# 默认设置
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      show_in_archives: true

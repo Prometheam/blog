@@ -1,23 +1,19 @@
 <header class="bloghead">
-    <div class="authorheader">
-        <a href="/">
-            <img alt="My Avatar" src="/assets/img/avatar.JPG"/>
-        </a>
-        <div class="blogtitle">
-            <h1><a href="/">{{ site.data.blog.title }}</a></h1>
-            <h5> {{ site.data.blog.description }} </h5>
-        </div>
-    </div>
+    <hr class="responsive-divider">
 
-    <nav class="menu" role="nav">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li>|</li>
-            <li><a href="/menu.html">Menu</a></li>
-            <li>|</li>
-            <li><a target="_blank" href="https://github.com/mengguowan">Github</a></li>
-            <li>|</li>
-            <li><a target="_blank" href="/about.html"> About Me</a></li>
-        </ul>
-    </nav>
+	<style>
+	.responsive-divider {
+		border: 0;
+		height: 2px;
+		background-image: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+		margin: 3vw 0;
+	}
+
+	@media (max-width: 768px) {
+		.responsive-divider {
+			margin: 5vw 0;
+			height: 1px;
+		}
+	}
+	</style>
 </header>
