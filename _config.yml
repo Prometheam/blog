@@ -13,15 +13,16 @@ highlight: true
 
 timezone: Asia/Shanghai
 
-markdown: GFM
-#markdown: kramdown
-#kramdown:
-#  auto_ids: true
-#  footnote_nr: 1
-#  entity_output: as_char
-#  toc_levels: 1..6
-#  smart_quotes: lsquo,rsquo,ldquo,rdquo
-#  enable_coderay: false
+
+markdown: kramdown
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+  input: GFM  # 启用 GitHub Flavored Markdown 兼容
 
   coderay:
     coderay_wrap: div
