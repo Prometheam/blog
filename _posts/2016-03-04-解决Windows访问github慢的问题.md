@@ -11,18 +11,21 @@ GitHub国内访问卡到崩溃？1招教你极速上车: 修改Hosts | 直连最
 
 1. 查询最新IP
 
-	访问 https://github.com.ipaddress.com
+	**获取GitHub IP地址**‌：通过DNS查询工具（如https://www.ip138.com/）获取 github.com 和        github.global.ssl.fastly.net的IP地址
 	
-	获取 github.com 和 github.global.ssl.fastly.net 的当前IP
 2. 编辑Hosts文件
 	
 		# Windows路径  
 		C:\Windows\System32\drivers\etc\hosts
 		# 添加以下内容  
-		140.82.113.3 github.com  
-		199.232.69.194 github.global.ssl.fastly.net 
+		20.205.243.166 github.com 
+		104.244.46.5 github.global.ssl.fastly.net  
 
 3. 刷新DNS缓存
 
+		```
 		ipconfig /flushdns  # Windows
+		```
+		
+		
 
