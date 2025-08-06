@@ -13,7 +13,29 @@ highlight: true
 
 timezone: Asia/Shanghai
 
-markdown: commonmark
+# _config.yml
+markdown: CommonMark-GFM  # 启用 GitHub 风格扩展
+commonmark:
+  options:
+    - "SMART"             # 智能标点（“” ‘’）
+    - "FOOTNOTES"         # 脚注支持
+    - "FULL_INFO_STRING"  # 代码块元数据
+    - "STRIKETHROUGH_DOUBLE_TILDE" # 强制 ~~删除线~~
+  extensions:
+    - "table"            # 表格
+    - "strikethrough"    # 删除线
+    - "tasklist"         # 任务列表
+    - "autolink"         # 自动链接
+    - "tagfilter"        # HTML 标签过滤
+    - "superscript"      # 上标
+    - "header-ids"       # 标题自动 ID
+    - name: "front_matter" # 解析 YAML 前言
+  render:
+    hardbreaks: false    # 禁用单换行转 <br>
+    unsafe: true         # 允许原始 HTML（需安全审计）
+
+plugins:
+  - jekyll-commonmark   # 必须插件
 
 # 启用归档功能
 collections:
