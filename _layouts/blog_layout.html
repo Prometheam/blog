@@ -4,11 +4,19 @@
   {% include head.html %}
 
   <body>
-	{% include navbar.html %}
+    {% include navbar.html %}
     {% include blog_header.html %}
-    <main class="blogmain">
-      {{ content }}
-    </main>
+
+    <div class="blog-page">
+      <div class="post-list">
+        {{ content }}
+      </div>
+    </div>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
     {% include footer.html %}
   </body>

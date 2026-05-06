@@ -1,25 +1,66 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-    {% include head.html %}
-    <body>
-        {% include blog_header.html %}
+  {% include head.html %}
 
-        <main class="blogmain">
-            <header>
-                <h1 class="article-title">{{ page.title }}</h1>
-                <p class="article-time">
-                    {{ page.time }},  发表于 <span>{{ page.location }}</span>
-                </p>
-                <p class="article-hint">
-                    如果你对本文有任何的建议或者疑问, 可以在
-                    <a href="https://github.com/mengguowan/mengguowan.github.io/issues" target="_blank">这里给我提 Issues</a>, 谢谢! :)
-                </p>
-            </header>
-            {{ content }}
-            {% include post_footer.html %}
+  <body>
+    {% include navbar.html %}
+
+    <article class="post-page">
+      <header class="post-header">
+        <h1 class="post-title">{{ page.title }}</h1>
+        <div class="post-meta">
+          <span>
+            <i class="fa-regular fa-calendar"></i>
+            {{ page.date | date: "%Y年%m月%d日" }}
+          </span>
+          <span>·</span>
+          <span class="reading-time">
+            <i class="fa-regular fa-clock"></i>
+            <span id="readingTime">计算中...</span>
+          </span>
+          {% if page.location %}
+          <span>·</span>
+          <span><i class="fa-solid fa-location-dot"></i> {{ page.location }}</span>
+          {% endif %}
+          {% if page.categories.size > 0 %}
+          <span>·</span>
+          <span>
+            {% for cat in page.categories %}
+            <span class="tag-pill">{{ cat }}</span>
+            {% endfor %}
+          </span>
+          {% endif %}
+        </div>
+      </header>
+
+      <div class="post-layout-wrapper">
+        <!-- TOC 侧边栏（桌面端） -->
+        <aside class="toc-sidebar" id="tocSidebar">
+          <div class="toc-title">
+            <i class="fa-solid fa-list"></i> 目录
+          </div>
+          <ul class="toc-list" id="tocList">
+            <!-- 由 JS 自动生成 -->
+          </ul>
+        </aside>
+
+        <!-- 文章正文 -->
+        <main class="post-content" id="postContent">
+          <p class="post-hint">
+            如果你对本文有任何的建议或者疑问，可以在
+            <a href="https://github.com/mengguowan/mengguowan.github.io/issues" target="_blank">这里给我提 Issues</a>
+          </p>
+          {{ content }}
+          {% include post_footer.html %}
         </main>
+      </div>
+    </article>
 
-        {% include footer.html %}
-    </body>
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">
+      <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
+    {% include footer.html %}
+  </body>
 </html>

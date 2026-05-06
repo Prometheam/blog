@@ -5,28 +5,26 @@ title: 文章归档
 
 <div class="archives">
   <h1>文章归档</h1>
-  
-  <!-- 按年份归档 -->
+
   {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
-  
+
   {% for year in posts_by_year %}
     <h2 id="{{ year.name }}">{{ year.name }}年</h2>
-    
-    <!-- 按月归档 -->
+
     {% assign posts_by_month = year.items | group_by_exp: "post", "post.date | date: '%m'" %}
-    
+
     {% for month in posts_by_month %}
-      <h3 id="{{ year.name }}-{{ month.name }}">{{ year.name }}年{{ month.name }}月</h3>
-      
-      <ul class="post-list">
+      <h3 id="{{ year.name }}-{{ month.name }}">{{ month.name }}月</h3>
+
+      <ul class="archive-list">
         {% for post in month.items %}
           <li>
-            <span class="post-date">{{ post.date | date: "%m-%d" }}</span>
-            <a href="{{ post.url }}">{{ post.title }}</a>
+            <span class="archive-date">{{ post.date | date: "%m-%d" }}</span>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
             {% if post.categories.size > 0 %}
-              <span class="post-categories">
+              <span class="archive-cats">
                 {% for category in post.categories %}
-                  <a href="/categories/{{ category | slugify }}/">{{ category }}</a>
+                  <span class="tag-pill">{{ category }}</span>
                 {% endfor %}
               </span>
             {% endif %}
@@ -36,3 +34,69 @@ title: 文章归档
     {% endfor %}
   {% endfor %}
 </div>
+
+<style>
+.archives {
+  max-width: var(--content-max-width, 800px);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.archives h2 {
+  color: var(--accent-primary);
+  margin-top: 2.5rem;
+  font-size: 1.4rem;
+}
+
+.archives h3 {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  border: none;
+  padding: 0;
+}
+
+.archive-list {
+  list-style: none;
+  padding: 0;
+}
+
+.archive-list li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.archive-date {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.archive-list a {
+  color: var(--text-primary);
+}
+
+.archive-list a:hover {
+  color: var(--accent-primary);
+}
+
+.archive-cats {
+  display: inline-flex;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .archive-list li {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .archive-cats {
+    margin-left: 0;
+  }
+}
+</style>

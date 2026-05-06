@@ -1,130 +1,257 @@
 ---
 layout: author_layout
 ---
-<div class="container">
-    <div class="row-center">
-        <div class="col-md-7">
-            {% if site.data.author.workHistory %}
-                <h3 class="title with-icon"><span class="glyphicon glyphicon-plane cat-title"></span>Work History</h3>
-                <ul class="timeline">
-                    {% for work in site.data.author.workHistory %}
-                        <li class="timeline-inverted">
-                            {% if work.started %}
-                                <div class="timeline-badge info">{{ work.started }}</div>
-                            {% endif %}
-                            <div class="timeline-panel grid-block">
-                                <div class="timeline-heading">
-                                    {% if work.company %}
-                                        <h4 class="timeline-title">{{ work.company }} </h4>
-                                    {% endif %}
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if work.title %}
-                                                {{ work.title }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if work.duration %}
-                                                <i class="fa fa-calendar"></i> {{ work.duration }} |
-                                            {% endif %}
-                                            {% if work.location %}
-                                                <i class="fa fa-map-marker"></i>  {{ work.location }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                </div>
-                                <div class="timeline-body">
-                                    {% if work.description %}
-                                        <p>{{ work.description }}</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            {% if site.data.author.educationHistory %}
-                <h3 class="title with-icon"><span class="fa fa-book cat-title"></span>Education History</h3>
-                <ul class="timeline">
-                    {% for education in site.data.author.educationHistory %}
-                        <li class="timeline-inverted">
-                            {% if education.started %}
-                                <div class="timeline-badge info">{{ education.started }}</div>
-                            {% endif %}
-                            <div class="timeline-panel grid-block">
-                                <div class="timeline-heading">
-                                    {% if education.organization %}
-                                        <h4 class="timeline-title">{{ education.organization }}</h4>
-                                    {% endif %}
-                                    <p>
-                                        <small class="text-muted">
-                                            {% if education.degree %}
-                                                {{ education.degree }}
-                                            {% endif %}
-                                            {% if education.major %}
-                                                , {{ education.major }}
-                                            {% endif %}
-                                        </small>
-                                    </p>
-                                    {% if education.duration %}
-                                        <p>
-                                            <small class="text-muted"><i class="fa fa-calendar"></i> {{ education.duration }}
-                                            </small>
-                                        </p>
-                                    {% endif %}
-                                </div>
-                                <div class="timeline-body">
-                                    {% if education.description %}
-                                        <p>{{ education.description }}</p>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+<div class="about-content">
+  <div class="row">
+    <div class="col-left">
+      {% if site.data.author.workHistory %}
+        <h3><i class="fa-solid fa-briefcase"></i> 工作经历</h3>
+        <div class="timeline">
+          {% for work in site.data.author.workHistory %}
+            <div class="timeline-item">
+              <div class="timeline-badge">{{ work.started }}</div>
+              <div class="timeline-panel">
+                {% if work.company %}
+                  <h4>{{ work.company }}</h4>
+                {% endif %}
+                {% if work.title %}
+                  <p class="timeline-role">{{ work.title }}</p>
+                {% endif %}
+                <p class="timeline-meta">
+                  {% if work.duration %}
+                    <i class="fa-regular fa-calendar"></i> {{ work.duration }}
+                  {% endif %}
+                  {% if work.location %}
+                    &nbsp;|&nbsp; <i class="fa-solid fa-location-dot"></i> {{ work.location }}
+                  {% endif %}
+                </p>
+                {% if work.description %}
+                  <p>{{ work.description }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
         </div>
-        <div class="col-md-5">
-            {% if site.data.author.programmingSkills %}
-                <h3 class="title with-icon"><span class="fa fa-code cat-title"></span> Programming Skills</h3>
-                <div class="grid-block">
-                    <ul class="list-unstyled list-skills">
-                        {% for programmingSkill in site.data.author.programmingSkills %}
-                            <li>
-                                {% if programmingSkill.name %}
-                                    <span class="caption-skill">{{ programmingSkill.name }}</span>
-                                {% endif %}
-                                {% if programmingSkill.percentage %}
-                                    <div class="progress">
-                                        <div class="progress-bar" style="width: {{ programmingSkill.percentage }}">
-                                            <span>{{ programmingSkill.percentage }} </span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            {% if site.data.author.languages %}
-                <div class="deviter"></div>
-                <h3 class="title with-icon"><span class="fa fa-globe cat-title"></span> Language Skills</h3>
-                <div class="grid-block">
-                    <ul class="list-unstyled list-strip">
-                        {% for language in site.data.author.languages %}
-                            {% if language.name %}
-                                {% if language.proficiency %}
-                                    <li>
-                                        <i class="fa fa-check"></i> <span class="badge badge-green badge-right-float">{{ language.proficiency }}</span>{{ language.name }}
-                                    </li>
-                                {% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+      {% endif %}
+
+      {% if site.data.author.educationHistory %}
+        <h3><i class="fa-solid fa-graduation-cap"></i> 教育经历</h3>
+        <div class="timeline">
+          {% for education in site.data.author.educationHistory %}
+            <div class="timeline-item">
+              <div class="timeline-panel">
+                {% if education.organization %}
+                  <h4>{{ education.organization }}</h4>
+                {% endif %}
+                <p class="timeline-role">
+                  {% if education.degree %}{{ education.degree }}{% endif %}
+                  {% if education.major %}, {{ education.major }}{% endif %}
+                </p>
+                {% if education.duration %}
+                  <p class="timeline-meta"><i class="fa-regular fa-calendar"></i> {{ education.duration }}</p>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
         </div>
+      {% endif %}
     </div>
+
+    <div class="col-right">
+      {% if site.data.author.programmingSkills %}
+        <h3><i class="fa-solid fa-code"></i> 技术技能</h3>
+        <div class="skills-list">
+          {% for programmingSkill in site.data.author.programmingSkills %}
+            <div class="skill-item">
+              <div class="skill-header">
+                <span class="skill-name">{{ programmingSkill.name }}</span>
+                <span class="skill-percent">{{ programmingSkill.percentage }}</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-bar-fill" style="width: {{ programmingSkill.percentage }}"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if site.data.author.languages %}
+        <h3><i class="fa-solid fa-globe"></i> 语言能力</h3>
+        <ul class="lang-list">
+          {% for language in site.data.author.languages %}
+            {% if language.name and language.proficiency %}
+              <li>
+                <i class="fa-solid fa-check"></i>
+                {{ language.name }}
+                <span class="lang-badge">{{ language.proficiency }}</span>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
 </div>
+
+<style>
+.about-content {
+  margin-top: 2rem;
+}
+
+.about-content .row {
+  display: flex;
+  gap: 3rem;
+}
+
+.col-left {
+  flex: 3;
+}
+
+.col-right {
+  flex: 2;
+}
+
+.about-content h3 {
+  color: var(--accent-primary);
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: none;
+  padding: 0;
+}
+
+.about-content h3 i {
+  margin-right: 0.5rem;
+}
+
+/* 时间线 */
+.timeline {
+  border-left: 2px solid var(--border-default);
+  padding-left: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.4rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  border: 2px solid var(--bg-primary);
+}
+
+.timeline-badge {
+  position: absolute;
+  left: -3.5rem;
+  top: 0;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+
+.timeline-panel h4 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.timeline-role {
+  color: var(--accent-tertiary);
+  font-size: 0.9rem;
+  margin: 0 0 0.2rem 0;
+}
+
+.timeline-meta {
+  color: var(--text-tertiary);
+  font-size: 0.82rem;
+  margin: 0 0 0.3rem 0;
+}
+
+.timeline-panel p:last-child {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+/* 技能条 */
+.skill-item {
+  margin-bottom: 1rem;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.skill-name {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.skill-percent {
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.skill-bar {
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+/* 语言列表 */
+.lang-list {
+  list-style: none;
+  padding: 0;
+}
+
+.lang-list li {
+  padding: 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lang-list i {
+  color: var(--accent-primary);
+  font-size: 0.8rem;
+}
+
+.lang-badge {
+  margin-left: auto;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--bg-tertiary);
+  color: var(--accent-tertiary);
+  border: 1px solid var(--border-default);
+}
+
+@media (max-width: 768px) {
+  .about-content .row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+</style>

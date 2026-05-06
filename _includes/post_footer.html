@@ -1,9 +1,9 @@
 <footer class="article-footer">
-    <div class="authorimage">
-        <img src="/assets/img/avatar.JPG" alt="My Avatar" class="img-circle">
-    </div>
-    <section class="author">
-        <h4><a href="/about.html">mengguowan</a></h4>
-        <a href="mailto:13087536225@163.com">mengguowan@163.com</a>
-    </section>
+  <div class="authorimage">
+    <img src="{{ site.data.author.gavatar }}" alt="头像">
+  </div>
+  <section class="author">
+    <h4><a href="{{ "/about/" | relative_url }}">{{ site.data.author.name }}</a></h4>
+    <a href="mailto:{{ site.data.author.email }}">{{ site.data.author.email }}</a>
+  </section>
 </footer>

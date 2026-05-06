@@ -6,32 +6,16 @@ permalink: /categories/
 
 <div class="categories">
   <h1>文章分类</h1>
-  
+
   <div class="category-stats">
     共 {{ site.posts.size }} 篇文章，分为 {{ site.categories.size }} 个分类
   </div>
-  
+
   <div class="category-cloud">
     {% assign categories = site.categories | sort %}
     {% for category in categories %}
-      {% assign size = category[1].size %}
-      {% assign percent = size | times: 100 | divided_by: site.posts.size %}
-      {% if percent < 10 %}
-        {% assign class = 'smallest' %}
-      {% elsif percent < 20 %}
-        {% assign class = 'small' %}
-      {% elsif percent < 40 %}
-        {% assign class = 'medium' %}
-      {% elsif percent < 60 %}
-        {% assign class = 'large' %}
-      {% else %}
-        {% assign class = 'largest' %}
-      {% endif %}
-      
-      <a href="#{{ category[0] | slugify }}" 
-         class="{{ class }}" 
-         title="{{ category[0] }} ({{ size }}篇)">
-        {{ category[0] }} ({{ size }})
+      <a href="#{{ category[0] | slugify }}" class="tag-pill" title="{{ category[0] }} ({{ category[1].size }}篇)">
+        {{ category[0] }} ({{ category[1].size }})
       </a>
     {% endfor %}
   </div>
@@ -39,24 +23,13 @@ permalink: /categories/
   <div class="category-posts">
     {% for category in categories %}
       <div class="category-section" id="{{ category[0] | slugify }}">
-        <h2>
-          <a href="/categories/{{ category[0] | slugify }}/">
-            {{ category[0] }} ({{ category[1].size }}篇)
-          </a>
-        </h2>
-        
-        <ul class="post-list">
+        <h2>{{ category[0] }} ({{ category[1].size }}篇)</h2>
+
+        <ul class="archive-list">
           {% for post in category[1] %}
             <li>
-              <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+              <span class="archive-date">{{ post.date | date: "%Y-%m-%d" }}</span>
               <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-              {% if post.tags.size > 0 %}
-                <span class="post-tags">
-                  {% for tag in post.tags %}
-                    <a href="/tags/{{ tag | slugify }}/">#{{ tag }}</a>
-                  {% endfor %}
-                </span>
-              {% endif %}
             </li>
           {% endfor %}
         </ul>
@@ -67,153 +40,91 @@ permalink: /categories/
 
 <style>
 .categories {
-  max-width: 900px;
+  max-width: var(--content-max-width, 800px);
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem 1.5rem;
 }
 
 .category-stats {
   text-align: center;
-  margin: 20px 0;
-  color: #666;
-  font-size: 1.1em;
+  margin: 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
 .category-cloud {
   text-align: center;
-  margin: 30px 0;
-  line-height: 2;
+  margin: 2rem 0;
+  line-height: 2.2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.category-cloud a {
-  display: inline-block;
-  margin: 0 5px;
-  padding: 5px 10px;
+.category-cloud .tag-pill {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.category-cloud .tag-pill:hover {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
   text-decoration: none;
-  border-radius: 4px;
-  transition: all 0.3s;
-}
-
-.category-cloud a:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.category-cloud .smallest { 
-  font-size: 0.8em;
-  background: #f0f8ff;
-  color: #0066cc;
-}
-.category-cloud .small { 
-  font-size: 1em;
-  background: #e6f7ff;
-  color: #0099ff;
-}
-.category-cloud .medium { 
-  font-size: 1.2em;
-  background: #d6f0ff;
-  color: #0077cc;
-}
-.category-cloud .large { 
-  font-size: 1.4em;
-  background: #c2e6ff;
-  color: #0055aa;
-}
-.category-cloud .largest { 
-  font-size: 1.6em;
-  background: #a8d8ff;
-  color: #003377;
-}
-
-.category-posts {
-  margin-top: 40px;
 }
 
 .category-section {
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.category-section:last-child {
+  border-bottom: none;
 }
 
 .category-section h2 {
-  margin-bottom: 15px;
-  color: #333;
+  border: none;
+  padding: 0;
+  font-size: 1.3rem;
+  color: var(--accent-primary);
 }
 
-.category-section h2 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.category-section h2 a:hover {
-  color: #0066cc;
-}
-
-.post-list {
+.archive-list {
   list-style: none;
   padding: 0;
 }
 
-.post-list li {
-  margin-bottom: 10px;
-  padding: 8px 0;
-  line-height: 1.6;
+.archive-list li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
 }
 
-.post-date {
-  display: inline-block;
-  width: 90px;
-  color: #666;
-  font-size: 0.9em;
+.archive-date {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  white-space: nowrap;
 }
 
-.post-tags {
-  margin-left: 10px;
+.archive-list a {
+  color: var(--text-primary);
 }
 
-.post-tags a {
-  font-size: 0.8em;
-  color: #888;
-  text-decoration: none;
-  margin-right: 5px;
-}
-
-.post-tags a:hover {
-  color: #cc3300;
-}
-
-.view-all {
-  text-align: right;
-  margin-top: 10px;
-}
-
-.view-all a {
-  color: #666;
-  text-decoration: none;
-  font-size: 0.9em;
-}
-
-.view-all a:hover {
-  color: #0066cc;
-  text-decoration: underline;
+.archive-list a:hover {
+  color: var(--accent-primary);
 }
 
 @media (max-width: 768px) {
-  .category-cloud a {
-    margin: 3px;
-    padding: 3px 6px;
-  }
-  
-  .post-date {
-    display: block;
-    width: auto;
-    margin-bottom: 2px;
-  }
-  
-  .post-tags {
-    display: block;
-    margin-left: 0;
-    margin-top: 3px;
+  .archive-list li {
+    flex-direction: column;
+    gap: 0.2rem;
   }
 }
 </style>

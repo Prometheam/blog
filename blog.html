@@ -3,12 +3,25 @@ layout: blog_layout
 ---
 
 {% for post in site.posts %}
-    <section class="smenu">
-        {{ post.time  | date: "%Y/%m/%d" }}
-        &nbsp;&nbsp;
-        <a href="{{post.url}}">
-            <span class="glyphicon glyphicon-hand-right">  </span>
-            &nbsp;&nbsp; {{post.title}} &nbsp;&nbsp; 
-        </a>
-    </section>
+  <article class="post-card">
+    <h2 class="post-card-title">
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    </h2>
+    <div class="post-card-meta">
+      <span><i class="fa-regular fa-calendar"></i> {{ post.date | date: "%Y年%m月%d日" }}</span>
+      {% if post.categories.size > 0 %}
+        <span>
+          {% for cat in post.categories %}
+            <span class="tag-pill">{{ cat }}</span>
+          {% endfor %}
+        </span>
+      {% endif %}
+    </div>
+    {% if post.excerpt %}
+      <p class="post-card-excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+    {% endif %}
+    <a href="{{ post.url | relative_url }}" class="read-more">
+      阅读全文 <i class="fa-solid fa-arrow-right"></i>
+    </a>
+  </article>
 {% endfor %}
