@@ -1,86 +1,442 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>孟国万的个人网站</title>
-    <style>
-        body {
-				margin: 0;
-				min-height: 100vh;          /* 替代 height，允许内容扩展 */
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				text-align: center;
-				font-family: Arial, sans-serif;
-				background: url("assets/img/blog_bg.jpg") center/cover no-repeat;
-				overflow-y: auto;            /* 允许滚动 */
-				line-height: 1.6;           /* 行高增强可读性 */
-				color: #333;                /* 深灰色文本 */
-			}
-        .intro {
-			width: 500px;      /* 固定宽度 */
-			height: 200px;     /* 固定高度 */
-			padding: 50px;
-			background: rgba(255, 255, 255, 0.30); /* 透明度调整为10% */
-			backdrop-filter: blur(3px); /* 可选：背景模糊效果 */
-			border: 1px solid rgba(255, 255, 255, 0.2); /* 可选：半透明边框 */
-			border-radius: 10px;
-			box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-			transition: all 0.3s ease;
-			color: #333; /* 确保文字可读性 */
-		}
-		@media (max-width: 600px) {
-			.intro {
-				padding: 20px;
-			}
-		}
-		.intro:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
-		}
-    </style>	
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d1117">
+  <title>{{ site.data.author.name }} - {{ site.data.author.title }}</title>
+  <link rel="icon" type="image/png" href="{{ site.favicon }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Inter', 'Noto Sans SC', sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 粒子画布 */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* 渐变叠加 */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, transparent 0%, rgba(13, 17, 23, 0.4) 70%, rgba(13, 17, 23, 0.8) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 主内容 */
+    .hero {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 2rem;
+      animation: fadeInUp 1s ease 0.3s both;
+    }
+
+    /* 头像 */
+    .hero-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(240, 165, 0, 0.5);
+      box-shadow: 0 0 30px rgba(240, 165, 0, 0.15);
+      margin-bottom: 1.5rem;
+      transition: all 0.4s ease;
+    }
+
+    .hero-avatar:hover {
+      border-color: #f0a500;
+      box-shadow: 0 0 40px rgba(240, 165, 0, 0.3);
+      transform: scale(1.05);
+    }
+
+    /* 名字 */
+    .hero-name {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #f0a500, #ffd166, #ff6b35);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      letter-spacing: 0.02em;
+    }
+
+    /* 职位标题 */
+    .hero-title {
+      font-size: 1.1rem;
+      color: #8b949e;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    /* 打字机区域 */
+    .typewriter-wrapper {
+      margin-bottom: 2.5rem;
+      min-height: 2.5rem;
+    }
+
+    .typewriter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: #ffd166;
+      display: inline-block;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .typewriter .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: #f0a500;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* 导航卡片 */
+    .nav-cards {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .nav-card {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.5rem;
+      background: rgba(22, 27, 34, 0.8);
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      color: #e6edf3;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent, rgba(240, 165, 0, 0.3), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-card:hover::before {
+      opacity: 1;
+    }
+
+    .nav-card:hover {
+      border-color: rgba(240, 165, 0, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(240, 165, 0, 0.1);
+      color: #ffd166;
+    }
+
+    .nav-card i {
+      font-size: 1.1rem;
+      color: #f0a500;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-card:hover i {
+      transform: scale(1.15);
+    }
+
+    /* 底部域名 */
+    .hero-footer {
+      color: #6e7681;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+      animation: fadeInUp 1s ease 1.2s both;
+    }
+
+    .hero-footer a {
+      color: #6e7681;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .hero-footer a:hover {
+      color: #f0a500;
+    }
+
+    /* 动画 */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      .hero-name {
+        font-size: 2rem;
+      }
+
+      .hero-title {
+        font-size: 0.95rem;
+      }
+
+      .typewriter {
+        font-size: 0.82rem;
+      }
+
+      .nav-cards {
+        gap: 0.75rem;
+      }
+
+      .nav-card {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="intro">
-		<h1>孟国万的个人网站</h1>
-		<hr> <!-- 基本水平线 -->
-		<nav>
-            <a href="/blog" class="blog-link decor-line">>> 博客(Blog)</a>
-			<style>
-			.blog-link.decor-line {
-			  display: block;
-			  text-align: left; /* 左对齐 */
-			  padding: 15px 20px 15px 30px;
-			  margin: 15px 0;
-			  background: rgba(245, 245, 245, 0.15);
-			  border-left: 4px solid rgba(52, 152, 219, 0.7); /* 左侧装饰条 */
-			  color: #333;
-			  position: relative;
-			  transition: background 0.3s;
-			}
+  <!-- 粒子背景 -->
+  <canvas id="particleCanvas"></canvas>
+  <div class="overlay"></div>
 
-			.blog-link.decor-line:hover {
-			  background: rgba(245, 245, 245, 0.8);
-			  padding-left: 35px;
-			}
-			</style>
-        </nav>
-		<hr> <!-- 基本水平线 -->
-		<div class="domain-container">
-		  <p>mengguowan.github.io</p>
-		</div>
+  <!-- 主内容 -->
+  <div class="hero">
+    <img src="/assets/img/avatar.JPG" alt="头像" class="hero-avatar">
+    <h1 class="hero-name">孟国万</h1>
+    <p class="hero-title">C++ 开发工程师 · 西安</p>
 
-		<style>
-		.domain-container {
-		  display: flex;
-		  justify-content: flex-end; /* 右对齐 */
-		}
-		.domain-container p {
-		  margin: 0;
-		  padding: 5px 0;
-		}
-		</style>
+    <div class="typewriter-wrapper">
+      <span class="typewriter" id="typewriter"></span><span class="cursor"></span>
     </div>
+
+    <nav class="nav-cards">
+      <a href="/blog" class="nav-card">
+        <i class="fa-solid fa-blog"></i>
+        <span>技术博客</span>
+      </a>
+      <a href="https://github.com/mengguowan" target="_blank" class="nav-card">
+        <i class="fa-brands fa-github"></i>
+        <span>GitHub</span>
+      </a>
+      <a href="/about/" class="nav-card">
+        <i class="fa-solid fa-user"></i>
+        <span>关于我</span>
+      </a>
+      <a href="/archives/" class="nav-card">
+        <i class="fa-solid fa-archive"></i>
+        <span>归档</span>
+      </a>
+    </nav>
+
+    <div class="hero-footer">
+      <a href="/">mengguowan.github.io</a>
+    </div>
+  </div>
+
+  <script>
+  // ============================================
+  // 粒子网络动画
+  // ============================================
+  (function() {
+    var canvas = document.getElementById('particleCanvas');
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var mouse = { x: null, y: null };
+    var particleCount = 80;
+    var maxDist = 120;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+
+    // 鼠标交互
+    document.addEventListener('mousemove', function(e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    document.addEventListener('mouseleave', function() {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    function Particle() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 1.5 + 0.5;
+    }
+
+    Particle.prototype.update = function() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    };
+
+    Particle.prototype.draw = function() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(240, 165, 0, 0.5)';
+      ctx.fill();
+    };
+
+    // 初始化粒子
+    for (var i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function drawLines() {
+      for (var i = 0; i < particles.length; i++) {
+        for (var j = i + 1; j < particles.length; j++) {
+          var dx = particles[i].x - particles[j].x;
+          var dy = particles[i].y - particles[j].y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDist) {
+            var opacity = (1 - dist / maxDist) * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = 'rgba(240, 165, 0, ' + opacity + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+
+        // 鼠标连线
+        if (mouse.x !== null) {
+          var dx2 = particles[i].x - mouse.x;
+          var dy2 = particles[i].y - mouse.y;
+          var dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+          if (dist2 < 150) {
+            var opacity2 = (1 - dist2 / 150) * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = 'rgba(255, 107, 53, ' + opacity2 + ')';
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (var i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+
+      drawLines();
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  })();
+
+  // ============================================
+  // 打字机效果
+  // ============================================
+  (function() {
+    var phrases = [
+      '「人生是宇宙熵增洪流中的一段反熵代码」',
+      '「我们短暂地创建局部秩序」',
+      '「像在无限 for(;;) 循环里用 printf() 画出一朵花」'
+    ];
+
+    var el = document.getElementById('typewriter');
+    var phraseIndex = 0;
+    var charIndex = 0;
+    var isDeleting = false;
+    var delay = 80;
+
+    function type() {
+      var current = phrases[phraseIndex];
+
+      if (isDeleting) {
+        el.textContent = current.substring(0, charIndex - 1);
+        charIndex--;
+        delay = 40;
+      } else {
+        el.textContent = current.substring(0, charIndex + 1);
+        charIndex++;
+        delay = 80;
+      }
+
+      if (!isDeleting && charIndex === current.length) {
+        delay = 2500; // 停留
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        delay = 500;
+      }
+
+      setTimeout(type, delay);
+    }
+
+    // 延迟启动
+    setTimeout(type, 1000);
+  })();
+  </script>
 </body>
 </html>
