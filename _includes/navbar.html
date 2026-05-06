@@ -41,6 +41,11 @@
         {% endif %}
       {% endfor %}
 
+      <!-- 搜索按钮 -->
+      <button class="search-toggle" id="searchToggle" aria-label="搜索" title="搜索">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+
       <!-- 主题切换按钮 -->
       <button class="theme-toggle" id="themeToggle" aria-label="切换主题" title="切换主题">
         <i class="fa-solid fa-sun" id="themeIcon"></i>
@@ -79,5 +84,105 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
   });
+
+  // 搜索功能
+  var searchToggle = document.getElementById('searchToggle');
+  var searchOverlay = document.getElementById('searchOverlay');
+  var searchInput = document.getElementById('searchInput');
+  var searchResults = document.getElementById('searchResults');
+  var searchClose = document.getElementById('searchClose');
+  var searchData = null;
+
+  function openSearch() {
+    searchOverlay.classList.add('active');
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+    setTimeout(function() { searchInput.focus(); }, 100);
+  }
+
+  function closeSearch() {
+    searchOverlay.classList.remove('active');
+  }
+
+  if (searchToggle) {
+    searchToggle.addEventListener('click', openSearch);
+  }
+  if (searchClose) {
+    searchClose.addEventListener('click', closeSearch);
+  }
+  if (searchOverlay) {
+    searchOverlay.addEventListener('click', function(e) {
+      if (e.target === searchOverlay) closeSearch();
+    });
+  }
+
+  // Ctrl+K / Cmd+K 快捷键
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+      closeSearch();
+    }
+  });
+
+  // 加载搜索数据
+  function loadSearchData(callback) {
+    if (searchData) { callback(searchData); return; }
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/search.json', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        searchData = JSON.parse(xhr.responseText);
+        callback(searchData);
+      }
+    };
+    xhr.send();
+  }
+
+  // 搜索逻辑
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      var query = this.value.trim().toLowerCase();
+      if (query.length < 1) {
+        searchResults.innerHTML = '<div class="search-hint">输入关键词搜索文章...</div>';
+        return;
+      }
+      loadSearchData(function(data) {
+        var results = data.filter(function(post) {
+          return post.title.toLowerCase().indexOf(query) !== -1 ||
+                 post.excerpt.toLowerCase().indexOf(query) !== -1 ||
+                 post.categories.join(' ').toLowerCase().indexOf(query) !== -1;
+        });
+        if (results.length === 0) {
+          searchResults.innerHTML = '<div class="search-empty">没有找到相关文章</div>';
+        } else {
+          var html = results.slice(0, 10).map(function(post) {
+            return '<a href="' + post.url + '" class="search-result-item">' +
+              '<div class="search-result-title">' + post.title + '</div>' +
+              '<div class="search-result-meta">' + post.date +
+              (post.categories.length ? ' · ' + post.categories.join(', ') : '') +
+              '</div></a>';
+          }).join('');
+          searchResults.innerHTML = html;
+        }
+      });
+    });
+  }
 });
 </script>
+
+<!-- 搜索弹窗 -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-modal">
+    <div class="search-header">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput" class="search-input" placeholder="搜索文章... (Ctrl+K)" autocomplete="off">
+      <button class="search-close" id="searchClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="search-results" id="searchResults">
+      <div class="search-hint">输入关键词搜索文章...</div>
+    </div>
+  </div>
+</div>
