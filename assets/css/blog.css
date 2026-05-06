@@ -382,7 +382,7 @@ li {
 /* 搜索按钮 */
 .search-toggle {
   background: none;
-  border: 1px solid var(--border-default);
+  border: none;
   color: var(--text-secondary);
   width: 36px;
   height: 36px;
