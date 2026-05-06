@@ -57,21 +57,24 @@
       animation: fadeInUp 1s ease 0.3s both;
     }
 
-    /* 头像 */
-    .hero-avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid rgba(240, 165, 0, 0.5);
-      box-shadow: 0 0 30px rgba(240, 165, 0, 0.15);
+    /* ASCII 头像 */
+    .ascii-avatar {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      line-height: 1.15;
+      color: #f0a500;
+      text-shadow: 0 0 8px rgba(240, 165, 0, 0.4), 0 0 20px rgba(240, 165, 0, 0.1);
       margin-bottom: 1.5rem;
+      display: inline-block;
       transition: all 0.4s ease;
+      white-space: pre;
+      letter-spacing: 0.05em;
+      user-select: none;
     }
 
-    .hero-avatar:hover {
-      border-color: #f0a500;
-      box-shadow: 0 0 40px rgba(240, 165, 0, 0.3);
+    .ascii-avatar:hover {
+      color: #ffd166;
+      text-shadow: 0 0 12px rgba(255, 209, 102, 0.6), 0 0 30px rgba(240, 165, 0, 0.2);
       transform: scale(1.05);
     }
 
@@ -240,6 +243,10 @@
         padding: 0.7rem 1.2rem;
         font-size: 0.85rem;
       }
+
+      .ascii-avatar {
+        font-size: 0.42rem;
+      }
     }
   </style>
 </head>
@@ -250,7 +257,22 @@
 
   <!-- 主内容 -->
   <div class="hero">
-    <img src="/assets/img/avatar.JPG" alt="头像" class="hero-avatar">
+    <pre class="ascii-avatar">
+        _______________
+       /               \
+      |  ┌───────────┐  |
+      |  │  &gt;_       │  |
+      |  │  ┌──┐     │  |
+      |  │  │◉◉│     │  |
+      |  │  └┬┬┘     │  |
+      |  │   ││      │  |
+      |  │  ╭┴┴╮     │  |
+      |  │  ╰──╯     │  |
+      |  └───────────┘  |
+      |   ___ ___ ___   |
+      |  |___|___|___|  |
+       \_______∧_______/
+    </pre>
     <h1 class="hero-name">孟国万</h1>
     <p class="hero-title">C++ 开发工程师 · 西安</p>
 
