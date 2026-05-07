@@ -1,0 +1,644 @@
+/* ==================== 管理后台样式 ==================== */
+
+/* 主题变量 */
+[data-theme="dark"] {
+  --admin-bg: #0d1117;
+  --admin-surface: #161b22;
+  --admin-surface-hover: #1c2128;
+  --admin-border: #30363d;
+  --admin-text: #e6edf3;
+  --admin-text-muted: #8b949e;
+  --admin-accent: #f0a500;
+  --admin-accent-hover: #d4900a;
+  --admin-danger: #f85149;
+  --admin-danger-hover: #da3633;
+  --admin-success: #3fb950;
+  --admin-input-bg: #0d1117;
+}
+
+[data-theme="light"] {
+  --admin-bg: #f6f8fa;
+  --admin-surface: #ffffff;
+  --admin-surface-hover: #f3f4f6;
+  --admin-border: #d1d9e0;
+  --admin-text: #1f2328;
+  --admin-text-muted: #656d76;
+  --admin-accent: #f0a500;
+  --admin-accent-hover: #b37800;
+  --admin-danger: #cf222e;
+  --admin-danger-hover: #a40e26;
+  --admin-success: #1a7f37;
+  --admin-input-bg: #ffffff;
+}
+
+/* 基础重置 */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+.d-none { display: none !important; }
+.w-full { width: 100%; }
+.text-danger { color: var(--admin-danger); }
+
+/* ==================== 导航栏 ==================== */
+.admin-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  padding: 0 1.5rem;
+  height: 56px;
+}
+
+.admin-navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.admin-brand {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--admin-accent);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-brand:hover {
+  color: var(--admin-accent-hover);
+}
+
+.admin-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-user {
+  font-size: 0.85rem;
+  color: var(--admin-text-muted);
+}
+
+/* ==================== 按钮 ==================== */
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.admin-btn-primary {
+  background: var(--admin-accent);
+  color: #000;
+}
+
+.admin-btn-primary:hover {
+  background: var(--admin-accent-hover);
+  color: #000;
+}
+
+.admin-btn-ghost {
+  background: transparent;
+  color: var(--admin-text-muted);
+  border: 1px solid var(--admin-border);
+}
+
+.admin-btn-ghost:hover {
+  background: var(--admin-surface-hover);
+  color: var(--admin-text);
+  border-color: var(--admin-text-muted);
+}
+
+.admin-btn-danger {
+  background: var(--admin-danger);
+  color: #fff;
+}
+
+.admin-btn-danger:hover {
+  background: var(--admin-danger-hover);
+  color: #fff;
+}
+
+/* ==================== 表单 ==================== */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--admin-text-muted);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  background: var(--admin-input-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  color: var(--admin-text);
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(240, 165, 0, 0.15);
+}
+
+.form-input-lg {
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+}
+
+.form-hint {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--admin-text-muted);
+}
+
+.form-hint a {
+  color: var(--admin-accent);
+  text-decoration: none;
+}
+
+.form-hint a:hover {
+  text-decoration: underline;
+}
+
+/* ==================== 登录视图 ==================== */
+.admin-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.login-header {
+  padding: 2rem 2rem 0;
+  text-align: center;
+}
+
+.login-header i {
+  font-size: 2rem;
+  color: var(--admin-accent);
+  margin-bottom: 0.75rem;
+}
+
+.login-header h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0;
+}
+
+.login-body {
+  padding: 1.5rem 2rem 2rem;
+}
+
+.alert-error {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(248, 81, 73, 0.1);
+  border: 1px solid var(--admin-danger);
+  border-radius: 6px;
+  color: var(--admin-danger);
+  font-size: 0.85rem;
+}
+
+/* ==================== 文章列表视图 ==================== */
+.posts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 360px;
+}
+
+.search-box i {
+  position: absolute;
+  left: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--admin-text-muted);
+  font-size: 0.85rem;
+}
+
+.search-box .form-input {
+  padding-left: 2.4rem;
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--admin-border);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: var(--admin-surface);
+  transition: background 0.15s;
+}
+
+.post-item:hover {
+  background: var(--admin-surface-hover);
+}
+
+.post-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-info h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-info .post-meta {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--admin-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.post-meta .category-tag {
+  background: rgba(240, 165, 0, 0.15);
+  color: var(--admin-accent);
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.post-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.post-actions .admin-btn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+}
+
+/* 加载和空状态 */
+.loading-state,
+.empty-state {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--admin-text-muted);
+}
+
+.loading-state i,
+.empty-state i {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--admin-border);
+  border-top-color: var(--admin-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==================== 编辑器视图 ==================== */
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.save-status {
+  font-size: 0.8rem;
+  color: var(--admin-text-muted);
+}
+
+.save-status.success { color: var(--admin-success); }
+.save-status.error { color: var(--admin-danger); }
+
+.editor-meta {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.meta-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.meta-row:last-child {
+  margin-bottom: 0;
+}
+
+.meta-field {
+  flex: 1;
+}
+
+.meta-field.meta-title {
+  flex: 1;
+}
+
+.editor-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ==================== EasyMDE 暗色主题覆盖 ==================== */
+[data-theme="dark"] .EasyMDEContainer .CodeMirror {
+  background: var(--admin-input-bg);
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+[data-theme="dark"] .EasyMDEContainer .CodeMirror-cursor {
+  border-left-color: var(--admin-text);
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-toolbar {
+  background: var(--admin-surface);
+  border-color: var(--admin-border);
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-toolbar button {
+  color: var(--admin-text-muted) !important;
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-toolbar button:hover {
+  background: var(--admin-surface-hover);
+  color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-toolbar button.active {
+  background: var(--admin-accent);
+  color: #000 !important;
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-toolbar i.separator {
+  border-left-color: var(--admin-border);
+  border-right-color: var(--admin-border);
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-preview,
+[data-theme="dark"] .EasyMDEContainer .editor-preview-side {
+  background: var(--admin-surface);
+  color: var(--admin-text);
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-preview-side {
+  border-color: var(--admin-border);
+}
+
+[data-theme="dark"] .EasyMDEContainer .editor-statusbar {
+  color: var(--admin-text-muted);
+}
+
+[data-theme="dark"] .EasyMDEContainer .cm-s-easymde .cm-header {
+  color: var(--admin-accent);
+}
+
+[data-theme="dark"] .EasyMDEContainer .cm-s-easymde .cm-link {
+  color: #58a6ff;
+}
+
+[data-theme="dark"] .EasyMDEContainer .cm-s-easymde .cm-url {
+  color: #8b949e;
+}
+
+[data-theme="dark"] .EasyMDEContainer .cm-s-easymde .cm-comment {
+  color: #8b949e;
+}
+
+/* EasyMDE 通用覆盖 */
+.EasyMDEContainer .CodeMirror {
+  border-radius: 0 0 8px 8px;
+  min-height: 400px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.EasyMDEContainer .editor-toolbar {
+  border-radius: 8px 8px 0 0;
+  padding: 0.5rem;
+}
+
+.EasyMDEContainer .editor-toolbar button {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+/* ==================== 模态框 ==================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-box {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: var(--admin-text);
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body p {
+  margin: 0 0 0.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--admin-border);
+}
+
+/* ==================== Toast 提示 ==================== */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  transition: opacity 0.3s;
+}
+
+.toast.toast-success { border-color: var(--admin-success); color: var(--admin-success); }
+.toast.toast-error { border-color: var(--admin-danger); color: var(--admin-danger); }
+
+/* ==================== 响应式 ==================== */
+@media (max-width: 768px) {
+  .admin-main {
+    padding: 1rem;
+  }
+
+  .hide-mobile {
+    display: none;
+  }
+
+  .posts-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .meta-row {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .post-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .post-actions {
+    width: 100%;
+  }
+
+  .post-actions .admin-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .editor-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .editor-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .EasyMDEContainer .CodeMirror {
+    min-height: 300px;
+  }
+}
