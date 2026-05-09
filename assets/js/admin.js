@@ -748,4 +748,193 @@
     }
   };
 
+  // ==================== 卡通角色 ====================
+  var Mascots = {
+    mouse: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
+    isTyping: false,
+    isLooking: false,
+    lookTimer: null,
+    rafId: null,
+
+    init: function () {
+      var self = this;
+
+      // 鼠标位置追踪
+      window.addEventListener('mousemove', function (e) {
+        self.mouse.x = e.clientX;
+        self.mouse.y = e.clientY;
+      }, { passive: true });
+
+      // 输入框 focus / blur
+      document.addEventListener('focusin', function (e) {
+        if (e.target.matches('input, textarea') || e.target.closest('.CodeMirror')) {
+          self.setTyping(true);
+        }
+      });
+      document.addEventListener('focusout', function (e) {
+        if (e.target.matches('input, textarea') || e.target.closest('.CodeMirror')) {
+          setTimeout(function () {
+            var a = document.activeElement;
+            if (!a || (!a.matches('input, textarea') && !a.closest('.CodeMirror'))) {
+              self.setTyping(false);
+            }
+          }, 80);
+        }
+      });
+
+      // 启动 RAF tick
+      var tick = function () {
+        self.tick();
+        self.rafId = requestAnimationFrame(tick);
+      };
+      self.rafId = requestAnimationFrame(tick);
+
+      // 随机眨眼（紫/黑）
+      self.startBlink('#m-purple', 9);
+      self.startBlink('#m-black', 7);
+    },
+
+    // 计算 body 倾斜 + face 偏移（参考 1.txt，cy 取 height/3）
+    calcPos: function (el) {
+      var r = el.getBoundingClientRect();
+      var cx = r.left + r.width / 2;
+      var cy = r.top + r.height / 3;
+      var dx = this.mouse.x - cx;
+      var dy = this.mouse.y - cy;
+      return {
+        faceX:    Math.max(-15, Math.min(15, dx / 20)),
+        faceY:    Math.max(-10, Math.min(10, dy / 30)),
+        bodySkew: Math.max(-6,  Math.min(6, -dx / 120))
+      };
+    },
+
+    // 计算眼球/瞳孔偏移
+    calcEyePos: function (el, maxDist) {
+      var r = el.getBoundingClientRect();
+      var dx = this.mouse.x - (r.left + r.width / 2);
+      var dy = this.mouse.y - (r.top + r.height / 2);
+      var dist = Math.min(Math.sqrt(dx * dx + dy * dy), maxDist);
+      var angle = Math.atan2(dy, dx);
+      return { x: Math.cos(angle) * dist, y: Math.sin(angle) * dist };
+    },
+
+    tick: function () {
+      var purple = document.getElementById('m-purple');
+      var black  = document.getElementById('m-black');
+      var orange = document.getElementById('m-orange');
+      var yellow = document.getElementById('m-yellow');
+      var pFace  = document.getElementById('m-purple-face');
+      var bFace  = document.getElementById('m-black-face');
+      var oFace  = document.getElementById('m-orange-face');
+      var yFace  = document.getElementById('m-yellow-face');
+      var yMouth = document.getElementById('m-yellow-mouth');
+      if (!purple || !black || !orange || !yellow) return;
+
+      // 紫色
+      var pp = this.calcPos(purple);
+      if (this.isTyping) {
+        purple.style.transform = 'skewX(' + (pp.bodySkew - 12) + 'deg) translateX(10px)';
+        purple.style.height = '210px';
+      } else {
+        purple.style.transform = 'skewX(' + pp.bodySkew + 'deg)';
+        purple.style.height = '';
+      }
+      if (!this.isLooking && pFace) {
+        var pfx = pp.faceX >= 0 ? Math.min(20, pp.faceX * 1.5) : pp.faceX;
+        pFace.style.transform = 'translate(' + pfx + 'px,' + pp.faceY + 'px)';
+      }
+
+      // 黑色
+      var bp = this.calcPos(black);
+      if (this.isLooking) {
+        black.style.transform = 'skewX(' + (bp.bodySkew * 1.5 + 10) + 'deg) translateX(5px)';
+      } else if (this.isTyping) {
+        black.style.transform = 'skewX(' + (bp.bodySkew * 1.5) + 'deg)';
+      } else {
+        black.style.transform = 'skewX(' + bp.bodySkew + 'deg)';
+      }
+      if (!this.isLooking && bFace) {
+        bFace.style.transform = 'translate(' + bp.faceX + 'px,' + bp.faceY + 'px)';
+      }
+
+      // 橙色
+      var op = this.calcPos(orange);
+      orange.style.transform = 'skewX(' + op.bodySkew + 'deg)';
+      if (oFace) oFace.style.transform = 'translate(' + op.faceX + 'px,' + op.faceY + 'px)';
+
+      // 黄色
+      var yp = this.calcPos(yellow);
+      yellow.style.transform = 'skewX(' + yp.bodySkew + 'deg)';
+      if (yFace)  yFace.style.transform  = 'translate(' + yp.faceX + 'px,' + yp.faceY + 'px)';
+      if (yMouth) yMouth.style.transform = 'translate(' + yp.faceX + 'px,' + yp.faceY + 'px)';
+
+      // 裸瞳孔（橙/黄）
+      var self = this;
+      document.querySelectorAll('#mascotsPanel .pupil').forEach(function (p) {
+        var maxD = parseFloat(p.getAttribute('data-max-dist')) || 5;
+        var pos = self.calcEyePos(p, maxD);
+        p.style.transform = 'translate(' + pos.x + 'px,' + pos.y + 'px)';
+      });
+
+      // 白眼球内瞳孔（非对视状态时正常跟随鼠标）
+      if (!this.isLooking) {
+        document.querySelectorAll('#mascotsPanel .eyeball').forEach(function (eb) {
+          var maxD = parseFloat(eb.getAttribute('data-max-dist')) || 5;
+          var pupil = eb.querySelector('.eyeball-pupil');
+          if (!pupil) return;
+          var pos = self.calcEyePos(eb, maxD);
+          pupil.style.transform = 'translate(' + pos.x + 'px,' + pos.y + 'px)';
+        });
+      }
+    },
+
+    setTyping: function (active) {
+      this.isTyping = active;
+      var self = this;
+      if (active && !this.isLooking) {
+        this.isLooking = true;
+        this._lookAt();
+        clearTimeout(this.lookTimer);
+        this.lookTimer = setTimeout(function () {
+          self.isLooking = false;
+        }, 800);
+      } else if (!active) {
+        clearTimeout(this.lookTimer);
+        this.isLooking = false;
+      }
+    },
+
+    // 紫/黑互相对视
+    _lookAt: function () {
+      var pFace = document.getElementById('m-purple-face');
+      var bFace = document.getElementById('m-black-face');
+      if (pFace) pFace.style.transform = 'translate(12px,20px)';
+      document.querySelectorAll('#m-purple .eyeball-pupil').forEach(function (p) {
+        p.style.transform = 'translate(3px,4px)';
+      });
+      if (bFace) bFace.style.transform = 'translate(0px,-18px)';
+      document.querySelectorAll('#m-black .eyeball-pupil').forEach(function (p) {
+        p.style.transform = 'translate(0px,-4px)';
+      });
+    },
+
+    // 随机眨眼（眼球高度 collapse）
+    startBlink: function (selector, size) {
+      var eyes = document.querySelectorAll(selector + ' .eyeball');
+      if (!eyes.length) return;
+      var schedule = function () {
+        setTimeout(function () {
+          eyes.forEach(function (e) { e.style.height = '2px'; });
+          setTimeout(function () {
+            eyes.forEach(function (e) { e.style.height = size + 'px'; });
+            schedule();
+          }, 150);
+        }, Math.random() * 4000 + 3000);
+      };
+      schedule();
+    }
+  };
+
+  Mascots.init();
+
 })();

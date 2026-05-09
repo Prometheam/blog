@@ -588,6 +588,144 @@ body {
 .toast.toast-success { border-color: var(--admin-success); color: var(--admin-success); }
 .toast.toast-error { border-color: var(--admin-danger); color: var(--admin-danger); }
 
+/* ==================== 卡通角色 ==================== */
+.mascots-panel {
+  position: fixed;
+  left: calc(0.75rem + 120px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 6px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .mascots-panel { display: none; }
+}
+
+/* 每个角色体 */
+.mascot {
+  position: relative;
+  transform-origin: bottom center;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
+              height   0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+  flex-shrink: 0;
+}
+
+/* 脸部（绝对定位在体内，平移跟随鼠标） */
+.mascot-face {
+  position: absolute;
+  display: flex;
+  transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+
+/* ---- 紫色矩形 ---- */
+.mascot-purple {
+  width: 66px;
+  height: 187px;
+  background: #6C3FF5;
+  border-radius: 6px 6px 0 0;
+  z-index: 1;
+}
+.mascot-purple .mascot-face {
+  gap: 12px;
+  left: 16px;
+  top: 18px;
+}
+
+/* ---- 黑色矩形 ---- */
+.mascot-black {
+  width: 48px;
+  height: 145px;
+  background: #2D2D2D;
+  border-radius: 4px 4px 0 0;
+  z-index: 2;
+}
+.mascot-black .mascot-face {
+  gap: 9px;
+  left: 10px;
+  top: 14px;
+}
+
+/* ---- 橙色宽拱 ---- */
+.mascot-orange {
+  width: 96px;
+  height: 85px;
+  background: #FF9B6B;
+  border-radius: 48px 48px 0 0;
+  z-index: 3;
+}
+.mascot-orange .mascot-face {
+  gap: 12px;
+  left: 30px;
+  top: 24px;
+}
+
+/* ---- 黄色窄拱 ---- */
+.mascot-yellow {
+  width: 57px;
+  height: 100px;
+  background: #E8D754;
+  border-radius: 28px 28px 0 0;
+  z-index: 4;
+}
+.mascot-yellow .mascot-face {
+  gap: 9px;
+  left: 16px;
+  top: 16px;
+}
+
+/* 嘴巴（黄色专用） */
+.mascot-mouth {
+  position: absolute;
+  height: 2px;
+  border-radius: 9999px;
+  background: #2D2D2D;
+  transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.mascot-yellow .mascot-mouth {
+  width: 33px;
+  left: 12px;
+  top: 45px;
+}
+
+/* ---- 白眼球（紫/黑） ---- */
+.eyeball {
+  position: relative;
+  border-radius: 50%;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: height 0.08s ease;
+}
+
+.eyeball-pupil {
+  border-radius: 50%;
+  background: #2D2D2D;
+  flex-shrink: 0;
+}
+
+.mascot-purple .eyeball       { width: 9px; height: 9px; }
+.mascot-purple .eyeball-pupil { width: 4px; height: 4px; }
+.mascot-black  .eyeball       { width: 7px; height: 7px; }
+.mascot-black  .eyeball-pupil { width: 3px; height: 3px; }
+
+/* ---- 裸瞳孔（橙/黄） ---- */
+.pupil {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2D2D2D;
+  flex-shrink: 0;
+}
+
 /* ==================== 响应式 ==================== */
 @media (max-width: 768px) {
   .admin-main {
