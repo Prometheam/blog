@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Disallow: /admin/
+
+Sitemap: https://mengguowan.github.io/sitemap.xml

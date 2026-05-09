@@ -21,8 +21,10 @@
       // 监听系统主题偏好变化
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {
-          document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+          const next = e.matches ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
           this.updateIcon();
+          this.syncUtterances(next);
         }
       });
     },
@@ -36,6 +38,24 @@
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       this.updateIcon();
+      this.syncUtterances(next);
+    },
+
+    syncUtterances(theme) {
+      const container = document.getElementById('utterances-container');
+      if (!container) return;
+      const utterancesTheme = theme === 'dark' ? 'github-dark' : 'github-light';
+      // 销毁旧实例，重新注入 script，彻底避免 postMessage 跨域问题
+      container.innerHTML = '';
+      const s = document.createElement('script');
+      s.src = 'https://utteranc.es/client.js';
+      s.setAttribute('repo', 'mengguowan/mengguowan.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      s.setAttribute('label', '💬 评论');
+      s.setAttribute('theme', utterancesTheme);
+      s.setAttribute('crossorigin', 'anonymous');
+      s.async = true;
+      container.appendChild(s);
     },
 
     updateIcon() {
@@ -116,6 +136,19 @@
         wrapper.className = 'code-block-wrapper';
         pre.parentNode.insertBefore(wrapper, pre);
         wrapper.appendChild(pre);
+
+        // 读取语言（Rouge 生成的 class 格式：language-cpp）
+        const codeEl = pre.querySelector('code[class*="language-"]');
+        const langClass = codeEl ? codeEl.className.match(/language-(\S+)/) : null;
+        const lang = langClass ? langClass[1] : '';
+
+        // 创建语言标签（有语言才显示）
+        if (lang) {
+          const langLabel = document.createElement('span');
+          langLabel.className = 'code-lang-label';
+          langLabel.textContent = lang;
+          wrapper.appendChild(langLabel);
+        }
 
         const btn = document.createElement('button');
         btn.className = 'copy-btn';

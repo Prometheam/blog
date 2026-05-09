@@ -971,6 +971,24 @@ div.highlight pre {
 }
 
 /* ========================================
+   评论区
+   ======================================== */
+.comments-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-default);
+}
+
+.comments-title {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ========================================
    12. 工具组件
    ======================================== */
 /* 代码复制按钮 */
@@ -1009,6 +1027,25 @@ div.highlight pre {
   color: white;
   border-color: #3fb950;
   opacity: 1;
+}
+
+/* 代码块语言标识 */
+.code-lang-label {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 有语言标识时，代码内容顶部留出空间 */
+.code-block-wrapper:has(.code-lang-label) pre {
+  padding-top: 2rem;
 }
 
 /* 回到顶部按钮 */
