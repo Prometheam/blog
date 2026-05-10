@@ -5,6 +5,9 @@
   <body>
     {% include navbar.html %}
 
+    <!-- 阅读进度条 -->
+    <div class="reading-progress-bar" id="readingProgressBar"></div>
+
     <article class="post-page">
       <header class="post-header">
         <h1 class="post-title">{{ page.title }}</h1>
@@ -52,6 +55,41 @@
           </p>
           {{ content }}
           {% include post_footer.html %}
+
+          <!-- 相关文章推荐 -->
+          {% if page.categories.size > 0 %}
+          {% assign current_cats = page.categories %}
+          {% assign related_posts = "" | split: "" %}
+          {% for post in site.posts %}
+            {% if post.url != page.url %}
+              {% for cat in post.categories %}
+                {% if current_cats contains cat %}
+                  {% assign related_posts = related_posts | push: post %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          {% assign related_posts = related_posts | slice: 0, 3 %}
+          {% if related_posts.size > 0 %}
+          <section class="related-posts">
+            <h3 class="related-posts-title">
+              <i class="fa-solid fa-book-open"></i> 相关文章
+            </h3>
+            <ul class="related-posts-list">
+              {% for post in related_posts %}
+              <li class="related-post-item">
+                <a href="{{ post.url | relative_url }}" class="related-post-link">
+                  <span class="related-post-name">{{ post.title }}</span>
+                  <span class="related-post-date">{{ post.date | date: "%Y年%m月%d日" }}</span>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </section>
+          {% endif %}
+          {% endif %}
+
           {% include comments.html %}
         </main>
       </div>

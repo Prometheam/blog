@@ -95,6 +95,18 @@ html {
   scroll-padding-top: calc(var(--navbar-height) + 1rem);
 }
 
+/* 主题切换过渡：仅在用户主动切换时生效（由 JS 动态添加/移除 .theme-transitioning 类） */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease !important;
+}
+
 body {
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -973,6 +985,79 @@ div.highlight pre {
 /* ========================================
    评论区
    ======================================== */
+/* 相关文章推荐 */
+.related-posts {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-default);
+}
+
+.related-posts-title {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  padding: 0;
+}
+
+.related-posts-title i {
+  color: var(--accent-primary);
+}
+
+.related-posts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.related-post-item {
+  margin: 0;
+}
+
+.related-post-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.related-post-link:hover {
+  border-color: var(--accent-primary);
+  background: var(--accent-glow);
+  text-decoration: none;
+}
+
+.related-post-name {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.related-post-link:hover .related-post-name {
+  color: var(--accent-primary);
+}
+
+.related-post-date {
+  color: var(--text-tertiary);
+  font-size: 0.78rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .comments-section {
   margin-top: 3rem;
   padding-top: 2rem;
@@ -1007,7 +1092,7 @@ div.highlight pre {
   padding: 4px 8px;
   font-size: 0.78rem;
   cursor: pointer;
-  opacity: 0;
+  opacity: 0.45;
   transition: opacity var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
   z-index: 5;
 }
@@ -1046,6 +1131,19 @@ div.highlight pre {
 /* 有语言标识时，代码内容顶部留出空间 */
 .code-block-wrapper:has(.code-lang-label) pre {
   padding-top: 2rem;
+}
+
+/* 阅读进度条 */
+.reading-progress-bar {
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  z-index: 1001;
+  transition: width 100ms linear;
+  border-radius: 0 2px 2px 0;
 }
 
 /* 回到顶部按钮 */

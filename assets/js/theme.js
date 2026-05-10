@@ -35,10 +35,15 @@
 
     switch() {
       const next = this.current() === 'dark' ? 'light' : 'dark';
+      // 加过渡类，切换完成后移除，避免影响防闪烁脚本
+      document.documentElement.classList.add('theme-transitioning');
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       this.updateIcon();
       this.syncUtterances(next);
+      window.setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      }, 350);
     },
 
     syncUtterances(theme) {
@@ -212,7 +217,27 @@
   };
 
   // ============================================
-  // 6. 导航栏活动链接高亮
+  // 6. 阅读进度条
+  // ============================================
+  const ReadingProgress = {
+    init() {
+      this.bar = document.getElementById('readingProgressBar');
+      if (!this.bar) return;
+
+      window.addEventListener('scroll', () => this.update(), { passive: true });
+      this.update();
+    },
+
+    update() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+      this.bar.style.width = progress + '%';
+    }
+  };
+
+  // ============================================
+  // 7. 导航栏活动链接高亮
   // ============================================
   const NavHighlight = {
     init() {
@@ -237,6 +262,7 @@
     CodeCopy.init();
     BackToTop.init();
     ReadingTime.init();
+    ReadingProgress.init();
     NavHighlight.init();
   });
 

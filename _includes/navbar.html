@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function openSearch() {
     searchOverlay.classList.add('active');
     searchInput.value = '';
-    searchResults.innerHTML = '';
+    searchResults.innerHTML = '<div class="search-hint">输入至少 2 个字符搜索文章...</div>';
     setTimeout(function() { searchInput.focus(); }, 100);
   }
 
@@ -130,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // 加载搜索数据
   function loadSearchData(callback) {
     if (searchData) { callback(searchData); return; }
+    // 显示加载中状态
+    searchResults.innerHTML = '<div class="search-hint"><i class="fa-solid fa-spinner fa-spin"></i> 加载中...</div>';
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/search.json', true);
     xhr.onload = function() {
@@ -145,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (searchInput) {
     searchInput.addEventListener('input', function() {
       var query = this.value.trim().toLowerCase();
-      if (query.length < 1) {
-        searchResults.innerHTML = '<div class="search-hint">输入关键词搜索文章...</div>';
+      if (query.length < 2) {
+        searchResults.innerHTML = '<div class="search-hint">输入至少 2 个字符搜索文章...</div>';
         return;
       }
       loadSearchData(function(data) {
@@ -182,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
       <button class="search-close" id="searchClose"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="search-results" id="searchResults">
-      <div class="search-hint">输入关键词搜索文章...</div>
+      <div class="search-hint">输入至少 2 个字符搜索文章...</div>
     </div>
   </div>
 </div>
