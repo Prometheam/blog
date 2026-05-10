@@ -1,0 +1,39 @@
+{% assign author = site.data.author %}
+{% if page.layout == "post_layout" or page.layout == "post" %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ page.title | jsonify }},
+  "datePublished": "{{ page.date | date_to_xmlschema }}",
+  "dateModified": "{{ page.updated | default: page.date | date_to_xmlschema }}",
+  "author": {
+    "@type": "Person",
+    "name": {{ author.name | jsonify }},
+    "url": "{{ site.url }}/about/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": {{ author.name | jsonify }}
+  },
+  "image": "{{ page.image | default: '/assets/img/avatar.JPG' | prepend: site.url }}",
+  "url": "{{ page.url | prepend: site.url }}",
+  "description": {{ page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }}
+}
+</script>
+{% else %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ site.title | jsonify }},
+  "url": "{{ site.url }}",
+  "description": {{ site.description | jsonify }},
+  "author": {
+    "@type": "Person",
+    "name": {{ author.name | jsonify }},
+    "url": "{{ site.url }}/about/"
+  }
+}
+</script>
+{% endif %}

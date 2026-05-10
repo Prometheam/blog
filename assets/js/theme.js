@@ -254,6 +254,118 @@
   };
 
   // ============================================
+  // 8. 图片懒加载
+  // ============================================
+  const LazyLoad = {
+    init() {
+      document.querySelectorAll('.post-content img:not([loading])').forEach(img => {
+        img.setAttribute('loading', 'lazy');
+      });
+    }
+  };
+
+  // ============================================
+  // 9. JS 客户端分页
+  // ============================================
+  const Pagination = {
+    pageSize: 10,
+    init() {
+      const posts = document.querySelectorAll('.post-card');
+      const nav = document.getElementById('paginationNav');
+      if (!nav || posts.length <= this.pageSize) return;
+      this.posts = Array.from(posts);
+      this.total = Math.ceil(posts.length / this.pageSize);
+      this.goto(1);
+    },
+    goto(page) {
+      this.current = page;
+      this.posts.forEach((p, i) => {
+        p.style.display = (i >= (page - 1) * this.pageSize && i < page * this.pageSize) ? '' : 'none';
+      });
+      this.render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    render() {
+      const nav = document.getElementById('paginationNav');
+      if (!nav) return;
+      let html = '';
+      if (this.current > 1) {
+        html += '<button class="page-btn page-prev" data-page="' + (this.current - 1) + '"><i class="fa-solid fa-chevron-left"></i></button>';
+      }
+      for (let i = 1; i <= this.total; i++) {
+        if (
+          i === 1 || i === this.total ||
+          (i >= this.current - 2 && i <= this.current + 2)
+        ) {
+          html += '<button class="page-btn' + (i === this.current ? ' active' : '') + '" data-page="' + i + '">' + i + '</button>';
+        } else if (i === this.current - 3 || i === this.current + 3) {
+          html += '<span class="page-ellipsis">…</span>';
+        }
+      }
+      if (this.current < this.total) {
+        html += '<button class="page-btn page-next" data-page="' + (this.current + 1) + '"><i class="fa-solid fa-chevron-right"></i></button>';
+      }
+      nav.innerHTML = html;
+      nav.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', () => this.goto(parseInt(btn.dataset.page)));
+      });
+    }
+  };
+
+  // ============================================
+  // 10. 移动端 TOC 抽屉
+  // ============================================
+  const MobileTOC = {
+    init() {
+      const btn = document.getElementById('tocMobileBtn');
+      const drawer = document.getElementById('tocMobileDrawer');
+      const overlay = document.getElementById('tocMobileOverlay');
+      const closeBtn = document.getElementById('tocMobileClose');
+      const tocListMobile = document.getElementById('tocListMobile');
+      const tocList = document.getElementById('tocList');
+
+      if (!btn || !drawer || !tocList) return;
+
+      // 克隆桌面端 TOC 列表到移动端
+      const cloned = tocList.cloneNode(true);
+      cloned.querySelectorAll('.toc-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      tocListMobile.appendChild(cloned);
+
+      // 点击链接后关闭抽屉
+      tocListMobile.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => this.close(drawer, overlay));
+      });
+
+      btn.addEventListener('click', () => {
+        const isOpen = drawer.classList.contains('open');
+        isOpen ? this.close(drawer, overlay) : this.open(drawer, overlay);
+      });
+
+      if (overlay) overlay.addEventListener('click', () => this.close(drawer, overlay));
+      if (closeBtn) closeBtn.addEventListener('click', () => this.close(drawer, overlay));
+
+      // 仅在移动端显示按钮（CSS 已控制，JS 仅在有标题时才显示）
+      if (tocList.children.length === 0) {
+        btn.style.display = 'none';
+      }
+    },
+
+    open(drawer, overlay) {
+      drawer.classList.add('open');
+      if (overlay) overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    },
+
+    close(drawer, overlay) {
+      drawer.classList.remove('open');
+      if (overlay) overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
+  // ============================================
   // 初始化
   // ============================================
   document.addEventListener('DOMContentLoaded', () => {
@@ -264,6 +376,9 @@
     ReadingTime.init();
     ReadingProgress.init();
     NavHighlight.init();
+    LazyLoad.init();
+    MobileTOC.init();
+    Pagination.init();
   });
 
 })();

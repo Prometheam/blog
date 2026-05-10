@@ -3,6 +3,7 @@
   {% include head.html %}
 
   <body>
+    <a href="#postContent" class="skip-to-content">跳至主要内容</a>
     {% include navbar.html %}
 
     <!-- 阅读进度条 -->
@@ -33,6 +34,18 @@
             {% endfor %}
           </span>
           {% endif %}
+          {% if page.tags.size > 0 %}
+          <span>·</span>
+          <span>
+            {% for tag in page.tags %}
+            <a href="{{ '/tags/' | relative_url }}#tag-{{ tag | slugify }}" class="tag-badge"><i class="fa-solid fa-tag"></i> {{ tag }}</a>
+            {% endfor %}
+          </span>
+          {% endif %}
+          {% if page.updated %}
+          <span>·</span>
+          <span class="post-updated"><i class="fa-regular fa-pen-to-square"></i> 更新于 {{ page.updated | date: "%Y年%m月%d日" }}</span>
+          {% endif %}
         </div>
       </header>
 
@@ -55,6 +68,46 @@
           </p>
           {{ content }}
           {% include post_footer.html %}
+
+          <!-- 同分类上下篇导航 -->
+          {% if page.categories.size > 0 %}
+          {% assign cat = page.categories[0] %}
+          {% assign cat_posts = site.categories[cat] %}
+          {% assign prev_post = nil %}
+          {% assign next_post = nil %}
+          {% for p in cat_posts %}
+            {% if p.url == page.url %}
+              {% if forloop.index0 > 0 %}
+                {% assign prev_idx = forloop.index0 | minus: 1 %}
+                {% assign prev_post = cat_posts[prev_idx] %}
+              {% endif %}
+              {% assign next_idx = forloop.index0 | plus: 1 %}
+              {% if next_idx < cat_posts.size %}
+                {% assign next_post = cat_posts[next_idx] %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {% if prev_post or next_post %}
+          <nav class="post-series-nav">
+            {% if next_post %}
+            <a href="{{ next_post.url | relative_url }}" class="series-nav-item series-prev">
+              <span class="series-nav-label"><i class="fa-solid fa-arrow-left"></i> 同分类上一篇</span>
+              <span class="series-nav-title">{{ next_post.title }}</span>
+            </a>
+            {% else %}
+            <span class="series-nav-item series-prev series-nav-disabled"></span>
+            {% endif %}
+            {% if prev_post %}
+            <a href="{{ prev_post.url | relative_url }}" class="series-nav-item series-next">
+              <span class="series-nav-label">同分类下一篇 <i class="fa-solid fa-arrow-right"></i></span>
+              <span class="series-nav-title">{{ prev_post.title }}</span>
+            </a>
+            {% else %}
+            <span class="series-nav-item series-next series-nav-disabled"></span>
+            {% endif %}
+          </nav>
+          {% endif %}
+          {% endif %}
 
           <!-- 相关文章推荐 -->
           {% if page.categories.size > 0 %}
@@ -101,5 +154,7 @@
     </button>
 
     {% include footer.html %}
+
+    {% include toc-mobile.html %}
   </body>
 </html>

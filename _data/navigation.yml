@@ -17,6 +17,10 @@
   url: /categories/
   icon: fas fa-tags
 
+- name: 标签
+  url: /tags/
+  icon: fas fa-tag
+
 - name: 关于
   url: /about/
   icon: fas fa-user

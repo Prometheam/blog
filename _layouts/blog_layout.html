@@ -4,11 +4,12 @@
   {% include head.html %}
 
   <body>
+    <a href="#main-content" class="skip-to-content">跳至主要内容</a>
     {% include navbar.html %}
     {% include blog_header.html %}
 
     <div class="blog-page">
-      <div class="post-list">
+      <div class="post-list" id="main-content">
         {{ content }}
       </div>
     </div>

@@ -6,3 +6,14 @@
 
 <!-- 主题功能 -->
 <script src="{{ "/assets/js/theme.js" | prepend: site.baseurl }}"></script>
+<!-- 搜索功能 -->
+<script src="{{ "/assets/js/search.js" | prepend: site.baseurl }}"></script>
+<!-- Service Worker 注册 -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('{{ "/sw.js" | prepend: site.baseurl }}')
+        .catch(function(err) { console.warn('SW registration failed:', err); });
+    });
+  }
+</script>

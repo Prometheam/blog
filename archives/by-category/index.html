@@ -1,0 +1,130 @@
+---
+layout: blog_layout
+title: 按分类归档
+permalink: /archives/by-category/
+---
+
+<div class="categories">
+  <h1>按分类归档</h1>
+
+  <div class="category-stats">
+    共 {{ site.posts.size }} 篇文章，分为 {{ site.categories.size }} 个分类
+  </div>
+
+  <div class="category-cloud">
+    {% assign categories = site.categories | sort %}
+    {% for category in categories %}
+      <a href="#{{ category[0] | slugify }}" class="tag-pill" title="{{ category[0] }} ({{ category[1].size }}篇)">
+        {{ category[0] }} ({{ category[1].size }})
+      </a>
+    {% endfor %}
+  </div>
+
+  <div class="category-posts">
+    {% for category in categories %}
+      <div class="category-section" id="{{ category[0] | slugify }}">
+        <h2>{{ category[0] }} ({{ category[1].size }}篇)</h2>
+
+        <ul class="archive-list">
+          {% for post in category[1] %}
+            <li>
+              <span class="archive-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.categories {
+  max-width: var(--content-max-width, 800px);
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.category-stats {
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.category-cloud {
+  text-align: center;
+  margin: 2rem 0;
+  line-height: 2.2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.category-cloud .tag-pill {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.category-cloud .tag-pill:hover {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.category-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.category-section:last-child {
+  border-bottom: none;
+}
+
+.category-section h2 {
+  border: none;
+  padding: 0;
+  font-size: 1.3rem;
+  color: var(--accent-primary);
+}
+
+.archive-list {
+  list-style: none;
+  padding: 0;
+}
+
+.archive-list li {
+  padding: 0.5rem 0;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.archive-date {
+  color: var(--text-tertiary);
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.archive-list a {
+  color: var(--text-primary);
+}
+
+.archive-list a:hover {
+  color: var(--accent-primary);
+}
+
+@media (max-width: 768px) {
+  .archive-list li {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+}
+</style>

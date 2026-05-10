@@ -1,0 +1,60 @@
+---
+layout: blog_layout
+title: 标签
+permalink: /tags/
+---
+
+<div class="categories">
+  <h1>标签</h1>
+
+  <div class="category-stats">
+    共 {{ site.tags.size }} 个标签，{{ site.posts.size }} 篇文章
+  </div>
+
+  {% if site.tags.size > 0 %}
+  <div class="category-cloud">
+    {% assign tags_sorted = site.tags | sort %}
+    {% for tag in tags_sorted %}
+      <a href="#tag-{{ tag[0] | slugify }}" class="tag-pill" title="{{ tag[0] }} ({{ tag[1].size }}篇)">
+        <i class="fa-solid fa-tag" style="font-size:0.7em"></i> {{ tag[0] }} ({{ tag[1].size }})
+      </a>
+    {% endfor %}
+  </div>
+
+  <div class="category-posts">
+    {% for tag in tags_sorted %}
+      <div class="category-section" id="tag-{{ tag[0] | slugify }}">
+        <h2><i class="fa-solid fa-tag"></i> {{ tag[0] }} ({{ tag[1].size }}篇)</h2>
+
+        <ul class="archive-list">
+          {% assign tag_posts = tag[1] | sort: "date" | reverse %}
+          {% for post in tag_posts %}
+            <li>
+              <span class="archive-date">{{ post.date | date: "%Y-%m-%d" }}</span>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-tip">暂无标签。在文章 Front Matter 中添加 <code>tags: [标签名]</code> 即可创建标签。</p>
+  {% endif %}
+</div>
+
+<style>
+.empty-tip {
+  text-align: center;
+  color: var(--text-secondary);
+  margin: 3rem 0;
+  font-size: 0.95rem;
+}
+.empty-tip code {
+  background: var(--bg-tertiary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+}
+</style>
