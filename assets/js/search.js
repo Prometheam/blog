@@ -159,10 +159,13 @@
     dropdowns.forEach(function (item) {
       var link = item.querySelector('.dropdown-icon');
       if (link && window.innerWidth <= 992) {
-        item.querySelector('.nav-link').addEventListener('click', function (e) {
+        var navLink = item.querySelector('.nav-link');
+        navLink.addEventListener('click', function (e) {
           if (item.querySelector('.dropdown-menu')) {
             e.preventDefault();
             item.classList.toggle('open');
+            var isOpen = item.classList.contains('open');
+            navLink.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
           }
         });
       }

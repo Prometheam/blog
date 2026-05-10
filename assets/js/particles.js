@@ -66,20 +66,53 @@
   }
 
   function drawLines() {
-    for (var i = 0; i < particles.length; i++) {
-      for (var j = i + 1; j < particles.length; j++) {
-        var dx = particles[i].x - particles[j].x;
-        var dy = particles[i].y - particles[j].y;
-        var dist = Math.sqrt(dx * dx + dy * dy);
+    // 网格空间分区：将 Canvas 划分为 maxDist × maxDist 的格子，
+    // 每帧只检查相邻格（最多 9 格）中的粒子对，将 O(n²) 降至 O(n·k)
+    var cellSize = maxDist;
+    var cols = Math.ceil(canvas.width / cellSize) + 1;
+    var rows = Math.ceil(canvas.height / cellSize) + 1;
+    var gridSize = cols * rows;
 
-        if (dist < maxDist) {
-          var opacity = (1 - dist / maxDist) * 0.15;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = 'rgba(240, 165, 0, ' + opacity + ')';
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
+    // 每帧重建网格（粒子会移动）
+    var grid = new Array(gridSize);
+    for (var g = 0; g < gridSize; g++) grid[g] = [];
+
+    for (var k = 0; k < particles.length; k++) {
+      var col = Math.floor(particles[k].x / cellSize);
+      var row = Math.floor(particles[k].y / cellSize);
+      var key = row * cols + col;
+      if (key >= 0 && key < gridSize) grid[key].push(k);
+    }
+
+    for (var i = 0; i < particles.length; i++) {
+      var ci = Math.floor(particles[i].x / cellSize);
+      var ri = Math.floor(particles[i].y / cellSize);
+
+      // 遍历 3×3 邻域格
+      for (var dr = -1; dr <= 1; dr++) {
+        for (var dc = -1; dc <= 1; dc++) {
+          var nc = ci + dc;
+          var nr = ri + dr;
+          if (nc < 0 || nr < 0 || nc >= cols || nr >= rows) continue;
+          var neighbors = grid[nr * cols + nc];
+          for (var n = 0; n < neighbors.length; n++) {
+            var j = neighbors[n];
+            if (j <= i) continue; // 避免重复检查同一对
+
+            var dx = particles[i].x - particles[j].x;
+            var dy = particles[i].y - particles[j].y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < maxDist) {
+              var opacity = (1 - dist / maxDist) * 0.15;
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = 'rgba(240, 165, 0, ' + opacity + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
         }
       }
 

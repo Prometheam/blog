@@ -1,0 +1,107 @@
+---
+layout: blog_layout
+title: 页面未找到
+permalink: /404.html
+---
+
+<div class="error-page">
+  <div class="error-code">404</div>
+  <h1 class="error-title">找不到这个页面了</h1>
+  <p class="error-desc">
+    你访问的页面可能已被删除、移动或从未存在过。<br>
+    不过别担心，从这里出发一样能找到想看的内容。
+  </p>
+  <div class="error-actions">
+    <a href="{{ '/' | relative_url }}" class="btn btn-primary">
+      <i class="fa-solid fa-house"></i> 返回首页
+    </a>
+    <a href="{{ '/blog' | relative_url }}" class="btn btn-secondary">
+      <i class="fa-solid fa-book-open"></i> 浏览文章
+    </a>
+  </div>
+  <p class="error-hint">
+    也可以试试顶部的 <i class="fa-solid fa-magnifying-glass"></i> 搜索功能找到你想要的内容。
+  </p>
+</div>
+
+<style>
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  min-height: 50vh;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent-primary);
+  opacity: 0.15;
+  margin-bottom: -1rem;
+}
+
+.error-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.error-desc {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.4rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.btn-primary {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.btn-primary:hover {
+  background: var(--accent-secondary);
+  color: var(--bg-primary);
+}
+
+.btn-secondary {
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.error-hint {
+  color: var(--text-tertiary);
+  font-size: 0.875rem;
+}
+</style>

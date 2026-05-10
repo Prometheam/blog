@@ -108,16 +108,24 @@
       });
 
       tocList.appendChild(fragment);
-      this.observeHeadings(headings);
+
+      // 一次性构建 id → linkEl 映射，避免 IntersectionObserver 回调中重复 querySelectorAll
+      const linkMap = new Map();
+      tocList.querySelectorAll('.toc-link').forEach(link => {
+        const id = link.getAttribute('href').slice(1);
+        linkMap.set(id, link);
+      });
+
+      this.observeHeadings(headings, linkMap);
     },
 
-    observeHeadings(headings) {
+    observeHeadings(headings, linkMap) {
       // 使用 IntersectionObserver 高亮当前章节
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
-            const activeLink = document.querySelector('.toc-link[href="#' + entry.target.id + '"]');
+            linkMap.forEach(l => l.classList.remove('active'));
+            const activeLink = linkMap.get(entry.target.id);
             if (activeLink) activeLink.classList.add('active');
           }
         });

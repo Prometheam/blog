@@ -15,15 +15,15 @@
       {% for item in site.data.navigation %}
         {% if item.dropdown %}
           <div class="nav-item">
-            <a href="{{ item.url | relative_url }}" class="nav-link">
+            <a href="{{ item.url | relative_url }}" class="nav-link" aria-haspopup="true" aria-expanded="false" id="dropdown-{{ item.name | slugify }}">
               <i class="{{ item.icon }}"></i>
               <span>{{ item.name }}</span>
               <i class="dropdown-icon fa-solid fa-angle-down"></i>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdown-{{ item.name | slugify }}">
               {% for subitem in item.dropdown %}
-                <li>
-                  <a href="{{ subitem.url | relative_url }}">
+                <li role="none">
+                  <a href="{{ subitem.url | relative_url }}" role="menuitem">
                     <i class="{{ subitem.icon }}"></i>
                     <span>{{ subitem.name }}</span>
                   </a>

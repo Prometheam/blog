@@ -6,9 +6,10 @@
  *   Network First — HTML 页面（保证内容最新）
  */
 
-const CACHE_NAME = 'mgw-blog-v1';
+const CACHE_NAME = 'mgw-blog-v2';
 const STATIC_ASSETS = [
   '/',
+  '/offline.html',
   '/assets/css/blog.css',
   '/assets/css/syntax.css',
   '/assets/js/theme.js',
@@ -49,7 +50,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // HTML 页面：Network First
+  // HTML 页面：Network First，失败时回退到离线页
   if (request.headers.get('accept') && request.headers.get('accept').includes('text/html')) {
     event.respondWith(
       fetch(request)
@@ -60,7 +61,7 @@ self.addEventListener('fetch', event => {
           }
           return response;
         })
-        .catch(() => caches.match(request).then(cached => cached || caches.match('/')))
+        .catch(() => caches.match(request).then(cached => cached || caches.match('/offline.html')))
     );
     return;
   }

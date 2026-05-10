@@ -1,6 +1,6 @@
 # Site settings
-title: Meng Guo Wan
-description: Meng Guo Wan
+title: Meng Guo Wan - 技术博客
+description: Meng Guo Wan 的个人技术博客，专注于 C++ 音视频开发、FFmpeg、WebRTC 及 Linux 底层技术。
 favicon: /assets/img/avatar.JPG
 baseurl:
 url: https://mengguowan.github.io
