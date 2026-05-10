@@ -778,19 +778,6 @@ li {
   text-decoration: none;
 }
 
-.post-hint {
-  color: var(--text-tertiary);
-  font-size: 0.85rem;
-  text-align: center;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border-default);
-}
-
-.post-hint a {
-  color: var(--accent-primary);
-}
-
 /* ========================================
    7. TOC 侧边栏
    ======================================== */
