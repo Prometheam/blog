@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <!-- 深色径向渐变背景 -->
+    <radialGradient id="bg" cx="50%" cy="38%" r="68%">
+      <stop offset="0%"   stop-color="#1a2030"/>
+      <stop offset="55%"  stop-color="#111620"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </radialGradient>
+
+    <!-- P 字母：亮金 → 金黄 → 琥珀 -->
+    <linearGradient id="pGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%"   stop-color="#ffe880"/>
+      <stop offset="38%"  stop-color="#f0a500"/>
+      <stop offset="100%" stop-color="#c07500"/>
+    </linearGradient>
+
+    <!-- P 字母光晕：金色暖辉 -->
+    <filter id="glowP" x="-55%" y="-55%" width="210%" height="210%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feFlood flood-color="#f0a500" flood-opacity="0.4" result="fc"/>
+      <feComposite in="fc" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- 角框 / 圆环光晕：金色 -->
+    <filter id="glowG" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+      <feFlood flood-color="#f0a500" flood-opacity="0.35" result="fc"/>
+      <feComposite in="fc" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- 代码符号 / 光标光晕：橙色 -->
+    <filter id="glowO" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+      <feFlood flood-color="#ff6b35" flood-opacity="0.5" result="fc"/>
+      <feComposite in="fc" in2="blur" operator="in" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 背景 -->
+  <circle cx="60" cy="60" r="60" fill="url(#bg)"/>
+
+  <!-- 电路板走线 -->
+  <g stroke="#1e3555" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.38">
+    <path d="M0,32 H20 V18 H34"/>
+    <path d="M120,38 H102 V22 H88"/>
+    <path d="M0,88 H16 V102 H30"/>
+    <path d="M120,82 H104 V98 H90"/>
+    <line x1="0"   y1="58" x2="9"   y2="58"/>
+    <line x1="120" y1="62" x2="111" y2="62"/>
+  </g>
+  <!-- 焊点 -->
+  <g fill="#1e3555" opacity="0.48">
+    <circle cx="20"  cy="32"  r="2"/>
+    <circle cx="20"  cy="18"  r="2"/>
+    <circle cx="34"  cy="18"  r="2"/>
+    <circle cx="102" cy="38"  r="2"/>
+    <circle cx="102" cy="22"  r="2"/>
+    <circle cx="88"  cy="22"  r="2"/>
+    <circle cx="16"  cy="88"  r="2"/>
+    <circle cx="16"  cy="102" r="2"/>
+    <circle cx="30"  cy="102" r="2"/>
+    <circle cx="104" cy="82"  r="2"/>
+    <circle cx="104" cy="98"  r="2"/>
+    <circle cx="90"  cy="98"  r="2"/>
+    <circle cx="9"   cy="58"  r="1.5"/>
+    <circle cx="111" cy="62"  r="1.5"/>
+  </g>
+
+  <!-- 装饰圆环 -->
+  <!-- 外圈：金色虚线 -->
+  <circle cx="60" cy="60" r="55.5" fill="none"
+          stroke="#f0a500" stroke-width="0.75"
+          stroke-dasharray="2.5,7" opacity="0.38"/>
+  <!-- 内圈：橙色细线 -->
+  <circle cx="60" cy="60" r="49" fill="none"
+          stroke="#ff6b35" stroke-width="0.5" opacity="0.18"/>
+
+  <!-- PCB 角框（取景器感） -->
+  <g stroke="#f0a500" stroke-width="1.5" fill="none"
+     stroke-linecap="square" opacity="0.72" filter="url(#glowG)">
+    <polyline points="13,25 13,13 25,13"/>
+    <polyline points="95,13 107,13 107,25"/>
+    <polyline points="13,95 13,107 25,107"/>
+    <polyline points="95,107 107,107 107,95"/>
+  </g>
+
+  <!-- 代码标签：< P /> -->
+  <text x="17" y="66"
+        font-family="'Courier New',Courier,monospace"
+        font-size="14" font-weight="bold" text-anchor="middle"
+        fill="#ff6b35" opacity="0.82" filter="url(#glowO)">&lt;</text>
+
+  <text x="104" y="66"
+        font-family="'Courier New',Courier,monospace"
+        font-size="14" font-weight="bold" text-anchor="middle"
+        fill="#ff6b35" opacity="0.82" filter="url(#glowO)">/&gt;</text>
+
+  <!-- 主体 P 字母 -->
+  <text x="60" y="80"
+        font-family="'Courier New',Courier,monospace"
+        font-size="68" font-weight="bold" text-anchor="middle"
+        fill="url(#pGrad)" filter="url(#glowP)">P</text>
+
+  <!-- 闪烁光标（终端感） -->
+  <rect x="83" y="73" width="5" height="6" rx="0.5" fill="#ff6b35">
+    <animate attributeName="opacity"
+             values="0.78;0.78;0;0;0.78"
+             keyTimes="0;0.45;0.55;0.9;1"
+             dur="1.2s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- 顶部装饰点阵 -->
+  <g fill="#f0a500" opacity="0.35">
+    <circle cx="50" cy="21" r="1.2"/>
+    <circle cx="55" cy="21" r="1.2"/>
+    <circle cx="60" cy="21" r="1.2"/>
+    <circle cx="65" cy="21" r="1.2"/>
+    <circle cx="70" cy="21" r="1.2"/>
+  </g>
+
+  <!-- 底部签名 -->
+  <text x="60" y="111"
+        font-family="'Courier New',Courier,monospace"
+        font-size="6.5" font-weight="bold" letter-spacing="1.5"
+        text-anchor="middle" fill="#f0a500" opacity="0.55">PROMETHEAN</text>
+</svg>

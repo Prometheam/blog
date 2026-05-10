@@ -15,7 +15,7 @@ const STATIC_ASSETS = [
   '/assets/js/theme.js',
   '/assets/js/search.js',
   '/assets/js/particles.js',
-  '/assets/img/avatar.JPG'
+  '/assets/img/avatar.svg'
 ];
 
 // 安装：预缓存核心静态资源

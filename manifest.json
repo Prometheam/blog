@@ -10,15 +10,15 @@
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "/assets/img/avatar.JPG",
+      "src": "/assets/img/avatar.svg",
       "sizes": "192x192",
-      "type": "image/jpeg",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/img/avatar.JPG",
+      "src": "/assets/img/avatar.svg",
       "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]

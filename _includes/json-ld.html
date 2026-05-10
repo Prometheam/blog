@@ -16,7 +16,7 @@
     "@type": "Person",
     "name": {{ author.name | jsonify }}
   },
-  "image": "{{ page.image | default: '/assets/img/avatar.JPG' | prepend: site.url }}",
+  "image": "{{ page.image | default: '/assets/img/avatar.svg' | prepend: site.url }}",
   "url": "{{ page.url | prepend: site.url }}",
   "description": {{ page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }}
 }

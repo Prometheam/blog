@@ -8,20 +8,20 @@
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
-  <link rel="icon" type="image/png" href="{{ site.favicon }}">
+  <link rel="icon" type="image/svg+xml" href="{{ site.favicon }}">
   <link rel="manifest" href="{{ '/manifest.json' | prepend: site.baseurl }}">
 
   <!-- Apple PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="{{ site.data.blog.title }}">
-  <link rel="apple-touch-icon" href="{{ '/assets/img/avatar.JPG' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/avatar.svg' | relative_url }}">
   <!-- Windows Tile -->
   <meta name="msapplication-TileColor" content="#0d1117">
-  <meta name="msapplication-TileImage" content="{{ '/assets/img/avatar.JPG' | relative_url }}">
+  <meta name="msapplication-TileImage" content="{{ '/assets/img/avatar.svg' | relative_url }}">
 
   <!-- Open Graph（社交媒体分享） -->
-  {% assign og_image = page.image | default: "/assets/img/avatar.JPG" %}
+  {% assign og_image = page.image | default: "/assets/img/avatar.svg" %}
   <meta property="og:type" content="{% if page.title %}article{% else %}website{% endif %}">
   <meta property="og:title" content="{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
   <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
