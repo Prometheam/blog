@@ -1,7 +1,7 @@
 {
-  "name": "Mengguowan 的技术博客",
-  "short_name": "MGW Blog",
-  "description": "Mengguowan 的个人技术博客，专注 C++ 音视频开发",
+  "name": "Promethean 的技术博客",
+  "short_name": "Promethean",
+  "description": "Promethean 的个人技术博客，专注 C++ 音视频开发",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",

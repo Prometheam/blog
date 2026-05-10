@@ -1,16 +1,28 @@
-<div class="author-header">
-  <img src="{{ site.data.author.gavatar }}" alt="头像" class="author-avatar">
-  <div class="author-info">
-    <h2>{{ site.data.author.name }}</h2>
-    <p><strong>{{ site.data.author.title }}</strong></p>
-    <p><i class="fa-solid fa-location-dot"></i> {{ site.data.author.address }}</p>
-    <div class="author-links">
-      <a href="https://github.com/{{ site.data.author.github }}" target="_blank">
-        <i class="fa-brands fa-github"></i> {{ site.data.author.github }}
+<div class="author-hero">
+  <img src="{{ site.data.author.gavatar }}" alt="{{ site.data.author.name }}" class="author-hero-avatar">
+  <div class="author-hero-body">
+    <h1 class="author-hero-name">{{ site.data.author.name }}</h1>
+    <p class="author-hero-title">{{ site.data.author.title }}</p>
+    {% if site.data.author.bio %}
+      <p class="author-hero-bio">{{ site.data.author.bio }}</p>
+    {% endif %}
+    <div class="author-hero-meta">
+      <span><i class="fa-solid fa-location-dot"></i> {{ site.data.author.address }}</span>
+    </div>
+    <div class="author-hero-links">
+      <a href="https://github.com/{{ site.data.author.github }}" target="_blank" rel="noopener" class="author-link-btn">
+        <i class="fa-brands fa-github"></i> GitHub
       </a>
-      <a href="mailto:{{ site.data.author.email }}">
-        <i class="fa-solid fa-envelope"></i> {{ site.data.author.email }}
+      <a href="mailto:{{ site.data.author.email }}" class="author-link-btn">
+        <i class="fa-solid fa-envelope"></i> 邮件
       </a>
     </div>
+    {% if site.data.author.techTags %}
+    <div class="hero-tags">
+      {% for tag in site.data.author.techTags %}
+      <span class="hero-tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
 </div>

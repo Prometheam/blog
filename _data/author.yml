@@ -1,46 +1,84 @@
 # Author settings
-name: Mengguowan
+name: Promethean
 title: C++ 开发工程师
 address: 中国, 西安
 email: 13087536225@163.com
 github: mengguowan
 gavatar: /assets/img/avatar.JPG
-workHistory:
-- work2:
-  company: 浙江大华西安研发中心
-  location: 中国, 西安
-  title: C++高级工程师
-  started: 2020
-  duration: (2020.7 - Present)
-  description: 音视频运维业务后端开发
+bio: 专注于 C++ 音视频开发，热爱开源技术，记录学习与实践。
 
-- work1:
-  company: 宇视科技西安研发中心
-  location: 中国，西安
-  title: C++开发工程师
-  started: 2017
-  duration: (2017.10 - 2020.7)
-  description: 音视频协议开发和维护
+techTags:
+  - C/C++
+  - FFmpeg
+  - RTSP/RTMP
+  - ONVIF
+  - Linux
+  - 流媒体
+
+workHistory:
+  - company: 浙江大华西安研发中心
+    location: 中国, 西安
+    title: C++ 高级工程师
+    started: 2020
+    duration: 2020.7 - 至今
+    description: 音视频运维业务后端开发，负责设备接入、流媒体分发模块。
+    tags:
+      - FFmpeg
+      - RTSP
+      - 流媒体
+      - C++
+    achievements:
+      - 设计并实现设备接入模块，支持千路视频并发接入，稳定性 99.9%+
+      - 优化流媒体分发架构，降低端到端延迟约 30%
+      - 主导 RTSP/RTMP 协议栈适配，兼容多厂商设备
+  - company: 宇视科技西安研发中心
+    location: 中国, 西安
+    title: C++ 开发工程师
+    started: 2017
+    duration: 2017.10 - 2020.7
+    description: 音视频协议（RTSP/ONVIF）开发和维护。
+    tags:
+      - ONVIF
+      - RTSP
+      - C++
+    achievements:
+      - 负责 ONVIF 协议接入模块开发与维护
+      - 参与 RTSP 协议栈重构，提升代码可维护性
+      - 修复多起核心协议解析 Bug，提升产品稳定性
 
 educationHistory:
-- education1:
-  organization: 南京邮电大学
-  degree: 学士
-  major: 软件工程
+  - organization: 南京邮电大学
+    degree: 学士
+    major: 软件工程
+    duration: 2013 - 2017
+
 languages:
-- language1:
-  name: 中文
-  proficiency: Native
-- language2:
-  name: English
-  proficiency: Limit
+  - name: 中文
+    proficiency: 母语
+  - name: English
+    proficiency: 读写流利
+
 programmingSkills:
-- CPP:
-  name: C/C++
-  percentage: 90%
-- Bash:
-  name: Bash Shell
-  percentage: 70%
-- Python:
-  name: Python
-  percentage: 30%
+  - name: C/C++
+    percentage: 90
+  - name: Bash Shell
+    percentage: 70
+  - name: Python
+    percentage: 30
+
+projects:
+  - name: 流媒体分发服务
+    description: 基于 C++ 实现的高性能流媒体分发中间件，支持 RTSP/RTMP/HLS 多协议输出，单节点并发转发 500+ 路视频流。
+    tags:
+      - C++
+      - RTSP
+      - RTMP
+      - HLS
+      - FFmpeg
+  - name: 设备接入网关
+    description: 统一设备接入层，支持 ONVIF、GB28181 等多协议设备自动注册与心跳维护，已接入设备 10000+ 台。
+    tags:
+      - C++
+      - ONVIF
+      - GB28181
+      - Linux
