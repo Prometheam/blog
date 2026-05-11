@@ -335,13 +335,9 @@
       var brand = $('#adminBrand');
       var isLogin = (location.hash === '#/login' || location.hash === '');
 
-      // 登录页隐藏"文章管理"导航品牌按钮
+      // 登录页隐藏"文章管理"导航品牌按钮（保留占位，避免右侧按钮位移）
       if (brand) {
-        if (isLogin) {
-          brand.classList.add('d-none');
-        } else {
-          brand.classList.remove('d-none');
-        }
+        brand.style.visibility = isLogin ? 'hidden' : 'visible';
       }
 
       if (Auth.isAuthenticated() && user) {
