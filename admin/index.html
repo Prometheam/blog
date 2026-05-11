@@ -192,6 +192,25 @@
     </div>
   </div>
 
+  <!-- 文章预览模态框 -->
+  <div class="modal-overlay d-none" id="previewModal">
+    <div class="modal-box modal-box-preview">
+      <div class="modal-header">
+        <h3 id="previewTitle">文章预览</h3>
+        <button class="modal-close" id="previewModalClose">&times;</button>
+      </div>
+      <div class="modal-body preview-body" id="previewBody">
+        <div id="previewLoading" class="preview-loading">
+          <div class="spinner"></div>
+          <p>加载中...</p>
+        </div>
+        <div id="previewError"   class="preview-error d-none"></div>
+        <div id="previewMeta"    class="preview-meta  d-none"></div>
+        <div id="previewContent" class="preview-content d-none"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast 提示 -->
   <div id="toast" class="toast d-none"></div>
 

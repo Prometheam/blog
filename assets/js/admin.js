@@ -467,6 +467,8 @@
           '</div>' +
           '</div>' +
           '<div class="post-actions">' +
+          '<button class="admin-btn admin-btn-ghost" title="预览" data-path="' + file.path + '" onclick="AdminApp.previewPost(this)">' +
+          '<i class="fas fa-eye"></i></button>' +
           '<a href="#/editor/' + encodeURIComponent(file.path) + '" class="admin-btn admin-btn-ghost">' +
           '<i class="fas fa-edit"></i> 编辑</a>' +
           '<button class="admin-btn admin-btn-danger" data-path="' + file.path + '" data-sha="' + file.sha + '" data-name="' + this.escapeHtml(displayTitle) + '" onclick="AdminApp.confirmDelete(this)">' +
@@ -822,6 +824,77 @@
     }
   };
 
+  // ==================== 预览功能 ====================
+  const PreviewHandler = {
+    show: function (path) {
+      var modal     = $('#previewModal');
+      var titleEl   = $('#previewTitle');
+      var loadingEl = $('#previewLoading');
+      var errorEl   = $('#previewError');
+      var metaEl    = $('#previewMeta');
+      var contentEl = $('#previewContent');
+      var bodyEl    = $('#previewBody');
+
+      // 重置状态
+      titleEl.textContent = '文章预览';
+      loadingEl.classList.remove('d-none');
+      errorEl.classList.add('d-none');
+      metaEl.classList.add('d-none');
+      contentEl.classList.add('d-none');
+      contentEl.innerHTML = '';
+      if (bodyEl) bodyEl.scrollTop = 0;
+
+      modal.classList.remove('d-none');
+
+      API.getPost(path).then(function (post) {
+        var parsed = FM.parse(post.content);
+        var meta   = parsed.meta;
+
+        titleEl.textContent = meta.title || post.name.replace(/\.md$/, '');
+
+        var metaHtml = '';
+        if (meta.date) {
+          var dateStr = String(meta.date).split(' ')[0];
+          metaHtml += '<span><i class="fas fa-calendar"></i> ' + PostList.escapeHtml(dateStr) + '</span>';
+        }
+        if (meta.categories) {
+          var cats = Array.isArray(meta.categories) ? meta.categories : [meta.categories];
+          cats.forEach(function (c) {
+            if (c) {
+              metaHtml += '<span class="preview-category"><i class="fas fa-tag"></i> ' +
+                PostList.escapeHtml(c) + '</span>';
+            }
+          });
+        }
+        if (meta.location) {
+          metaHtml += '<span><i class="fas fa-map-marker-alt"></i> ' +
+            PostList.escapeHtml(meta.location) + '</span>';
+        }
+
+        var fullText = (parsed.excerpt ? parsed.excerpt + '\n\n' : '') + parsed.body;
+        var rawHtml  = marked.parse(fullText);
+        var safeHtml = DOMPurify.sanitize(rawHtml);
+
+        loadingEl.classList.add('d-none');
+        if (metaHtml) {
+          metaEl.innerHTML = metaHtml;
+          metaEl.classList.remove('d-none');
+        }
+        contentEl.innerHTML = safeHtml;
+        contentEl.classList.remove('d-none');
+
+      }).catch(function (e) {
+        loadingEl.classList.add('d-none');
+        errorEl.textContent = '加载失败：' + e.message;
+        errorEl.classList.remove('d-none');
+      });
+    },
+
+    hide: function () {
+      $('#previewModal').classList.add('d-none');
+    }
+  };
+
   // ==================== 初始化 ====================
   document.addEventListener('DOMContentLoaded', function () {
     Auth.init();
@@ -906,6 +979,11 @@
           Editor.publish();
         }
       }
+      if (e.key === 'Escape') {
+        if (!$('#previewModal').classList.contains('d-none')) {
+          PreviewHandler.hide();
+        }
+      }
     });
 
     // 删除模态框
@@ -916,6 +994,12 @@
       if (e.target === this) DeleteHandler.hide();
     });
 
+    // 预览模态框
+    $('#previewModalClose').addEventListener('click', function () { PreviewHandler.hide(); });
+    $('#previewModal').addEventListener('click', function (e) {
+      if (e.target === this) PreviewHandler.hide();
+    });
+
     // 初始化路由
     Router.init();
   });
@@ -924,9 +1008,13 @@
   window.AdminApp = {
     confirmDelete: function (btn) {
       var path = btn.getAttribute('data-path');
-      var sha = btn.getAttribute('data-sha');
+      var sha  = btn.getAttribute('data-sha');
       var name = btn.getAttribute('data-name');
       DeleteHandler.show(path, sha, name);
+    },
+    previewPost: function (btn) {
+      var path = btn.getAttribute('data-path');
+      PreviewHandler.show(path);
     }
   };
 

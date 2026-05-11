@@ -630,6 +630,180 @@ body {
   border-top: 1px solid var(--admin-border);
 }
 
+/* ==================== 预览模态框 ==================== */
+.modal-box-preview {
+  max-width: 800px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.modal-box-preview .modal-header {
+  flex-shrink: 0;
+}
+
+.preview-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: 1.5rem;
+}
+
+.preview-loading {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--admin-text-muted);
+}
+
+.preview-error {
+  padding: 0.85rem 1rem;
+  background: rgba(248, 81, 73, 0.1);
+  border: 1px solid var(--admin-danger);
+  border-radius: 6px;
+  color: var(--admin-danger);
+  font-size: 0.875rem;
+}
+
+.preview-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  padding: 0.65rem 1rem;
+  background: var(--admin-surface-hover);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--admin-text-muted);
+}
+
+.preview-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.preview-meta .preview-category {
+  background: rgba(240, 165, 0, 0.15);
+  color: var(--admin-accent);
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.preview-content {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--admin-text);
+  word-break: break-word;
+}
+
+.preview-content h1,
+.preview-content h2,
+.preview-content h3,
+.preview-content h4,
+.preview-content h5 {
+  color: var(--admin-text);
+  line-height: 1.35;
+  margin: 1.5em 0 0.5em;
+}
+
+.preview-content h1 {
+  font-size: 1.55rem;
+  border-bottom: 1px solid var(--admin-border);
+  padding-bottom: 0.3em;
+}
+
+.preview-content h2 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--admin-border);
+  padding-bottom: 0.2em;
+}
+
+.preview-content h3 { font-size: 1.05rem; }
+
+.preview-content p { margin: 0 0 1em; }
+
+.preview-content a {
+  color: var(--admin-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.preview-content blockquote {
+  margin: 1em 0;
+  padding: 0.6em 1em;
+  border-left: 3px solid var(--admin-accent);
+  background: var(--admin-surface-hover);
+  color: var(--admin-text-muted);
+  border-radius: 0 4px 4px 0;
+}
+
+.preview-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875em;
+  background: var(--admin-surface-hover);
+  border: 1px solid var(--admin-border);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+}
+
+.preview-content pre {
+  background: var(--admin-input-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.preview-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.preview-content ul,
+.preview-content ol {
+  padding-left: 1.75em;
+  margin: 0.5em 0 1em;
+}
+
+.preview-content li { margin: 0.3em 0; }
+
+.preview-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.9rem;
+}
+
+.preview-content th,
+.preview-content td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--admin-border);
+  text-align: left;
+}
+
+.preview-content th {
+  background: var(--admin-surface-hover);
+  font-weight: 600;
+}
+
+.preview-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  display: block;
+}
+
+.preview-content hr {
+  border: none;
+  border-top: 1px solid var(--admin-border);
+  margin: 1.5em 0;
+}
+
 /* ==================== Toast 提示 ==================== */
 .toast {
   position: fixed;
@@ -839,5 +1013,9 @@ body {
 
   .EasyMDEContainer .CodeMirror {
     min-height: 300px;
+  }
+
+  .modal-box-preview {
+    max-height: 92vh;
   }
 }
