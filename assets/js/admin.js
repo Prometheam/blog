@@ -332,6 +332,17 @@
       var user = Auth.getUser();
       var userInfo = $('#userInfo');
       var logoutBtn = $('#logoutBtn');
+      var brand = $('#adminBrand');
+      var isLogin = (location.hash === '#/login' || location.hash === '');
+
+      // 登录页隐藏"文章管理"导航品牌按钮
+      if (brand) {
+        if (isLogin) {
+          brand.classList.add('d-none');
+        } else {
+          brand.classList.remove('d-none');
+        }
+      }
 
       if (Auth.isAuthenticated() && user) {
         userInfo.textContent = user.login;
