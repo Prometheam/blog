@@ -11,6 +11,7 @@
     repo: 'mengguowan.github.io',
     branch: 'gh-pages',
     postsDir: '_posts',
+    draftsDir: '_drafts',
     apiBase: 'https://api.github.com',
     tokenKey: 'mgw_admin_token',
     userKey: 'mgw_admin_user',
@@ -117,6 +118,20 @@
       var resp = await fetch(url, { headers: this.headers() });
       if (!resp.ok) throw new Error('获取文章列表失败: ' + resp.status);
 
+      var files = await resp.json();
+      return files
+        .filter(function (f) { return f.name.endsWith('.md'); })
+        .sort(function (a, b) { return b.name.localeCompare(a.name); });
+    },
+
+    // 获取草稿列表
+    async listDrafts() {
+      var url = CONFIG.apiBase + '/repos/' + CONFIG.owner + '/' + CONFIG.repo +
+        '/contents/' + CONFIG.draftsDir + '?ref=' + CONFIG.branch;
+      var resp = await fetch(url, { headers: this.headers() });
+      // 草稿目录可能不存在，返回空数组
+      if (resp.status === 404) return [];
+      if (!resp.ok) throw new Error('获取草稿列表失败: ' + resp.status);
       var files = await resp.json();
       return files
         .filter(function (f) { return f.name.endsWith('.md'); })
@@ -330,15 +345,18 @@
 
     showLogin: function () {
       $('#view-login').classList.remove('d-none');
+      Mascots.mount();
     },
 
     showPosts: function () {
       $('#view-posts').classList.remove('d-none');
+      Mascots.destroy();
       PostList.load();
     },
 
     showEditor: function (path) {
       $('#view-editor').classList.remove('d-none');
+      Mascots.destroy();
       Editor.load(path);
     }
   };
@@ -346,6 +364,8 @@
   // ==================== 文章列表模块 ====================
   const PostList = {
     posts: [],
+    drafts: [],
+    currentTab: 'published',
     loading: false,
 
     async load() {
@@ -361,14 +381,20 @@
       emptyEl.classList.add('d-none');
 
       try {
-        this.posts = await API.listPosts();
+        // 并行请求已发布文章和草稿
+        var results = await Promise.all([API.listPosts(), API.listDrafts()]);
+        this.posts = results[0];
+        this.drafts = results[1];
+
         loadingEl.classList.add('d-none');
 
-        if (this.posts.length === 0) {
-          emptyEl.classList.remove('d-none');
-        } else {
-          this.render(this.posts);
-        }
+        // 更新 Tab 计数
+        var pubCount = $('#tabPublishedCount');
+        var draftCount = $('#tabDraftsCount');
+        if (pubCount) pubCount.textContent = this.posts.length || '';
+        if (draftCount) draftCount.textContent = this.drafts.length || '';
+
+        this.renderCurrent();
       } catch (e) {
         loadingEl.classList.add('d-none');
         showToast('加载失败: ' + e.message, 'error');
@@ -377,7 +403,43 @@
       }
     },
 
-    render: function (posts) {
+    switchTab: function (tab) {
+      this.currentTab = tab;
+      // 更新 Tab 激活状态
+      $$('.posts-tab').forEach(function (btn) {
+        if (btn.getAttribute('data-tab') === tab) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      this.renderCurrent();
+    },
+
+    renderCurrent: function () {
+      var emptyEl = $('#postsEmpty');
+      if (this.currentTab === 'drafts') {
+        if (this.drafts.length === 0) {
+          $('#postsList').innerHTML = '';
+          emptyEl.classList.remove('d-none');
+          emptyEl.querySelector('p').textContent = '暂无草稿';
+        } else {
+          emptyEl.classList.add('d-none');
+          this.render(this.drafts, true);
+        }
+      } else {
+        if (this.posts.length === 0) {
+          $('#postsList').innerHTML = '';
+          emptyEl.classList.remove('d-none');
+          emptyEl.querySelector('p').textContent = '暂无文章';
+        } else {
+          emptyEl.classList.add('d-none');
+          this.render(this.posts, false);
+        }
+      }
+    },
+
+    render: function (posts, isDraft) {
       var listEl = $('#postsList');
       var html = '';
 
@@ -385,15 +447,16 @@
         var file = posts[i];
         var match = file.name.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
         var date = match ? match[1] : '';
-        var titleSlug = match ? match[2] : file.name;
-        // 文件名中的标题仅为 slug，实际标题需要从内容获取，这里先展示 slug
+        var titleSlug = match ? match[2] : file.name.replace(/\.md$/, '');
         var displayTitle = decodeURIComponent(titleSlug.replace(/-/g, ' '));
+
+        var draftBadge = isDraft ? '<span class="draft-badge">草稿</span>' : '';
 
         html += '<div class="post-item">' +
           '<div class="post-info">' +
-          '<h4>' + this.escapeHtml(displayTitle) + '</h4>' +
+          '<h4>' + this.escapeHtml(displayTitle) + ' ' + draftBadge + '</h4>' +
           '<div class="post-meta">' +
-          '<span><i class="fas fa-calendar"></i> ' + date + '</span>' +
+          (date ? '<span><i class="fas fa-calendar"></i> ' + date + '</span>' : '') +
           '</div>' +
           '</div>' +
           '<div class="post-actions">' +
@@ -409,15 +472,18 @@
     },
 
     filter: function (keyword) {
+      var source = this.currentTab === 'drafts' ? this.drafts : this.posts;
+      var isDraft = this.currentTab === 'drafts';
+
       if (!keyword) {
-        this.render(this.posts);
+        this.render(source, isDraft);
         return;
       }
       var lk = keyword.toLowerCase();
-      var filtered = this.posts.filter(function (f) {
+      var filtered = source.filter(function (f) {
         return f.name.toLowerCase().indexOf(lk) !== -1;
       });
-      this.render(filtered);
+      this.render(filtered, isDraft);
 
       if (filtered.length === 0) {
         $('#postsList').innerHTML = '<div class="post-item" style="justify-content:center;color:var(--admin-text-muted)">没有匹配的文章</div>';
@@ -437,6 +503,7 @@
     currentSha: null,
     currentPath: null,
     isDirty: false,
+    isDraft: false,
 
     async load(path) {
       // 初始化 EasyMDE
@@ -475,10 +542,11 @@
 
       // 清除自动保存的内容（如果是加载新文章）
       this.isDirty = false;
+      this.isDraft = false;
       this.updateStatus('');
 
       if (path) {
-        // 编辑已有文章
+        // 编辑已有文章（可能是草稿或已发布）
         this.updateStatus('加载中...', '');
         try {
           var post = await API.getPost(path);
@@ -504,8 +572,17 @@
           this.currentPath = post.path;
           this.updateStatus('');
 
-          // 更新发布按钮文字
-          $('#publishBtn').innerHTML = '<i class="fas fa-save"></i> 更新';
+          // 判断是否为草稿
+          this.isDraft = post.path.startsWith(CONFIG.draftsDir + '/');
+
+          // 更新按钮文字
+          if (this.isDraft) {
+            $('#publishBtn').innerHTML = '<i class="fas fa-paper-plane"></i> 发布';
+            $('#saveDraftBtn').innerHTML = '<i class="fas fa-file-alt"></i> 更新草稿';
+          } else {
+            $('#publishBtn').innerHTML = '<i class="fas fa-save"></i> 更新';
+            $('#saveDraftBtn').innerHTML = '<i class="fas fa-file-alt"></i> 保存草稿';
+          }
         } catch (e) {
           this.updateStatus('加载失败: ' + e.message, 'error');
         }
@@ -522,6 +599,7 @@
 
         // 更新发布按钮文字
         $('#publishBtn').innerHTML = '<i class="fas fa-paper-plane"></i> 发布';
+        $('#saveDraftBtn').innerHTML = '<i class="fas fa-file-alt"></i> 保存草稿';
       }
     },
 
@@ -559,27 +637,112 @@
       };
 
       var content = FM.generate(meta, excerpt, body);
-      var path = this.currentPath || (CONFIG.postsDir + '/' + FM.generateFilename(title, date));
-      var message = this.currentSha ? '更新文章: ' + title : '发布文章: ' + title;
 
       this.updateStatus('保存中...', '');
       $('#publishBtn').disabled = true;
 
       try {
-        var result = await API.savePost(path, content, message, this.currentSha);
-        this.currentSha = result.content.sha;
-        this.currentPath = result.content.path;
-        this.isDirty = false;
-        this.updateStatus('✓ 已保存', 'success');
-        showToast(this.currentSha ? '文章已更新，等待自动构建...' : '文章已发布，等待自动构建...', 'success');
+        if (this.isDraft) {
+          // ---- 草稿升级：保存到 _posts/，再删除 _drafts/ 旧文件 ----
+          var oldDraftPath = this.currentPath;
+          var oldDraftSha  = this.currentSha;
+          var newPostPath  = CONFIG.postsDir + '/' + FM.generateFilename(title, date);
 
-        // 更新按钮文字为"更新"
-        $('#publishBtn').innerHTML = '<i class="fas fa-save"></i> 更新';
+          var result = await API.savePost(newPostPath, content, '发布文章: ' + title, null);
+
+          // 删除草稿（失败不阻断发布）
+          try {
+            await API.deletePost(oldDraftPath, oldDraftSha, '发布草稿，删除原草稿: ' + title);
+          } catch (delErr) {
+            console.warn('草稿删除失败（已忽略）:', delErr);
+          }
+
+          this.currentSha  = result.content.sha;
+          this.currentPath = result.content.path;
+          this.isDraft     = false;
+          this.isDirty     = false;
+          this.updateStatus('✓ 已发布', 'success');
+          showToast('草稿已发布，等待自动构建...', 'success');
+          $('#publishBtn').innerHTML   = '<i class="fas fa-save"></i> 更新';
+          $('#saveDraftBtn').innerHTML = '<i class="fas fa-file-alt"></i> 保存草稿';
+        } else {
+          // ---- 普通发布 / 更新 ----
+          var isUpdate = !!this.currentSha;
+          var path     = this.currentPath || (CONFIG.postsDir + '/' + FM.generateFilename(title, date));
+          var message  = isUpdate ? '更新文章: ' + title : '发布文章: ' + title;
+
+          var result = await API.savePost(path, content, message, this.currentSha);
+          this.currentSha  = result.content.sha;
+          this.currentPath = result.content.path;
+          this.isDirty     = false;
+          this.updateStatus('✓ 已保存', 'success');
+          showToast(isUpdate ? '文章已更新，等待自动构建...' : '文章已发布，等待自动构建...', 'success');
+          $('#publishBtn').innerHTML = '<i class="fas fa-save"></i> 更新';
+        }
       } catch (e) {
         this.updateStatus('保存失败', 'error');
         showToast('保存失败: ' + e.message, 'error');
       } finally {
         $('#publishBtn').disabled = false;
+      }
+    },
+
+    async saveDraft() {
+      var title      = $('#postTitle').value.trim();
+      var date       = $('#postDate').value || new Date().toISOString().split('T')[0];
+      var categories = $('#postCategories').value.trim();
+      var location   = $('#postLocation').value.trim();
+      var excerpt    = $('#postExcerpt').value.trim();
+      var body       = this.instance.value();
+
+      if (!title) {
+        showToast('请填写文章标题', 'error');
+        $('#postTitle').focus();
+        return;
+      }
+
+      // 补全日期输入框（若用户未填）
+      if (!$('#postDate').value) {
+        $('#postDate').value = date;
+      }
+
+      var meta = {
+        layout: 'post_layout',
+        title: title,
+        date: date + ' 12:00:00 +0800',
+        categories: categories ? categories.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [],
+        location: location
+      };
+
+      var content  = FM.generate(meta, excerpt, body);
+
+      // 若已是草稿，保持原路径（更新）；否则生成新路径
+      var path    = (this.isDraft && this.currentPath)
+        ? this.currentPath
+        : CONFIG.draftsDir + '/' + FM.generateFilename(title, date);
+      var sha     = (this.isDraft && this.currentPath) ? this.currentSha : null;
+      var message = (this.isDraft && this.currentPath)
+        ? '更新草稿: ' + title
+        : '保存草稿: ' + title;
+
+      this.updateStatus('保存中...', '');
+      $('#saveDraftBtn').disabled = true;
+
+      try {
+        var result = await API.savePost(path, content, message, sha);
+        this.currentSha  = result.content.sha;
+        this.currentPath = result.content.path;
+        this.isDraft     = true;
+        this.isDirty     = false;
+        this.updateStatus('✓ 草稿已保存', 'success');
+        showToast('草稿已保存', 'success');
+        $('#saveDraftBtn').innerHTML = '<i class="fas fa-file-alt"></i> 更新草稿';
+        $('#publishBtn').innerHTML   = '<i class="fas fa-paper-plane"></i> 发布';
+      } catch (e) {
+        this.updateStatus('保存失败', 'error');
+        showToast('保存失败: ' + e.message, 'error');
+      } finally {
+        $('#saveDraftBtn').disabled = false;
       }
     },
 
@@ -716,6 +879,18 @@
       Editor.publish();
     });
 
+    // 保存草稿按钮
+    $('#saveDraftBtn').addEventListener('click', function () {
+      Editor.saveDraft();
+    });
+
+    // Tab 切换
+    $$('.posts-tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        PostList.switchTab(this.getAttribute('data-tab'));
+      });
+    });
+
     // Ctrl+S 快捷键保存
     document.addEventListener('keydown', function (e) {
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
@@ -755,40 +930,86 @@
     isLooking: false,
     lookTimer: null,
     rafId: null,
+    _bound: false,
 
-    init: function () {
+    // 动态挂载角色 DOM 并启动动画（仅登录页调用）
+    mount: function () {
+      if (document.getElementById('mascotsPanel')) return; // 幂等
+      var panel = document.createElement('div');
+      panel.className = 'mascots-panel';
+      panel.id = 'mascotsPanel';
+      panel.innerHTML =
+        '<div class="mascot mascot-purple" id="m-purple">' +
+          '<div class="mascot-face" id="m-purple-face">' +
+            '<div class="eyeball" data-max-dist="5"><div class="eyeball-pupil"></div></div>' +
+            '<div class="eyeball" data-max-dist="5"><div class="eyeball-pupil"></div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mascot mascot-black" id="m-black">' +
+          '<div class="mascot-face" id="m-black-face">' +
+            '<div class="eyeball" data-max-dist="4"><div class="eyeball-pupil"></div></div>' +
+            '<div class="eyeball" data-max-dist="4"><div class="eyeball-pupil"></div></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mascot mascot-orange" id="m-orange">' +
+          '<div class="mascot-face" id="m-orange-face">' +
+            '<div class="pupil" data-max-dist="5"></div>' +
+            '<div class="pupil" data-max-dist="5"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mascot mascot-yellow" id="m-yellow">' +
+          '<div class="mascot-face" id="m-yellow-face">' +
+            '<div class="pupil" data-max-dist="5"></div>' +
+            '<div class="pupil" data-max-dist="5"></div>' +
+          '</div>' +
+          '<div class="mascot-mouth" id="m-yellow-mouth"></div>' +
+        '</div>';
+      document.body.appendChild(panel);
+      this._start();
+    },
+
+    // 销毁角色 DOM 并停止动画（切换到非登录页时调用）
+    destroy: function () {
+      if (this.rafId) {
+        cancelAnimationFrame(this.rafId);
+        this.rafId = null;
+      }
+      var panel = document.getElementById('mascotsPanel');
+      if (panel) panel.parentNode.removeChild(panel);
+    },
+
+    // 启动事件监听和 RAF（内部调用）
+    _start: function () {
       var self = this;
-
-      // 鼠标位置追踪
-      window.addEventListener('mousemove', function (e) {
-        self.mouse.x = e.clientX;
-        self.mouse.y = e.clientY;
-      }, { passive: true });
-
-      // 输入框 focus / blur
-      document.addEventListener('focusin', function (e) {
-        if (e.target.matches('input, textarea') || e.target.closest('.CodeMirror')) {
-          self.setTyping(true);
-        }
-      });
-      document.addEventListener('focusout', function (e) {
-        if (e.target.matches('input, textarea') || e.target.closest('.CodeMirror')) {
-          setTimeout(function () {
-            var a = document.activeElement;
-            if (!a || (!a.matches('input, textarea') && !a.closest('.CodeMirror'))) {
-              self.setTyping(false);
-            }
-          }, 80);
-        }
-      });
-
+      // 事件监听只注册一次（跨 mount/destroy 周期复用）
+      if (!this._bound) {
+        window.addEventListener('mousemove', function (e) {
+          self.mouse.x = e.clientX;
+          self.mouse.y = e.clientY;
+        }, { passive: true });
+        document.addEventListener('focusin', function (e) {
+          if (e.target.matches('input, textarea') || e.target.closest('.CodeMirror')) {
+            self.setTyping(true);
+          }
+        });
+        document.addEventListener('focusout', function (e) {
+          if (e.target.matches('input, textarea') || e.target.closest('.CodeMirror')) {
+            setTimeout(function () {
+              var a = document.activeElement;
+              if (!a || (!a.matches('input, textarea') && !a.closest('.CodeMirror'))) {
+                self.setTyping(false);
+              }
+            }, 80);
+          }
+        });
+        this._bound = true;
+      }
       // 启动 RAF tick
       var tick = function () {
         self.tick();
         self.rafId = requestAnimationFrame(tick);
       };
       self.rafId = requestAnimationFrame(tick);
-
       // 随机眨眼（紫/黑）
       self.startBlink('#m-purple', 9);
       self.startBlink('#m-black', 7);
@@ -934,7 +1155,5 @@
       schedule();
     }
   };
-
-  Mascots.init();
 
 })();

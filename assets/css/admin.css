@@ -128,15 +128,76 @@ body {
   border-color: var(--admin-text-muted);
 }
 
-.admin-btn-danger {
-  background: var(--admin-danger);
-  color: #fff;
+.admin-btn-secondary {
+  background: transparent;
+  color: var(--admin-text);
+  border: 1px solid var(--admin-border);
 }
 
-.admin-btn-danger:hover {
-  background: var(--admin-danger-hover);
-  color: #fff;
+.admin-btn-secondary:hover {
+  background: var(--admin-surface-hover);
+  border-color: var(--admin-text-muted);
+  color: var(--admin-text);
+  text-decoration: none;
 }
+
+/* ==================== 文章列表 Tab ==================== */
+.posts-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.posts-tab {
+  padding: 0.6rem 1.2rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--admin-text-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: -1px;
+  transition: color 0.15s ease;
+}
+
+.posts-tab:hover {
+  color: var(--admin-text);
+}
+
+.posts-tab.active {
+  color: var(--admin-accent);
+  border-bottom-color: var(--admin-accent);
+}
+
+.tab-count {
+  background: var(--admin-border);
+  border-radius: 10px;
+  padding: 0.05rem 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* 草稿标签（列表中显示） */
+.draft-badge {
+  background: rgba(139, 148, 158, 0.15);
+  color: var(--admin-text-muted);
+  border: 1px solid var(--admin-border);
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+
 
 /* ==================== 表单 ==================== */
 .form-group {

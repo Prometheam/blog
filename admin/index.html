@@ -97,6 +97,18 @@
           <i class="fas fa-plus"></i> 新建文章
         </a>
       </div>
+      <!-- 已发布 / 草稿 Tab -->
+      <div class="posts-tabs">
+        <button class="posts-tab active" id="tabPublished" data-tab="published">
+          <i class="fas fa-check-circle"></i> 已发布
+          <span class="tab-count" id="tabPublishedCount"></span>
+        </button>
+        <button class="posts-tab" id="tabDrafts" data-tab="drafts">
+          <i class="fas fa-file-alt"></i> 草稿
+          <span class="tab-count" id="tabDraftsCount"></span>
+        </button>
+      </div>
+
       <div id="postsList" class="posts-list"></div>
       <div id="postsLoading" class="loading-state">
         <div class="spinner"></div>
@@ -116,6 +128,9 @@
         </button>
         <div class="editor-actions">
           <span id="saveStatus" class="save-status"></span>
+          <button id="saveDraftBtn" class="admin-btn admin-btn-secondary">
+            <i class="fas fa-file-alt"></i> 保存草稿
+          </button>
           <button id="publishBtn" class="admin-btn admin-btn-primary">
             <i class="fas fa-paper-plane"></i> 发布
           </button>
@@ -175,44 +190,6 @@
         <button class="admin-btn admin-btn-danger" id="confirmDeleteBtn">确认删除</button>
       </div>
     </div>
-  </div>
-
-  <!-- 左侧卡通角色 -->
-  <div class="mascots-panel" id="mascotsPanel">
-
-    <!-- 角色1：紫色矩形（EyeBall×2） -->
-    <div class="mascot mascot-purple" id="m-purple">
-      <div class="mascot-face" id="m-purple-face">
-        <div class="eyeball" data-max-dist="5"><div class="eyeball-pupil"></div></div>
-        <div class="eyeball" data-max-dist="5"><div class="eyeball-pupil"></div></div>
-      </div>
-    </div>
-
-    <!-- 角色2：黑色矩形（EyeBall×2） -->
-    <div class="mascot mascot-black" id="m-black">
-      <div class="mascot-face" id="m-black-face">
-        <div class="eyeball" data-max-dist="4"><div class="eyeball-pupil"></div></div>
-        <div class="eyeball" data-max-dist="4"><div class="eyeball-pupil"></div></div>
-      </div>
-    </div>
-
-    <!-- 角色3：橙色宽拱（bare Pupil×2） -->
-    <div class="mascot mascot-orange" id="m-orange">
-      <div class="mascot-face" id="m-orange-face">
-        <div class="pupil" data-max-dist="5"></div>
-        <div class="pupil" data-max-dist="5"></div>
-      </div>
-    </div>
-
-    <!-- 角色4：黄色窄拱（bare Pupil×2 + 嘴巴） -->
-    <div class="mascot mascot-yellow" id="m-yellow">
-      <div class="mascot-face" id="m-yellow-face">
-        <div class="pupil" data-max-dist="5"></div>
-        <div class="pupil" data-max-dist="5"></div>
-      </div>
-      <div class="mascot-mouth" id="m-yellow-mouth"></div>
-    </div>
-
   </div>
 
   <!-- Toast 提示 -->
