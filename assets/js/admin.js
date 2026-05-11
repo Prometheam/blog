@@ -1010,9 +1010,11 @@
         self.rafId = requestAnimationFrame(tick);
       };
       self.rafId = requestAnimationFrame(tick);
-      // 随机眨眼（紫/黑）
-      self.startBlink('#m-purple', 9);
-      self.startBlink('#m-black', 7);
+      // 推迟到下一帧再启动眨眼，确保 DOM 已完成渲染后再查询节点
+      requestAnimationFrame(function () {
+        self.startBlink('#m-purple', 9);
+        self.startBlink('#m-black', 7);
+      });
     },
 
     // 计算 body 倾斜 + face 偏移（参考 1.txt，cy 取 height/3）
@@ -1141,13 +1143,15 @@
 
     // 随机眨眼（眼球高度 collapse）
     startBlink: function (selector, size) {
-      var eyes = document.querySelectorAll(selector + ' .eyeball');
-      if (!eyes.length) return;
       var schedule = function () {
         setTimeout(function () {
+          // 每次眨眼时实时查询 DOM，panel 被 destroy 后自动停止调度
+          var eyes = document.querySelectorAll(selector + ' .eyeball');
+          if (!eyes.length) return;
           eyes.forEach(function (e) { e.style.height = '2px'; });
           setTimeout(function () {
-            eyes.forEach(function (e) { e.style.height = size + 'px'; });
+            var eyes2 = document.querySelectorAll(selector + ' .eyeball');
+            eyes2.forEach(function (e) { e.style.height = size + 'px'; });
             schedule();
           }, 150);
         }, Math.random() * 4000 + 3000);
