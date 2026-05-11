@@ -1,10 +1,9 @@
 ---
 layout: post_layout
-title: PageController的使用介绍
-time: 2016年04月05日 星期二
+title: "PageController的使用介绍"
+date: 2026-05-11 12:00:00 +0800
 location: 上海
-pulished: true
-excerpt_separator: "#"
+excerpt_separator: "```"
 ---
 
 在开发 App 的过程中, 很多时候我们都要用到分页加载, 每次在处理分页操作我都感觉到很麻烦(可能是我太笨..),
