@@ -2,7 +2,7 @@
 layout: post_layout
 title: "Linux OOM Killer 深度解析：内存耗尽时的“救命稻草”"
 date: 2025-12-01 16:28:14 +0800
-categories: []
+categories: [Linux系统]
 location: 西安
 excerpt_separator: "```"
 ---

@@ -2,7 +2,7 @@
 layout: post_layout
 title: "移动语义（Move Semantics）和完美转发（Perfect Forwarding）"
 date: 2025-08-29 19:12:33 +0800
-categories: []
+categories: [C++语言]
 location: 西安
 excerpt_separator: "```"
 ---

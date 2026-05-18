@@ -2,7 +2,7 @@
 layout: post_layout
 title: "Windows 上安装 Jekyll "
 date: 2025-08-29 19:08:23 +0800
-categories: []
+categories: [博客搭建]
 location: 西安
 excerpt_separator: "```"
 ---

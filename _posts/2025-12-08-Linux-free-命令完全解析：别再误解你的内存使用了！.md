@@ -2,7 +2,7 @@
 layout: post_layout
 title: "Linux free 命令完全解析：别再误解你的内存使用了！"
 date: 2025-12-08 16:31:35 +0800
-categories: []
+categories: [Linux系统]
 location: 西安
 excerpt_separator: "```"
 ---

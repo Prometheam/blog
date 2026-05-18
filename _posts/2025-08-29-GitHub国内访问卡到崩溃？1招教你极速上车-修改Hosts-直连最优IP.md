@@ -2,7 +2,7 @@
 layout: post_layout
 title: "GitHub国内访问卡到崩溃？1招教你极速上车: 修改Hosts | 直连最优IP"
 date: 2025-08-29 14:16:00 +0800
-categories: []
+categories: [博客搭建]
 location: 西安
 excerpt_separator: "```"
 ---

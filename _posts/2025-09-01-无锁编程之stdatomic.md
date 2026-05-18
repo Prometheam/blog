@@ -2,7 +2,7 @@
 layout: post_layout
 title: "无锁编程之std::atomic"
 date: 2025-09-01 21:59:44 +0800
-categories: []
+categories: [并发编程]
 location: 西安
 excerpt_separator: "```"
 ---

@@ -2,7 +2,7 @@
 layout: post_layout
 title: "C++new和delete实现原理解析"
 date: 2026-01-09 14:51:58 +0800
-categories: []
+categories: [C++语言]
 location: 西安
 excerpt_separator: "```"
 ---

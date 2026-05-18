@@ -2,7 +2,7 @@
 layout: post_layout
 title: "并发（Concurrency） 和 并行（Parallelism）"
 date: 2025-08-29 19:09:40 +0800
-categories: []
+categories: [并发编程]
 location: 西安
 excerpt_separator: "```"
 ---

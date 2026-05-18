@@ -2,7 +2,7 @@
 layout: post_layout
 title: "构建协议兼容层，支持 TCP/UDP/HTTP 自适应及公/内网传输模式无缝切换系统"
 date: 2026-01-13 11:26:53 +0800
-categories: []
+categories: [网络编程]
 location: 西安
 excerpt_separator: "```"
 ---

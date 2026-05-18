@@ -13,6 +13,8 @@ highlight: true
 
 timezone: Asia/Shanghai
 
+permalink: /:year/:month/:day/:title/
+
 # _config.yml
 markdown: kramdown
 kramdown:
@@ -36,6 +38,6 @@ defaults:
       path: ""
       type: "posts"
     values:
-      layout: "post"
+      layout: "post_layout"
       show_in_archives: true
       

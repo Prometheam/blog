@@ -1,6 +1,6 @@
 ---
 layout: post_layout
-title: "2023-10-01-解决Win访问github卡的问题"
+title: "解决Win访问github卡的问题"
 date: 2023-10-01 14:30:00 +0800
 categories: [博客搭建]
 location: 西安

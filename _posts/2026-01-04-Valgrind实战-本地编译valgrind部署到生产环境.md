@@ -2,7 +2,7 @@
 layout: post_layout
 title: "Valgrind实战-本地编译valgrind部署到生产环境"
 date: 2026-01-04 11:05:45 +0800
-categories: []
+categories: [工具与效率]
 location: 西安
 excerpt_separator: "```"
 ---

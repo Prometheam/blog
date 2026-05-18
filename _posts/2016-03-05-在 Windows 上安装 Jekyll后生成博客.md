@@ -1,6 +1,6 @@
 ---
 layout: post_layout
-title: "2016-03-05-在 Windows 上安装 Jekyll后生成博客"
+title: "在 Windows 上安装 Jekyll后生成博客"
 date: 2016-03-05 14:30:00 +0800
 categories: [博客搭建]
 location: 西安
