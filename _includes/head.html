@@ -9,7 +9,7 @@
 
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="icon" type="image/svg+xml" href="{{ site.favicon | relative_url }}">
-  <link rel="manifest" href="{{ '/manifest.json' | prepend: site.baseurl }}">
+  <link rel="manifest" href="{{ '/manifest.json' | relative_url }}">
 
   <!-- Apple PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,7 +26,7 @@
   <meta property="og:title" content="{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}">
   <meta property="og:description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
   <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
-  <meta property="og:image" content="{{ og_image | prepend: site.url }}">
+  <meta property="og:image" content="{{ og_image | absolute_url }}">
   <meta property="og:site_name" content="{{ site.title }}">
   {% if page.date %}<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">{% endif %}
   {% if page.updated %}<meta property="article:modified_time" content="{{ page.updated | date_to_xmlschema }}">{% endif %}
@@ -55,8 +55,8 @@
   <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" crossorigin="anonymous"></noscript>
 
   <!-- 主题样式 -->
-  <link rel="stylesheet" href="{{ "/assets/css/blog.css" | prepend: site.baseurl }}">
-  <link rel="stylesheet" href="{{ "/assets/css/syntax.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{ '/assets/css/blog.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
 
   <!-- 防闪烁：在渲染前确定主题 -->
   <script>
