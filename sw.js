@@ -1,3 +1,5 @@
+---
+---
 /**
  * Service Worker — 博客离线缓存
  * 策略：
@@ -6,16 +8,16 @@
  *   Network First — HTML 页面（保证内容最新）
  */
 
-const CACHE_NAME = 'mgw-blog-v2';
+const CACHE_NAME = 'mgw-blog-v3';
 const STATIC_ASSETS = [
-  '/',
-  '/offline.html',
-  '/assets/css/blog.css',
-  '/assets/css/syntax.css',
-  '/assets/js/theme.js',
-  '/assets/js/search.js',
-  '/assets/js/particles.js',
-  '/assets/img/avatar.svg'
+  '{{ "/" | relative_url }}',
+  '{{ "/offline.html" | relative_url }}',
+  '{{ "/assets/css/blog.css" | relative_url }}',
+  '{{ "/assets/css/syntax.css" | relative_url }}',
+  '{{ "/assets/js/theme.js" | relative_url }}',
+  '{{ "/assets/js/search.js" | relative_url }}',
+  '{{ "/assets/js/particles.js" | relative_url }}',
+  '{{ "/assets/img/avatar.svg" | relative_url }}'
 ];
 
 // 安装：预缓存核心静态资源
@@ -61,7 +63,7 @@ self.addEventListener('fetch', event => {
           }
           return response;
         })
-        .catch(() => caches.match(request).then(cached => cached || caches.match('/offline.html')))
+        .catch(() => caches.match(request).then(cached => cached || caches.match('{{ "/offline.html" | relative_url }}')))
     );
     return;
   }

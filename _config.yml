@@ -2,7 +2,7 @@
 title: Meng Guo Wan - 技术博客
 description: Meng Guo Wan 的个人技术博客，专注于 C++ 音视频开发、FFmpeg、WebRTC 及 Linux 底层技术。
 favicon: /assets/img/avatar.svg
-baseurl:
+baseurl: /blog
 url: https://mengguowan.github.io
 rss_url:
 

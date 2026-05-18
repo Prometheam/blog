@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0d1117">
   <title>{{ site.data.author.name }} - {{ site.data.author.title }}</title>
-  <link rel="icon" type="image/png" href="{{ site.favicon }}">
+  <link rel="icon" type="image/png" href="{{ site.favicon | relative_url }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -281,7 +281,7 @@
     </div>
 
     <nav class="nav-cards">
-      <a href="/blog" class="nav-card">
+      <a href="{{ '/posts/' | relative_url }}" class="nav-card">
         <i class="fa-solid fa-blog"></i>
         <span>技术博客</span>
       </a>
@@ -289,22 +289,22 @@
         <i class="fa-brands fa-github"></i>
         <span>GitHub</span>
       </a>
-      <a href="/about/" class="nav-card">
+      <a href="{{ '/about/' | relative_url }}" class="nav-card">
         <i class="fa-solid fa-user"></i>
         <span>关于我</span>
       </a>
-      <a href="/archives/" class="nav-card">
+      <a href="{{ '/archives/' | relative_url }}" class="nav-card">
         <i class="fa-solid fa-archive"></i>
         <span>归档</span>
       </a>
     </nav>
 
     <div class="hero-footer">
-      <a href="/">mengguowan.github.io</a>
+      <a href="{{ '/' | relative_url }}">mengguowan.github.io</a>
     </div>
   </div>
 
-  <script src="/assets/js/particles.js"></script>
+  <script src="{{ '/assets/js/particles.js' | relative_url }}"></script>
   <script>
   // ============================================
   // 打字机效果
