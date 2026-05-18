@@ -22,7 +22,7 @@ bundle exec jekyll serve --drafts
 
 ## 架构概览
 
-本项目是一个基于 Jekyll 4.4.1 的个人技术博客，部署在 GitHub Pages（`mengguowan.github.io`）。
+本项目是一个基于 Jekyll 4.4.1 的个人技术博客，部署在 GitHub Pages（`prometheam.github.io`）。
 
 ### 页面 / 布局层级
 
@@ -52,7 +52,7 @@ bundle exec jekyll serve --drafts
 
 ### 评论系统
 
-`_includes/comments.html` 接入了 **utterances**（基于 GitHub Issues 的评论），关联仓库为 `mengguowan/mengguowan.github.io`。评论主题在页面加载时自动与深色/浅色模式同步。
+`_includes/comments.html` 接入了 **utterances**（基于 GitHub Issues 的评论），关联仓库为 `Prometheam/blog`。评论主题在页面加载时自动与深色/浅色模式同步。
 
 ### 样式
 

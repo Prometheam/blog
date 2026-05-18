@@ -3,4 +3,4 @@ Allow: /
 
 Disallow: /admin/
 
-Sitemap: https://mengguowan.github.io/sitemap.xml
+Sitemap: https://prometheam.github.io/blog/sitemap.xml

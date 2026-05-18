@@ -54,7 +54,7 @@
       container.innerHTML = '';
       const s = document.createElement('script');
       s.src = 'https://utteranc.es/client.js';
-      s.setAttribute('repo', 'mengguowan/mengguowan.github.io');
+      s.setAttribute('repo', 'Prometheam/blog');
       s.setAttribute('issue-term', 'pathname');
       s.setAttribute('label', '💬 评论');
       s.setAttribute('theme', utterancesTheme);

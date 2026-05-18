@@ -7,9 +7,9 @@
 
   // ==================== 配置 ====================
   const CONFIG = {
-    owner: 'mengguowan',
-    repo: 'mengguowan.github.io',
-    branch: 'gh-pages',
+    owner: 'Prometheam',
+    repo: 'blog',
+    branch: 'master',
     postsDir: '_posts',
     draftsDir: '_drafts',
     apiBase: 'https://api.github.com',
