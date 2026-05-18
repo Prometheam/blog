@@ -1,3 +1,7 @@
+---
+---
+---
+---
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -28,8 +32,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2/dist/easymde.min.css">
 
   <!-- 博客主题样式 + 管理后台样式 -->
-  <link rel="stylesheet" href="/assets/css/blog.css">
-  <link rel="stylesheet" href="/assets/css/admin.css">
+  <link rel="stylesheet" href="{{ '/assets/css/blog.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/admin.css' | relative_url }}">
 </head>
 <body>
   <!-- 顶部导航栏 -->
@@ -39,7 +43,7 @@
         <i class="fas fa-pen-nib"></i> 文章管理
       </a>
       <div class="admin-navbar-actions">
-        <a href="/" class="admin-btn admin-btn-ghost">
+        <a href="{{ '/' | relative_url }}" class="admin-btn admin-btn-ghost">
           <i class="fas fa-home"></i> <span class="hide-mobile">返回博客</span>
         </a>
         <button class="admin-btn admin-btn-ghost" id="themeToggle" title="切换主题">
@@ -219,6 +223,6 @@
   <script src="https://cdn.jsdelivr.net/npm/easymde@2/dist/easymde.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
-  <script src="/assets/js/admin.js"></script>
+  <script src="{{ '/assets/js/admin.js' | relative_url }}"></script>
 </body>
 </html>
