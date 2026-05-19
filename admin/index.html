@@ -140,45 +140,45 @@
         <!-- Front Matter 折叠区域 -->
         <details class="gh-meta-section" open>
           <summary class="gh-meta-toggle">
-            <i class="fas fa-caret-down"></i> File properties (Front Matter)
+            <i class="fas fa-caret-down"></i> 文章属性
           </summary>
           <div class="gh-meta-body">
             <div class="gh-meta-row">
               <div class="gh-meta-field gh-meta-title">
-                <label class="gh-label">title</label>
+                <label class="gh-label">标题</label>
                 <input type="text" id="postTitle" class="gh-input" placeholder="文章标题">
               </div>
             </div>
             <div class="gh-meta-row">
               <div class="gh-meta-field">
-                <label class="gh-label">date</label>
+                <label class="gh-label">日期</label>
                 <input type="date" id="postDate" class="gh-input">
               </div>
               <div class="gh-meta-field">
-                <label class="gh-label">categories</label>
+                <label class="gh-label">分类</label>
                 <input type="text" id="postCategories" class="gh-input" placeholder="逗号分隔">
               </div>
               <div class="gh-meta-field">
-                <label class="gh-label">location</label>
+                <label class="gh-label">地点</label>
                 <input type="text" id="postLocation" class="gh-input" placeholder="城市">
               </div>
             </div>
             <div class="gh-meta-row">
               <div class="gh-meta-field" style="flex:1">
-                <label class="gh-label">excerpt</label>
+                <label class="gh-label">摘要</label>
                 <textarea id="postExcerpt" class="gh-input" rows="2" placeholder="简短摘要..."></textarea>
               </div>
             </div>
           </div>
         </details>
 
-        <!-- Edit / Preview 标签页 -->
+        <!-- 编辑 / 预览 标签页 -->
         <div class="gh-tabs">
           <button class="gh-tab active" id="ghTabEdit">
-            <i class="fas fa-code"></i> Edit file
+            <i class="fas fa-code"></i> 编辑
           </button>
           <button class="gh-tab" id="ghTabPreview">
-            <i class="fas fa-eye"></i> Preview
+            <i class="fas fa-eye"></i> 预览
           </button>
         </div>
 
@@ -190,20 +190,20 @@
         <!-- 预览区 -->
         <div class="gh-preview-body d-none" id="ghPreviewBody"></div>
 
-        <!-- 底部 Commit 区域 -->
+        <!-- 底部提交区域 -->
         <div class="gh-commit-section">
           <div class="gh-commit-header">
-            <i class="fas fa-code-commit"></i> Commit changes
+            <i class="fas fa-code-commit"></i> 提交更改
           </div>
           <div class="gh-commit-body">
-            <input type="text" class="gh-input gh-commit-title" id="commitTitle" placeholder="Update post...">
-            <textarea class="gh-input gh-commit-desc" id="commitDesc" placeholder="Add an optional extended description..." rows="2"></textarea>
+            <input type="text" class="gh-input gh-commit-title" id="commitTitle" placeholder="更新文章...">
+            <textarea class="gh-input gh-commit-desc" id="commitDesc" placeholder="添加详细描述（可选）..." rows="2"></textarea>
             <div class="gh-commit-actions">
               <button id="saveDraftBtn" class="gh-btn gh-btn-secondary">
-                <i class="fas fa-file-alt"></i> Save as draft
+                <i class="fas fa-file-alt"></i> 保存草稿
               </button>
               <button id="publishBtn" class="gh-btn gh-btn-primary">
-                <i class="fas fa-check"></i> Commit changes
+                <i class="fas fa-check"></i> 提交更改
               </button>
             </div>
           </div>
