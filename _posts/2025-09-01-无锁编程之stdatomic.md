@@ -18,7 +18,9 @@ excerpt_separator: "```"
 if (counter.is_lock_free())
 {
   std::out&lt;&lt;"This atomic&lt;int&gt; is lock-free"&lt;&lt;std::endl
-}</code></pre>**2."无锁"的真正含义**
+}
+```
+**2."无锁"的真正含义**
 
 **“**无锁**”**并不意味着**“**没有同步**”。**它的精确定义是：系统中至少有一个线程能够保持继续前进，而不管其他线程的状态如何。
 
