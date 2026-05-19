@@ -567,6 +567,377 @@ body {
   border-radius: 4px;
 }
 
+/* ==================== GitHub 风格编辑器 ==================== */
+.gh-editor {
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--admin-surface);
+}
+
+/* 文件名头部 */
+.gh-editor-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--admin-bg);
+  border-bottom: 1px solid var(--admin-border);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.gh-back-btn {
+  background: none;
+  border: none;
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.gh-back-btn:hover {
+  background: var(--admin-surface-hover);
+  color: var(--admin-text);
+}
+
+.gh-file-icon {
+  color: var(--admin-text-muted);
+}
+
+.gh-filename {
+  color: var(--admin-accent);
+  font-weight: 500;
+}
+
+/* Front Matter 折叠区域 */
+.gh-meta-section {
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.gh-meta-toggle {
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.gh-meta-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.gh-meta-toggle i {
+  transition: transform 0.2s;
+}
+
+details[open] .gh-meta-toggle i {
+  transform: rotate(0deg);
+}
+
+details:not([open]) .gh-meta-toggle i {
+  transform: rotate(-90deg);
+}
+
+.gh-meta-body {
+  padding: 0.75rem 1rem 1rem;
+  background: var(--admin-bg);
+  border-top: 1px solid var(--admin-border);
+}
+
+.gh-meta-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.gh-meta-row:last-child {
+  margin-bottom: 0;
+}
+
+.gh-meta-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.gh-meta-title {
+  flex: 1;
+}
+
+.gh-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--admin-text-muted);
+  font-weight: 500;
+}
+
+.gh-input {
+  background: var(--admin-input-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--admin-text);
+  font-family: 'JetBrains Mono', monospace;
+  transition: border-color 0.2s;
+}
+
+.gh-input:focus {
+  outline: none;
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(240, 165, 0, 0.15);
+}
+
+.gh-input::placeholder {
+  color: var(--admin-text-muted);
+  opacity: 0.6;
+}
+
+textarea.gh-input {
+  resize: vertical;
+}
+
+/* Edit / Preview 标签 */
+.gh-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--admin-border);
+  padding: 0 1rem;
+  background: var(--admin-bg);
+}
+
+.gh-tab {
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--admin-text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: -1px;
+}
+
+.gh-tab:hover {
+  color: var(--admin-text);
+}
+
+.gh-tab.active {
+  color: var(--admin-text);
+  border-bottom-color: var(--admin-accent);
+}
+
+/* 编辑区域 */
+.gh-editor-body {
+  min-height: 450px;
+}
+
+.gh-editor-body .EasyMDEContainer .editor-toolbar {
+  display: none;
+}
+
+.gh-editor-body .EasyMDEContainer .CodeMirror {
+  border: none;
+  border-radius: 0;
+  min-height: 450px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  background: var(--admin-surface);
+}
+
+.gh-editor-body .EasyMDEContainer .editor-statusbar {
+  background: var(--admin-bg);
+  border-top: 1px solid var(--admin-border);
+  padding: 0.4rem 1rem;
+  font-size: 0.75rem;
+  color: var(--admin-text-muted);
+}
+
+/* 预览区域 */
+.gh-preview-body {
+  min-height: 450px;
+  padding: 2rem;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--admin-text);
+  overflow-y: auto;
+}
+
+.gh-preview-body h1, .gh-preview-body h2, .gh-preview-body h3,
+.gh-preview-body h4, .gh-preview-body h5, .gh-preview-body h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.gh-preview-body h1 { font-size: 1.75rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.3em; }
+.gh-preview-body h2 { font-size: 1.4rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.3em; }
+.gh-preview-body h3 { font-size: 1.15rem; }
+
+.gh-preview-body code {
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  font-size: 0.85em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.gh-preview-body pre {
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.gh-preview-body pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.gh-preview-body blockquote {
+  border-left: 3px solid var(--admin-accent);
+  padding-left: 1rem;
+  color: var(--admin-text-muted);
+  margin: 1rem 0;
+}
+
+.gh-preview-body a {
+  color: var(--admin-accent);
+  text-decoration: none;
+}
+
+.gh-preview-body a:hover {
+  text-decoration: underline;
+}
+
+.gh-preview-body img {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--admin-border);
+}
+
+.gh-preview-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.gh-preview-body th, .gh-preview-body td {
+  border: 1px solid var(--admin-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.gh-preview-body th {
+  background: var(--admin-bg);
+  font-weight: 600;
+}
+
+/* Commit 区域 */
+.gh-commit-section {
+  border-top: 1px solid var(--admin-border);
+}
+
+.gh-commit-header {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--admin-text);
+  background: var(--admin-bg);
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gh-commit-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.gh-commit-title {
+  font-weight: 500;
+}
+
+.gh-commit-desc {
+  font-size: 0.8rem;
+}
+
+.gh-commit-actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}
+
+/* GitHub 风格按钮 */
+.gh-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+
+.gh-btn-primary {
+  background: #238636;
+  color: #ffffff;
+  border-color: rgba(240, 246, 252, 0.1);
+}
+
+.gh-btn-primary:hover {
+  background: #2ea043;
+}
+
+.gh-btn-secondary {
+  background: var(--admin-surface-hover);
+  color: var(--admin-text);
+  border-color: var(--admin-border);
+}
+
+.gh-btn-secondary:hover {
+  background: var(--admin-border);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+  .gh-meta-row {
+    flex-direction: column;
+  }
+  .gh-editor-header {
+    font-size: 0.75rem;
+  }
+  .gh-commit-actions {
+    flex-direction: column;
+  }
+  .gh-btn {
+    justify-content: center;
+  }
+}
+
 /* ==================== 模态框 ==================== */
 .modal-overlay {
   position: fixed;
@@ -632,21 +1003,32 @@ body {
 
 /* ==================== 预览模态框 ==================== */
 .modal-box-preview {
-  max-width: 800px;
+  max-width: 900px;
+  width: 90vw;
   max-height: 85vh;
   display: flex;
   flex-direction: column;
   padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--admin-border);
 }
 
 .modal-box-preview .modal-header {
   flex-shrink: 0;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--admin-border);
+  background: var(--admin-bg);
+}
+
+.modal-box-preview .modal-header h3 {
+  font-size: 1rem;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .preview-body {
   overflow-y: auto;
   flex: 1;
-  padding: 1.5rem;
+  padding: 2rem 2.5rem;
 }
 
 .preview-loading {
@@ -706,28 +1088,32 @@ body {
   color: var(--admin-text);
   line-height: 1.35;
   margin: 1.5em 0 0.5em;
+  font-weight: 600;
 }
 
 .preview-content h1 {
-  font-size: 1.55rem;
+  font-size: 1.75rem;
   border-bottom: 1px solid var(--admin-border);
   padding-bottom: 0.3em;
 }
 
 .preview-content h2 {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   border-bottom: 1px solid var(--admin-border);
   padding-bottom: 0.2em;
 }
 
-.preview-content h3 { font-size: 1.05rem; }
+.preview-content h3 { font-size: 1.15rem; }
 
 .preview-content p { margin: 0 0 1em; }
 
 .preview-content a {
-  color: var(--admin-accent);
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.preview-content a:hover {
   text-decoration: underline;
-  text-underline-offset: 2px;
 }
 
 .preview-content blockquote {
@@ -736,22 +1122,22 @@ body {
   border-left: 3px solid var(--admin-accent);
   background: var(--admin-surface-hover);
   color: var(--admin-text-muted);
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 6px 6px 0;
 }
 
 .preview-content code {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.875em;
+  font-size: 0.85em;
   background: var(--admin-surface-hover);
   border: 1px solid var(--admin-border);
   border-radius: 4px;
-  padding: 0.1em 0.4em;
+  padding: 0.15em 0.4em;
 }
 
 .preview-content pre {
   background: var(--admin-input-bg);
   border: 1px solid var(--admin-border);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 1rem 1.25rem;
   overflow-x: auto;
   margin: 1em 0;
@@ -762,13 +1148,49 @@ body {
   border: none;
   padding: 0;
   font-size: 0.85rem;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .preview-content ul,
 .preview-content ol {
   padding-left: 1.75em;
   margin: 0.5em 0 1em;
+}
+
+.preview-content li {
+  margin-bottom: 0.3em;
+}
+
+.preview-content img {
+  max-width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--admin-border);
+  margin: 0.5em 0;
+}
+
+.preview-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.9rem;
+}
+
+.preview-content th,
+.preview-content td {
+  border: 1px solid var(--admin-border);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.preview-content th {
+  background: var(--admin-bg);
+  font-weight: 600;
+}
+
+.preview-content hr {
+  border: none;
+  border-top: 1px solid var(--admin-border);
+  margin: 2em 0;
 }
 
 .preview-content li { margin: 0.3em 0; }

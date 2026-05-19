@@ -126,54 +126,92 @@
 
     <!-- ========== 编辑器视图 ========== -->
     <div id="view-editor" class="view d-none">
-      <div class="editor-header">
-        <button id="backToListBtn" class="admin-btn admin-btn-ghost">
-          <i class="fas fa-arrow-left"></i> 返回列表
-        </button>
-        <div class="editor-actions">
+
+      <!-- GitHub 风格编辑器 -->
+      <div class="gh-editor">
+        <!-- 文件名头部 -->
+        <div class="gh-editor-header">
+          <button id="backToListBtn" class="gh-back-btn">
+            <i class="fas fa-arrow-left"></i>
+          </button>
+          <i class="fas fa-file-code gh-file-icon"></i>
+          <span class="gh-filename" id="editorFilename">_posts/new-post.md</span>
           <span id="saveStatus" class="save-status"></span>
-          <button id="saveDraftBtn" class="admin-btn admin-btn-secondary">
-            <i class="fas fa-file-alt"></i> 保存草稿
+        </div>
+
+        <!-- Front Matter 折叠区域 -->
+        <details class="gh-meta-section" open>
+          <summary class="gh-meta-toggle">
+            <i class="fas fa-caret-down"></i> File properties (Front Matter)
+          </summary>
+          <div class="gh-meta-body">
+            <div class="gh-meta-row">
+              <div class="gh-meta-field gh-meta-title">
+                <label class="gh-label">title</label>
+                <input type="text" id="postTitle" class="gh-input" placeholder="文章标题">
+              </div>
+            </div>
+            <div class="gh-meta-row">
+              <div class="gh-meta-field">
+                <label class="gh-label">date</label>
+                <input type="date" id="postDate" class="gh-input">
+              </div>
+              <div class="gh-meta-field">
+                <label class="gh-label">categories</label>
+                <input type="text" id="postCategories" class="gh-input" placeholder="逗号分隔">
+              </div>
+              <div class="gh-meta-field">
+                <label class="gh-label">location</label>
+                <input type="text" id="postLocation" class="gh-input" placeholder="城市">
+              </div>
+            </div>
+            <div class="gh-meta-row">
+              <div class="gh-meta-field" style="flex:1">
+                <label class="gh-label">excerpt</label>
+                <textarea id="postExcerpt" class="gh-input" rows="2" placeholder="简短摘要..."></textarea>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Edit / Preview 标签页 -->
+        <div class="gh-tabs">
+          <button class="gh-tab active" id="ghTabEdit">
+            <i class="fas fa-code"></i> Edit file
           </button>
-          <button id="publishBtn" class="admin-btn admin-btn-primary">
-            <i class="fas fa-paper-plane"></i> 发布
+          <button class="gh-tab" id="ghTabPreview">
+            <i class="fas fa-eye"></i> Preview
           </button>
+        </div>
+
+        <!-- 编辑区 -->
+        <div class="gh-editor-body" id="ghEditorBody">
+          <textarea id="markdown-editor"></textarea>
+        </div>
+
+        <!-- 预览区 -->
+        <div class="gh-preview-body d-none" id="ghPreviewBody"></div>
+
+        <!-- 底部 Commit 区域 -->
+        <div class="gh-commit-section">
+          <div class="gh-commit-header">
+            <i class="fas fa-code-commit"></i> Commit changes
+          </div>
+          <div class="gh-commit-body">
+            <input type="text" class="gh-input gh-commit-title" id="commitTitle" placeholder="Update post...">
+            <textarea class="gh-input gh-commit-desc" id="commitDesc" placeholder="Add an optional extended description..." rows="2"></textarea>
+            <div class="gh-commit-actions">
+              <button id="saveDraftBtn" class="gh-btn gh-btn-secondary">
+                <i class="fas fa-file-alt"></i> Save as draft
+              </button>
+              <button id="publishBtn" class="gh-btn gh-btn-primary">
+                <i class="fas fa-check"></i> Commit changes
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Front Matter 表单 -->
-      <div class="editor-meta">
-        <div class="meta-row">
-          <div class="meta-field meta-title">
-            <input type="text" id="postTitle" class="form-input form-input-lg" placeholder="文章标题">
-          </div>
-        </div>
-        <div class="meta-row">
-          <div class="meta-field">
-            <label class="form-label">日期</label>
-            <input type="date" id="postDate" class="form-input">
-          </div>
-          <div class="meta-field">
-            <label class="form-label">分类</label>
-            <input type="text" id="postCategories" class="form-input" placeholder="逗号分隔">
-          </div>
-          <div class="meta-field">
-            <label class="form-label">地点</label>
-            <input type="text" id="postLocation" class="form-input" placeholder="城市">
-          </div>
-        </div>
-        <div class="meta-row">
-          <div class="meta-field" style="flex:1">
-            <label class="form-label">摘要（显示在文章列表中）</label>
-            <textarea id="postExcerpt" class="form-input" rows="2" placeholder="一段简短的中文摘要..."></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- Markdown 编辑器 -->
-      <div class="editor-wrapper">
-        <textarea id="markdown-editor"></textarea>
-      </div>
     </div>
 
   </main>

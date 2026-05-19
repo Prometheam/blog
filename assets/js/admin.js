@@ -467,8 +467,6 @@
           '</div>' +
           '</div>' +
           '<div class="post-actions">' +
-          '<button class="admin-btn admin-btn-ghost" title="预览" data-path="' + file.path + '" onclick="AdminApp.previewPost(this)">' +
-          '<i class="fas fa-eye"></i></button>' +
           '<a href="#/editor/' + encodeURIComponent(file.path) + '" class="admin-btn admin-btn-ghost">' +
           '<i class="fas fa-edit"></i> 编辑</a>' +
           '<button class="admin-btn admin-btn-danger" data-path="' + file.path + '" data-sha="' + file.sha + '" data-name="' + this.escapeHtml(displayTitle) + '" onclick="AdminApp.confirmDelete(this)">' +
@@ -520,8 +518,10 @@
         this.instance = new EasyMDE({
           element: $('#markdown-editor'),
           spellChecker: false,
-          minHeight: '400px',
+          minHeight: '450px',
           placeholder: '开始撰写文章内容...',
+          toolbar: false,
+          status: ['lines', 'words', 'cursor'],
           autosave: {
             enabled: true,
             uniqueId: 'mgw-admin-editor',
@@ -531,22 +531,43 @@
             sanitizerFunction: function (html) {
               return DOMPurify.sanitize(html);
             }
-          },
-          toolbar: [
-            'bold', 'italic', 'strikethrough', '|',
-            'heading-1', 'heading-2', 'heading-3', '|',
-            'code', 'quote', 'unordered-list', 'ordered-list', 'table', '|',
-            'link', 'image', 'horizontal-rule', '|',
-            'preview', 'side-by-side', 'fullscreen'
-          ],
-          status: ['lines', 'words', 'cursor']
+          }
         });
+
+        // 启用行号
+        this.instance.codemirror.setOption('lineNumbers', true);
 
         // 监听内容变化
         var self = this;
         this.instance.codemirror.on('change', function () {
           self.isDirty = true;
         });
+
+        // Edit / Preview 标签切换
+        var tabEdit = $('#ghTabEdit');
+        var tabPreview = $('#ghTabPreview');
+        var editorBody = $('#ghEditorBody');
+        var previewBody = $('#ghPreviewBody');
+
+        if (tabEdit && tabPreview) {
+          tabEdit.addEventListener('click', function () {
+            tabEdit.classList.add('active');
+            tabPreview.classList.remove('active');
+            editorBody.classList.remove('d-none');
+            previewBody.classList.add('d-none');
+          });
+
+          tabPreview.addEventListener('click', function () {
+            tabPreview.classList.add('active');
+            tabEdit.classList.remove('active');
+            editorBody.classList.add('d-none');
+            previewBody.classList.remove('d-none');
+            // 渲染预览
+            var md = self.instance.value();
+            var html = DOMPurify.sanitize(marked.parse(md));
+            previewBody.innerHTML = html;
+          });
+        }
       }
 
       // 清除自动保存的内容（如果是加载新文章）
@@ -557,6 +578,9 @@
       if (path) {
         // 编辑已有文章（可能是草稿或已发布）
         this.updateStatus('加载中...', '');
+        // 更新文件名显示
+        var filenameEl = $('#editorFilename');
+        if (filenameEl) filenameEl.textContent = path;
         try {
           var post = await API.getPost(path);
           var parsed = FM.parse(post.content);
@@ -597,6 +621,8 @@
         }
       } else {
         // 新建文章
+        var filenameEl = $('#editorFilename');
+        if (filenameEl) filenameEl.textContent = '_posts/' + new Date().toISOString().split('T')[0] + '-new-post.md';
         $('#postTitle').value = '';
         $('#postDate').value = new Date().toISOString().split('T')[0];
         $('#postCategories').value = '';
