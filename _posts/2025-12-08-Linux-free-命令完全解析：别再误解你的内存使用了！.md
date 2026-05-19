@@ -6,10 +6,65 @@ categories: [Linux系统]
 location: 西安
 excerpt_separator: "```"
 ---
+很多同学看到  命令输出中“已用内存”很高就感到恐慌，但真相可能完全相反。本文将彻底解析  命令，让你真正理解Linux内存管理机制。
 
-<p style="text-indent: 2em"><span style="font-size: 16px; color: rgb(15, 17, 21)">很多同学看到&nbsp;</span><code>free</code><span style="font-size: 16px; color: rgb(15, 17, 21)">&nbsp;命令输出中“已用内存”很高就感到恐慌，但真相可能完全相反。本文将彻底解析&nbsp;</span><code>free</code><span style="font-size: 16px; color: rgb(15, 17, 21)">&nbsp;命令，让你真正理解Linux内存管理机制。</span></p><p style="text-indent: 2em"></p><h4 style="" id="%E4%B8%80%E3%80%81%E4%B8%80%E4%B8%AA%E5%B8%B8%E8%A7%81%E7%9A%84%E8%AF%AF%E8%A7%A3%E5%9C%BA%E6%99%AF">一、一个常见的误解场景</h4><p style="text-indent: 2em"><span style="font-size: 16px; color: rgb(15, 17, 21)">当你运行&nbsp;</span><code>free -h</code><span style="font-size: 16px; color: rgb(15, 17, 21)">&nbsp;命令，看到这样的输出：</span></p><pre><code>$ free -h
-              总计         已用        空闲      共享    缓冲/缓存    可用
-内存：       15Gi       12Gi       500Mi       300Mi        2.2Gi       1.8Gi</code></pre><p style="">新手的第一反应往往是："天啊！我的15GB内存已经用了12GB，只剩下500MB空闲，系统要卡死了！" <strong>但这是完全错误的解读！</strong>&nbsp;让我们揭开真相。</p><h4 style="" id="%E4%BA%8C%E3%80%81free%E5%91%BD%E4%BB%A4%E8%BE%93%E5%87%BA%E8%AF%A6%E8%A7%A3">二、free命令输出详解</h4><p style="">标准输出格式解析</p><pre><code>$ free
-              total        used        free      shared  buff/cache   available
-Mem:       16244396     4442564     1147224      461524    10654608    10209888
-Swap:       2097148           0     2097148</code></pre><ul><li><p style="">total：总物理内存 系统安装的所有RAM大小</p></li><li><p style="">used：已使用内存 = total - free - buff/cache；<span style="font-size: 16px; color: rgb(15, 17, 21)">它包含了应用程序使用的内存和一部分</span>buff/cache<span style="font-size: 16px; color: rgb(15, 17, 21)">内存。</span></p></li><li><p style="">free：完全空闲内存 未被任何程序使用的"裸"内存；<span style="font-size: 16px; color: rgb(15, 17, 21)">这个值通常很小，因为在Linux中，空闲内存会被用来做缓存以提高性能，所以“空闲少”不一定是坏事。</span></p></li><li><p style="">shared：<span style="font-size: 16px; color: rgb(15, 17, 21)">主要是&nbsp;</span><code>tmpfs</code><span style="font-size: 16px; color: rgb(15, 17, 21)">（临时文件系统，如&nbsp;</span><code>/dev/shm</code><span style="font-size: 16px; color: rgb(15, 17, 21)">）和共享内存（SHM）占用的内存。多个进程可以共享的内存部分。</span></p></li><li><p style="">buff/cache：缓冲区/页缓存 Linux性能优化的核心！可被快速回收</p><ul><li><p style=""><strong>buffers</strong><span style="font-size: 16px; color: rgb(15, 17, 21)">: 内核缓冲区（Buffer）大小，主要用于存放磁盘块的元数据（如文件系统属性、权限等）和原始磁盘块的临时存储。对块设备（如磁盘）的读写操作会用到。</span></p></li><li><p style=""><strong>cache</strong><span style="font-size: 16px; color: rgb(15, 17, 21)">: 页缓存（Page Cache）大小，用于缓存从磁盘读取的文件和数据。当再次访问这些文件时，可以直接从内存读取，极大加速I/O。</span></p></li><li><p style=""><strong>这部分内存在应用程序需要时可以被快速回收使用</strong><span style="font-size: 16px; color: rgb(15, 17, 21)">，所以它算作“可用”资源。</span></p></li></ul></li><li><p style="">available：<strong>估算的、可供应用程序使用的内存量</strong><span style="font-size: 16px; color: rgb(15, 17, 21)">。这是判断内存是否充足的最重要指标！</span></p><ul><li><p style=""><span style="font-size: 16px; color: rgb(15, 17, 21)">它是&nbsp;</span><code>free + buff/cache</code><span style="font-size: 16px; color: rgb(15, 17, 21)">&nbsp;中可以被回收的部分的一个估算值。</span></p></li><li><p style=""><span style="font-size: 16px; color: rgb(15, 17, 21)">即使&nbsp;</span><code>free</code><span style="font-size: 16px; color: rgb(15, 17, 21)">&nbsp;很小，只要&nbsp;</span><code>available</code><span style="font-size: 16px; color: rgb(15, 17, 21)">&nbsp;很大，就说明系统有充足的内存资源供新程序使用。</span></p></li></ul></li><li><p style="">Swap：交换分区 硬盘模拟的内存，使用过多会严重影响性能</p></li></ul><h4 style="" id="%E4%B8%89%E3%80%81linux%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%93%B2%E5%AD%A6">三、Linux内存管理哲学</h4><ol><li><p style="">为什么free内存那么少？</p></li></ol><p style="margin-left: 24px!important">Linux内核有一个基本原则：<strong>闲置的内存是浪费的内存</strong>。</p><p style="margin-left: 24px!important"><strong>页缓存（Page Cache）</strong>：当你读取文件时，Linux会将文件内容缓存在内存中</p><p style="margin-left: 24px!important"><strong>缓冲区（Buffers）</strong>：存储文件系统元数据和磁盘块信息</p><p style="margin-left: 24px!important"><strong>这些缓存可以随时被回收</strong>，当应用程序需要更多内存时，内核会立即释放它们</p><p style=""></p><h4 style="" id="%E5%9B%9B%E3%80%81%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E5%88%A4%E6%96%AD%E5%86%85%E5%AD%98%E7%8A%B6%E6%80%81%EF%BC%9F">四、如何正确判断内存状态？</h4><p style="text-indent: 2em">核心观念：Linux 会充分利用内存进行缓存，以提升系统性能。未被程序使用的内存会被自动用作磁盘缓存。因此，不要单纯看&nbsp;<code>used</code>&nbsp;和&nbsp;<code>free</code>&nbsp;来判断内存是否紧张。</p><p style="text-indent: 2em">黄金法则：看&nbsp;<code>available</code>，不要看&nbsp;<code>free</code>！</p><p style="">1. 看内存是否充足，主要看&nbsp;<code>available</code>&nbsp;列：</p><ul><li><p style=""><code>available</code>&nbsp;的值很大（例如，占总内存的 20-30% 以上）：内存充足。</p></li><li><p style=""><code>available</code>&nbsp;的值很小或接近于 0：内存可能不足，系统可能会开始使用交换分区（Swap），导致性能下降。</p></li></ul><p style="">2. 看交换分区（Swap）的使用情况：</p><ul><li><p style=""><code>Swap used</code>&nbsp;持续大于 0，且&nbsp;<code>available</code>&nbsp;很小：说明物理内存已经不够，系统正在频繁使用硬盘来模拟内存，性能会受严重影响。</p></li><li><p style=""><code>Swap used</code>&nbsp;为 0 或很小：正常状态。</p></li></ul><h4 style="" id="%E4%BA%94%E3%80%81%E5%B8%B8%E7%94%A8%E9%80%89%E9%A1%B9">五、常用选项</h4><ul><li><p style=""><code>free -h</code>：以人类易读的单位（B, K, M, G）显示。<strong>最常用</strong>。</p></li><li><p style=""><code>free -m</code>：以 MB 为单位显示。</p></li><li><p style=""><code>free -g</code>：以 GB 为单位显示（会取整）。</p></li><li><p style=""><code>free -s 5</code>：每 5 秒自动刷新一次显示（按&nbsp;<code>Ctrl+C</code>&nbsp;停止）。</p></li><li><p style=""><code>free -t</code>：在输出末尾显示一行&nbsp;<strong>总计</strong>（物理内存+Swap 的总和）。</p></li><li><p style=""><code>free -h -s 3</code> ：# 每3秒刷新一次</p></li><li><p style=""><code>watch -n 3 free -h</code>：# 结合watch命令</p></li></ul><p style=""></p><p style=""></p><p style=""></p><p style=""></p><p style=""></p>
+
+#### 一、一个常见的误解场景
+
+当你运行  命令，看到这样的输出：
+
+</pre>新手的第一反应往往是："天啊！我的15GB内存已经用了12GB，只剩下500MB空闲，系统要卡死了！" **但这是完全错误的解读！** 让我们揭开真相。
+
+#### 二、free命令输出详解
+
+标准输出格式解析
+
+</pre>- total：总物理内存 系统安装的所有RAM大小
+- used：已使用内存 = total - free - buff/cache；它包含了应用程序使用的内存和一部分buff/cache内存。
+- free：完全空闲内存 未被任何程序使用的"裸"内存；这个值通常很小，因为在Linux中，空闲内存会被用来做缓存以提高性能，所以“空闲少”不一定是坏事。
+- shared：主要是 （临时文件系统，如 ）和共享内存（SHM）占用的内存。多个进程可以共享的内存部分。
+- buff/cache：缓冲区/页缓存 Linux性能优化的核心！可被快速回收
+<li>
+**buffers**: 内核缓冲区（Buffer）大小，主要用于存放磁盘块的元数据（如文件系统属性、权限等）和原始磁盘块的临时存储。对块设备（如磁盘）的读写操作会用到。
+- **cache**: 页缓存（Page Cache）大小，用于缓存从磁盘读取的文件和数据。当再次访问这些文件时，可以直接从内存读取，极大加速I/O。
+- **这部分内存在应用程序需要时可以被快速回收使用**，所以它算作“可用”资源。
+</li>- available：**估算的、可供应用程序使用的内存量**。这是判断内存是否充足的最重要指标！
+<li>
+它是  中可以被回收的部分的一个估算值。
+- 即使  很小，只要  很大，就说明系统有充足的内存资源供新程序使用。
+</li>- Swap：交换分区 硬盘模拟的内存，使用过多会严重影响性能
+
+#### 三、Linux内存管理哲学
+- 为什么free内存那么少？
+
+Linux内核有一个基本原则：**闲置的内存是浪费的内存**。
+
+**页缓存（Page Cache）**：当你读取文件时，Linux会将文件内容缓存在内存中
+
+**缓冲区（Buffers）**：存储文件系统元数据和磁盘块信息
+
+**这些缓存可以随时被回收**，当应用程序需要更多内存时，内核会立即释放它们
+
+
+#### 四、如何正确判断内存状态？
+
+核心观念：Linux 会充分利用内存进行缓存，以提升系统性能。未被程序使用的内存会被自动用作磁盘缓存。因此，不要单纯看  和  来判断内存是否紧张。
+
+黄金法则：看 ，不要看 ！
+
+1. 看内存是否充足，主要看  列：
+- 的值很大（例如，占总内存的 20-30% 以上）：内存充足。
+- 的值很小或接近于 0：内存可能不足，系统可能会开始使用交换分区（Swap），导致性能下降。
+
+2. 看交换分区（Swap）的使用情况：
+- 持续大于 0，且  很小：说明物理内存已经不够，系统正在频繁使用硬盘来模拟内存，性能会受严重影响。
+- 为 0 或很小：正常状态。
+
+#### 五、常用选项
+- ：以人类易读的单位（B, K, M, G）显示。**最常用**。
+- ：以 MB 为单位显示。
+- ：以 GB 为单位显示（会取整）。
+- ：每 5 秒自动刷新一次显示（按  停止）。
+- ：在输出末尾显示一行 **总计**（物理内存+Swap 的总和）。
+- ：# 每3秒刷新一次
+- ：# 结合watch命令

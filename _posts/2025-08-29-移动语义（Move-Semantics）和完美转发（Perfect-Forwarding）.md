@@ -6,5 +6,79 @@ categories: [C++语言]
 location: 西安
 excerpt_separator: "```"
 ---
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;移动语义（Move Semantics）和完美转发（Perfect Forwarding）是 C++11 引入的核心特性，旨在提升程序性能并解决泛型编程中的参数传递问题。
 
-<p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;移动语义（Move Semantics）和完美转发（Perfect Forwarding）是 C++11 引入的核心特性，旨在提升程序性能并解决泛型编程中的参数传递问题。</p><p style="">### 移动语义</p><p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在了解移动意义之前，需要先掌握两个概念：**右值（Rvalue）**和**右值引用（Rvalue Reference）**:</p><p style="">- 右值（Rvalue）：临时对象（如函数返回值）、字面量（如 42）、显式标记为右值的对象（std::move(x)）。</p><p style="">- 右值引用（Rvalue Reference）：用 <strong>&amp;&amp;</strong>声明的引用（如 T&amp;&amp;），只能绑定到右值。</p><p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;C++类默认成员函数中的**移动构造函数**/**移动赋值运算符**便是右值引用的应用。</p><p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;再来说说**移动语义（Move Semantics）**引入的目的是解决深拷贝带来的性能开销，通过“转移资源所有权”而非复制资源来优化临时对象的处理。</p><p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;C++提供了 <strong>std::move</strong> ，将资源从临时对象“窃取”到新对象，提升性能：</p><p style="">	Vector v1(1000);      // 构造 v1</p><p style="">	Vector v2 = std::move(v1);  // 调用移动构造函数，v1 的资源被转移到 v2</p><p style="">	//此后 v1 处于有效但未定义状态（通常为空）。</p><p style="">### 完美转发</p><p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;针对泛型编程中丢失原始类别问题：</p><p style="">	template &lt;typename T&gt;</p><p style="">	void wrapper(T arg) {</p><p style="">	    func(arg);  // 丢失了 arg 的原始类别（总是视为左值）</p><p style="">	}</p><p style="">&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;万能引用（Universal Reference）+ 完美转发（Perfect Forwarding）提供了一种在泛型代码中**保持参数的原始类型**（左值/右值）和常量性，确保参数被正确传递的方案-**std::forward**</p><p style="">	</p><p style="">- 万能引用（Universal Reference）</p><p style="">		template &lt;typename T&gt;</p><p style="">		void wrapper(T&amp;&amp; arg) {  // 万能引用（T&amp;&amp;） 可绑定到左值/右值</p><p style="">		    func(???);          // 如何保持 arg 的原始类别？</p><p style="">		}</p><p style="">	</p><p style="">- 引用折叠规则如下：</p><p style="">	</p><p style="">		T&amp; &amp;   (左值引用的左值引用) 折叠为 T&amp;</p><p style="">		T&amp; &amp;&amp;  (左值引用的右值引用) 折叠为 T&amp;</p><p style="">		T&amp;&amp; &amp;  (右值引用的左值引用) 折叠为 T&amp;</p><p style="">		T&amp;&amp; &amp;&amp; (右值引用的右值引用) 折叠为 T&amp;&amp;</p><p style="">		//只要出现一个 &amp;，结果就是左值引用（左值引用具有传染性）</p><p style="">		//仅当两个都是 &amp;&amp; 时，结果才是右值引用</p><p style="">- std::forward：</p><p style="">		template &lt;typename T&gt;</p><p style="">		void wrapper(T&amp;&amp; arg) {	</p><p style="">		    func(std::forward&lt;T&gt;(arg));  // 保持 arg 的原始类型</p><p style="">		}</p><p style="">		//若 arg 是左值，std::forward 返回左值引用。</p><p style="">		//若 arg 是右值，std::forward 返回右值引用。</p>
+### 移动语义
+
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;在了解移动意义之前，需要先掌握两个概念：**右值（Rvalue）**和**右值引用（Rvalue Reference）**:
+
+- 右值（Rvalue）：临时对象（如函数返回值）、字面量（如 42）、显式标记为右值的对象（std::move(x)）。
+
+- 右值引用（Rvalue Reference）：用 **&amp;&amp;**声明的引用（如 T&amp;&amp;），只能绑定到右值。
+
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;C++类默认成员函数中的**移动构造函数**/**移动赋值运算符**便是右值引用的应用。
+
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;再来说说**移动语义（Move Semantics）**引入的目的是解决深拷贝带来的性能开销，通过“转移资源所有权”而非复制资源来优化临时对象的处理。
+
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;C++提供了 **std::move** ，将资源从临时对象“窃取”到新对象，提升性能：
+
+Vector v1(1000);      // 构造 v1
+
+Vector v2 = std::move(v1);  // 调用移动构造函数，v1 的资源被转移到 v2
+
+//此后 v1 处于有效但未定义状态（通常为空）。
+
+### 完美转发
+
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;针对泛型编程中丢失原始类别问题：
+
+template &lt;typename T&gt;
+
+void wrapper(T arg) {
+
+func(arg);  // 丢失了 arg 的原始类别（总是视为左值）
+
+}
+
+&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;万能引用（Universal Reference）+ 完美转发（Perfect Forwarding）提供了一种在泛型代码中**保持参数的原始类型**（左值/右值）和常量性，确保参数被正确传递的方案-**std::forward**
+
+
+- 万能引用（Universal Reference）
+
+template &lt;typename T&gt;
+
+void wrapper(T&amp;&amp; arg) {  // 万能引用（T&amp;&amp;） 可绑定到左值/右值
+
+func(???);          // 如何保持 arg 的原始类别？
+
+}
+
+
+- 引用折叠规则如下：
+
+
+T&amp; &amp;   (左值引用的左值引用) 折叠为 T&amp;
+
+T&amp; &amp;&amp;  (左值引用的右值引用) 折叠为 T&amp;
+
+T&amp;&amp; &amp;  (右值引用的左值引用) 折叠为 T&amp;
+
+T&amp;&amp; &amp;&amp; (右值引用的右值引用) 折叠为 T&amp;&amp;
+
+//只要出现一个 &amp;，结果就是左值引用（左值引用具有传染性）
+
+//仅当两个都是 &amp;&amp; 时，结果才是右值引用
+
+- std::forward：
+
+template &lt;typename T&gt;
+
+void wrapper(T&amp;&amp; arg) {
+
+func(std::forward&lt;T&gt;(arg));  // 保持 arg 的原始类型
+
+}
+
+//若 arg 是左值，std::forward 返回左值引用。
+
+//若 arg 是右值，std::forward 返回右值引用。
