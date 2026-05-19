@@ -6,7 +6,6 @@ categories: [博客搭建]
 location: 西安
 excerpt_separator: "```"
 ---
-
 GitHub国内访问卡到崩溃？1招教你极速上车: 修改Hosts | 直连最优IP
 
 1. 查询最新IP
@@ -26,6 +25,3 @@ GitHub国内访问卡到崩溃？1招教你极速上车: 修改Hosts | 直连最
 		```
 		ipconfig /flushdns  # Windows
 		```
-		
-		
-

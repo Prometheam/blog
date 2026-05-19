@@ -13,7 +13,6 @@ excerpt_separator: "```"
 3. **契约声明**：明确告知调用者函数不会抛出异常，简化错误处理。
 
 
-
 - **作为说明符（Specifier）**：声明函数不会抛出异常
 
   ```
@@ -45,5 +44,3 @@ excerpt_separator: "```"
   ```
   bool is_noexcept = noexcept(func());  // 检查 func() 是否声明为 noexcept
   ```
-
-  

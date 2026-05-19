@@ -6,7 +6,6 @@ categories: [C++语言]
 location: 西安
 excerpt_separator: "```"
 ---
-
 ##### 1、new的底层实现：
 
 new运算符通常分为两部分：分配内存和调用构造函数。对于内置类型，new只负责分配内存。对于自定义类型，new先分配内存，然后调用构造函数。

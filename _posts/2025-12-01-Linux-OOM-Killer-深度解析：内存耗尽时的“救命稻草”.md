@@ -108,15 +108,13 @@ OOM Killer 在选择目标时会综合考虑多个因素：
 
 在 Docker 和 Kubernetes 环境中，OOM Killer 的行为有所不同：
 
-</pre><pre></pre>容器特有的 OOM 行为
+</pre></pre>容器特有的 OOM 行为
 - cgroup 级别的 OOM：每个容器有自己的 cgroup，OOM 在 cgroup 级别触发
 - 优先级继承：容器内进程的 OOM 分数会考虑容器的限制
 - Kubernetes QoS 等级：
-<li>
-Guaranteed：requests=limits，最后被 kill
+- Guaranteed：requests=limits，最后被 kill
 - Burstable：requests&lt;limits，其次被 kill
 - BestEffort：无限制，最先被 kill
-</li>
 
 
 #### 八、最佳实践
