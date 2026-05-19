@@ -62,7 +62,8 @@
 
         <!-- 文章正文 -->
         <main class="post-content" id="postContent">
-          {{ content }}
+          {% assign fixed_content = content | replace: 'src="/upload/', 'src="/blog/upload/' %}
+          {{ fixed_content }}
           {% include post_footer.html %}
 
           <!-- 同分类上下篇导航 -->
