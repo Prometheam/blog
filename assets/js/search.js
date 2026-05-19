@@ -62,7 +62,7 @@
       searchResults.innerHTML = '<div class="search-hint"><i class="fa-solid fa-spinner fa-spin"></i> 加载中...</div>';
     }
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/search.json', true);
+    xhr.open('GET', (window.__BASEURL__ || '/') + 'search.json', true);
     xhr.onload = function () {
       if (xhr.status === 200) {
         searchData = JSON.parse(xhr.responseText);
