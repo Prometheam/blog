@@ -7,6 +7,7 @@
 
   var searchData = null;
   var MAX_HISTORY = 5;
+  var debounceTimer = null;
 
   function getHistory() {
     try {
@@ -24,10 +25,9 @@
     localStorage.setItem('searchHistory', JSON.stringify(history));
   }
 
-  function highlightKeyword(text, query) {
-    if (!query) return text;
-    var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return text.replace(new RegExp('(' + escaped + ')', 'gi'), '<mark>$1</mark>');
+  function highlightKeyword(text, highlightRe) {
+    if (!highlightRe) return text;
+    return text.replace(highlightRe, '<mark>$1</mark>');
   }
 
   function renderHistory(searchResults) {
@@ -66,6 +66,11 @@
     xhr.onload = function () {
       if (xhr.status === 200) {
         searchData = JSON.parse(xhr.responseText);
+        searchData.forEach(function (post) {
+          post._titleLower = post.title.toLowerCase();
+          post._excerptLower = post.excerpt.toLowerCase();
+          post._categoriesLower = post.categories.join(' ').toLowerCase();
+        });
         callback(searchData);
       }
     };
@@ -113,29 +118,39 @@
       searchInput.addEventListener('input', function () {
         var query = this.value.trim().toLowerCase();
         if (query.length < 2) {
+          clearTimeout(debounceTimer);
           renderHistory(searchResults);
           return;
         }
-        loadSearchData(function (data) {
-          var results = data.filter(function (post) {
-            return post.title.toLowerCase().indexOf(query) !== -1 ||
-                   post.excerpt.toLowerCase().indexOf(query) !== -1 ||
-                   post.categories.join(' ').toLowerCase().indexOf(query) !== -1;
-          });
-          if (results.length === 0) {
-            searchResults.innerHTML = '<div class="search-empty">没有找到相关文章</div>';
-          } else {
-            saveHistory(query);
-            var html = results.slice(0, 10).map(function (post) {
-              return '<a href="' + post.url + '" class="search-result-item">'
-                + '<div class="search-result-title">' + highlightKeyword(post.title, query) + '</div>'
-                + '<div class="search-result-meta">' + post.date
-                + (post.categories.length ? ' · ' + post.categories.join(', ') : '')
-                + '</div></a>';
-            }).join('');
-            searchResults.innerHTML = html;
-          }
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function () {
+          performSearch(query, searchResults);
+        }, 200);
+      });
+    }
+
+    function performSearch(query, searchResults) {
+      loadSearchData(function (data) {
+        var results = data.filter(function (post) {
+          return post._titleLower.indexOf(query) !== -1 ||
+                 post._excerptLower.indexOf(query) !== -1 ||
+                 post._categoriesLower.indexOf(query) !== -1;
         });
+        if (results.length === 0) {
+          searchResults.innerHTML = '<div class="search-empty">没有找到相关文章</div>';
+        } else {
+          saveHistory(query);
+          var escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          var highlightRe = new RegExp('(' + escaped + ')', 'gi');
+          var html = results.slice(0, 10).map(function (post) {
+            return '<a href="' + post.url + '" class="search-result-item">'
+              + '<div class="search-result-title">' + highlightKeyword(post.title, highlightRe) + '</div>'
+              + '<div class="search-result-meta">' + post.date
+              + (post.categories.length ? ' · ' + post.categories.join(', ') : '')
+              + '</div></a>';
+          }).join('');
+          searchResults.innerHTML = html;
+        }
       });
     }
 
