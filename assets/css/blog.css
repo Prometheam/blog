@@ -51,7 +51,7 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Source Code Pro', Consolas, monospace;
 
   /* 尺寸 */
-  --content-max-width: none;
+  --content-max-width: 1600px;
   --navbar-height: 64px;
 
   /* 过渡 */
@@ -219,13 +219,13 @@ li {
    3. 布局
    ======================================== */
 .container {
-  max-width: var(--content-max-width);
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 .container-wide {
-  max-width: none;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -254,6 +254,8 @@ li {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .navbar-brand {
@@ -592,7 +594,7 @@ li {
 }
 
 .post-list {
-  max-width: var(--content-max-width);
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -746,16 +748,16 @@ li {
 
 .post-layout-wrapper {
   display: flex;
-  max-width: none;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
   gap: 3rem;
 }
 
 .post-content {
   flex: 1;
   min-width: 0;
-  max-width: var(--content-max-width);
+  max-width: 1600px;
   font-size: 1rem;
   line-height: 1.85;
 }
@@ -782,7 +784,7 @@ li {
 .toc-sidebar {
   position: sticky;
   top: calc(var(--navbar-height) + 2rem);
-  width: 220px;
+  width: 240px;
   max-height: calc(100vh - var(--navbar-height) - 6rem);
   overflow-y: auto;
   padding: 1.25rem;
