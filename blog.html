@@ -10,7 +10,6 @@ permalink: /posts/
     <aside class="posts-browser__nav" id="category-nav" role="navigation" aria-label="文章分类导航">
       <header class="posts-browser__header">
         <h1>文章全览</h1>
-        <p class="posts-browser__subtitle">按分类浏览所有文章</p>
       </header>
 
       <div class="posts-browser__nav-controls">
@@ -88,9 +87,9 @@ permalink: /posts/
 </script>
 
 <style>
-/* 覆盖 .post-list 的 800px 限制，让分栏布局有足够宽度 */
+/* 覆盖 .post-list 的 800px 限制，让分栏布局铺满 */
 .blog-page .post-list {
-  max-width: 1200px;
+  max-width: none;
 }
 
 /* 减少顶部空白 */
@@ -106,9 +105,9 @@ permalink: /posts/
    ========================================================================== */
 
 .posts-browser {
-  max-width: 1200px;
+  max-width: none;
   margin: 0 auto;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem 2rem;
 }
 
 .posts-browser__header {
@@ -135,7 +134,7 @@ permalink: /posts/
 
 /* --- 左侧面板 --- */
 .posts-browser__nav {
-  flex: 0 0 32%;
+  flex: 0 0 20%;
   position: sticky;
   top: calc(64px + 2rem);
   max-height: calc(100vh - 64px - 6rem);
