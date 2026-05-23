@@ -58,7 +58,7 @@ permalink: /posts/
             <div class="posts-browser__preview-categories" id="preview-categories"></div>
           </div>
         </header>
-        <div class="posts-browser__preview-body" id="preview-body"></div>
+        <div class="posts-browser__preview-body post-content" id="preview-body"></div>
         <footer class="posts-browser__preview-footer">
           <a href="#" class="posts-browser__read-more" id="preview-link">
             <i class="fa-solid fa-book-open"></i> 阅读全文
@@ -80,7 +80,7 @@ permalink: /posts/
     "date": {{ post.date | date: "%Y-%m-%d" | jsonify }},
     "dateISO": {{ post.date | date_to_xmlschema | jsonify }},
     "categories": {{ post.categories | jsonify }},
-    "excerpt": {{ post.content | strip_html | truncate: 1200 | jsonify }}
+    "excerpt": {{ post.content | jsonify }}
   }{% unless forloop.last %},{% endunless %}
   {% endfor %}
 ]
@@ -349,7 +349,7 @@ permalink: /posts/
   margin-bottom: 2rem;
   max-height: 60vh;
   overflow-y: auto;
-  white-space: pre-line;
+  white-space: normal;
 }
 
 .posts-browser__preview-footer {
@@ -544,7 +544,7 @@ permalink: /posts/
     }).join('');
 
     // 正文预览
-    document.getElementById('preview-body').textContent = post.excerpt;
+    document.getElementById('preview-body').innerHTML = post.excerpt;
 
     // 阅读全文链接
     document.getElementById('preview-link').href = post.url;
