@@ -72,6 +72,12 @@
       white-space: pre;
       letter-spacing: 0.05em;
       user-select: none;
+      animation: wall-e-bob 3s ease-in-out infinite;
+    }
+
+    @keyframes wall-e-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
     }
 
     .ascii-avatar:hover {
@@ -259,21 +265,19 @@
 
   <!-- 主内容 -->
   <div class="hero">
-    <pre class="ascii-avatar">
-       _______________
-      /               \
-     |  ┌───────────┐  |
-     |  │    &gt;_     │  |
-     |  │   ┌──┐    │  |
-     |  │   │◉◉│    │  |
-     |  │   └┬┬┘    │  |
-     |  │    ││     │  |
-     |  │   ╭┴┴╮    │  |
-     |  │   ╰──╯    │  |
-     |  └───────────┘  |
-     |   ___ ___ ___   |
-     |  |___|___|___|  |
-      \_______∧_______/
+    <pre class="ascii-avatar" id="wall-e-ascii">
+        ╭───────────╮
+        │  ◉     ◉  │
+        ╰─────┬─────╯
+       ───────┼───────
+        ╭─────┴─────╮
+        │ ╭───────╮ │
+        │ │ WALL·E│ │
+        │ ╰───────╯ │
+        ╰─┬───────┬─╯
+       ╭──┴─╮   ╭─┴──╮
+       │····│   │····│
+       ╰────╯   ╰────╯
     </pre>
 
     <div class="typewriter-wrapper">
@@ -347,6 +351,107 @@
 
     // 延迟启动
     setTimeout(type, 1000);
+  })();
+
+  // ============================================
+  // WALL-E 眨眼 + 表情动画
+  // ============================================
+  (function() {
+    var el = document.getElementById('wall-e-ascii');
+    if (!el) return;
+
+    // 各帧定义：正常、眨眼、左看、右看
+    var frames = {
+      normal: [
+        '        ╭───────────╮',
+        '        │  ◉     ◉  │',
+        '        ╰─────┬─────╯',
+        '       ───────┼───────',
+        '        ╭─────┴─────╮',
+        '        │ ╭───────╮ │',
+        '        │ │ WALL·E│ │',
+        '        │ ╰───────╯ │',
+        '        ╰─┬───────┬─╯',
+        '       ╭──┴─╮   ╭─┴──╮',
+        '       │····│   │····│',
+        '       ╰────╯   ╰────╯'
+      ],
+      blink: [
+        '        ╭───────────╮',
+        '        │  ─     ─  │',
+        '        ╰─────┬─────╯',
+        '       ───────┼───────',
+        '        ╭─────┴─────╮',
+        '        │ ╭───────╮ │',
+        '        │ │ WALL·E│ │',
+        '        │ ╰───────╯ │',
+        '        ╰─┬───────┬─╯',
+        '       ╭──┴─╮   ╭─┴──╮',
+        '       │····│   │····│',
+        '       ╰────╯   ╰────╯'
+      ],
+      lookLeft: [
+        '        ╭───────────╮',
+        '        │ ◉    ◉    │',
+        '        ╰─────┬─────╯',
+        '       ───────┼───────',
+        '        ╭─────┴─────╮',
+        '        │ ╭───────╮ │',
+        '        │ │ WALL·E│ │',
+        '        │ ╰───────╯ │',
+        '        ╰─┬───────┬─╯',
+        '       ╭──┴─╮   ╭─┴──╮',
+        '       │····│   │····│',
+        '       ╰────╯   ╰────╯'
+      ],
+      lookRight: [
+        '        ╭───────────╮',
+        '        │    ◉    ◉ │',
+        '        ╰─────┬─────╯',
+        '       ───────┼───────',
+        '        ╭─────┴─────╮',
+        '        │ ╭───────╮ │',
+        '        │ │ WALL·E│ │',
+        '        │ ╰───────╯ │',
+        '        ╰─┬───────┬─╯',
+        '       ╭──┴─╮   ╭─┴──╮',
+        '       │····│   │····│',
+        '       ╰────╯   ╰────╯'
+      ]
+    };
+
+    function render(frame) {
+      el.textContent = frame.join('\n');
+    }
+
+    // 眨眼动画
+    function doBlink() {
+      render(frames.blink);
+      setTimeout(function() { render(frames.normal); }, 150);
+    }
+
+    // 随机看左右
+    function doLook() {
+      var dir = Math.random() > 0.5 ? 'lookLeft' : 'lookRight';
+      render(frames[dir]);
+      setTimeout(function() { render(frames.normal); }, 800);
+    }
+
+    // 主循环：随机触发眨眼或张望
+    function scheduleNext() {
+      var wait = 1500 + Math.random() * 3000; // 1.5~4.5秒间隔
+      setTimeout(function() {
+        var action = Math.random();
+        if (action < 0.6) {
+          doBlink(); // 60% 眨眼
+        } else {
+          doLook();  // 40% 左右看
+        }
+        scheduleNext();
+      }, wait);
+    }
+
+    scheduleNext();
   })();
   </script>
 </body>
