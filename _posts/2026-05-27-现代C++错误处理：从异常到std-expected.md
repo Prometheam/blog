@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: "现代C++错误处理：从异常到std::expected"
-date: 2026-05-29 09:00:00 +0800
+date: 2026-05-27 09:00:00 +0800
 categories: [C++语言]
 location: 西安
 excerpt_separator: "```"

@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: "从PyTorch到MindSpore：昇腾上的模型训练实战"
-date: 2026-05-29 00:00:00 +0800
+date: 2026-05-27 00:00:00 +0800
 categories: [昇腾AI]
 location: 西安
 excerpt_separator: "```"
