@@ -2,7 +2,7 @@
 layout: post_layout
 title: "TCP半连接队列与全连接队列：从SYN Flood到内核调优"
 date: 2026-05-26 11:00:00 +0800
-categories: [网络协议]
+categories: [网络编程]
 location: 西安
 excerpt_separator: "```"
 ---
