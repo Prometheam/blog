@@ -57,6 +57,7 @@ excerpt_separator: "```"
 
 ## C++ 服务埋点（prometheus-cpp）
 
+{% raw %}
 ```cpp
 #include <prometheus/counter.h>
 #include <prometheus/histogram.h>
@@ -105,6 +106,7 @@ private:
     prometheus::Histogram* latency_hist_;
 };
 ```
+{% endraw %}
 
 ## RED 与 USE 方法论
 
@@ -142,6 +144,7 @@ avg by (instance) (rate(process_cpu_seconds_total[5m])) * 100
 
 ## 告警规则设计
 
+{% raw %}
 ```yaml
 # prometheus_rules.yml
 groups:
@@ -166,6 +169,7 @@ groups:
         labels:
           severity: critical
 ```
+{% endraw %}
 
 告警设计原则：
 1. **告警要可操作**——收到告警后应该明确知道要做什么

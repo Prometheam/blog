@@ -104,6 +104,7 @@ void InitTracing() {
 
 在gRPC拦截器中自动创建Span：
 
+{% raw %}
 ```cpp
 class TracingInterceptor : public grpc::experimental::Interceptor {
     void Intercept(InterceptorBatchMethods* methods) override {
@@ -122,6 +123,7 @@ class TracingInterceptor : public grpc::experimental::Interceptor {
     }
 };
 ```
+{% endraw %}
 
 ## 采样策略
 
@@ -160,6 +162,7 @@ class TracingInterceptor : public grpc::experimental::Interceptor {
 
 真正的可观测性在于三者的关联：
 
+{% raw %}
 ```cpp
 // 日志中自动注入trace_id
 spdlog::info("[trace_id={}] Processing order {}",
@@ -168,6 +171,7 @@ spdlog::info("[trace_id={}] Processing order {}",
 // Metrics中关联exemplar
 histogram.Record(latency_ms, {{"trace_id", current_trace_id}});
 ```
+{% endraw %}
 
 在Grafana中，点击Metrics图表上的异常点 → 跳转到对应的Trace → 展开Span查看关联的Log。这个闭环让故障排查效率提升了一个数量级。
 

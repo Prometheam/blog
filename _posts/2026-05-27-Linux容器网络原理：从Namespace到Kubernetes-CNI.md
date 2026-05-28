@@ -348,6 +348,7 @@ Host B (10.0.0.2):
 
 ### 7. 网络问题排查
 
+{% raw %}
 ```bash
 # 1. 查看容器的network namespace
 pid=$(docker inspect -f '{{.State.Pid}}' container_id)
@@ -385,6 +386,7 @@ ping -s 1450 10.244.2.3   # 1450字节不通 → MTU问题！
 # 修复：调小容器接口MTU
 ip link set eth0 mtu 1450
 ```
+{% endraw %}
 
 ---
 
