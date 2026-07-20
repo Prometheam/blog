@@ -6,6 +6,7 @@ location: 西安
 excerpt_separator: "```"
 ---
 
+
 ABI(Application Binary Interface，应用二进制接口)定义机器码层面的交互规则，数据布局、调用约定、符号名、库接口等。
 API(Application Programming Interface)源代码层面的约定，函数名、函数类型、返回值等。
 
