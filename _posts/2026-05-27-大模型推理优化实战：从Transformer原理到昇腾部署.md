@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: "大模型推理优化实战：从Transformer原理到昇腾部署"
-date: 2026-05-27 13:00:00 +0800
+date: 2026-05-27 12:00:00 +0800
 categories: [昇腾AI]
 location: 西安
 excerpt_separator: "```"
